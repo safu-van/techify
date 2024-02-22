@@ -1,0 +1,14 @@
+from django.shortcuts import render
+from category.models import Category
+from product.models import Product
+
+# Create your views here.
+
+def home(request):
+    categories = Category.objects.all()
+    products = Product.objects.all()
+    context = {
+        'categories': categories,
+        'products': products,
+    }
+    return render(request, 'user/index.html', context)
