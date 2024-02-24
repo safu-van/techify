@@ -206,3 +206,13 @@ h2 {
 .control--checkbox input:disabled:checked ~ .control__indicator {
   background-color: #7e0cf5;
   opacity: .2; }
+
+.form-control::placeholder {
+  color: #999; /* Placeholder text color */
+  font-size: 13px;
+}
+
+.text-danger {
+  color: #ff0000; /* Red color for error messages */
+  font-size: 12px; /* Font size for error messages */
+}

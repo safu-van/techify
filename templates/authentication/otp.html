@@ -1,0 +1,84 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon/favicon.ico' %}" >
+
+	<!-- Bootstrap 5 CDN Link -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Custom CSS Link -->
+	<link rel="stylesheet" href="{% static 'authentication/css/otp.css' %}">
+
+</head>
+<body> 
+    <section class="wrapper">
+		<div class="container">
+			<div class="col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 text-center">
+				<form class="rounded bg-white shadow p-5" action="{% url 'authentication:otp' %}" method="POST" id="otpForm">
+					{% csrf_token %}
+					<h3 class="text-dark fw-bolder fs-4 mb-2">OTP Verification</h3>
+				
+					<div class="fw-normal text-muted">
+						Enter the verification code we sent to
+					</div>  
+				
+					<div class="d-flex align-items-center justify-content-center fw-bold mb-4">
+						<span>mail</span>
+					</div>
+				
+					<div class="otp_input text-start mb-2">
+						<div class="d-flex align-items-center justify-content-evenly mt-2">
+							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp1">
+							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp2">
+							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp3">
+							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp4">
+						</div> 
+					</div>  
+				
+					<button type="submit" class="btn btn-primary submit_btn my-4">Submit</button> 
+				
+					<div class="fw-normal text-muted mb-2">
+						Didn’t get the code ? <a href="#" class="text-primary fw-bold text-decoration-none">Resend</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#otpForm').submit(function(event) {
+				var isValid = true;
+				$('.otp').each(function() {
+					if ($(this).val() === '') {
+						isValid = false;
+						$(this).css('border-color', 'red');
+					}
+				});
+				if (!isValid) {
+					event.preventDefault();
+				}
+			});
+
+			// Reset border color on input focus
+			$('.otp').focus(function() {
+				$(this).css('border-color', '');
+			});
+		});
+	</script>
+
+</body>
+</html>
+

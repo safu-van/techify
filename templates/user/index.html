@@ -69,18 +69,41 @@
                     <div class="header-right">
                         <div class="header-dropdown-link">
                             <div class="dropdown compare-dropdown">
-                                <a href="wishlist.html" class="wishlist-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
-                                    <i class="icon-heart-o"></i>
-                                    <span class="wishlist-count">3</span>
-                                    <span class="wishlist-txt">wishlist</span>
-                                </a>
+                                <li class="nav-item dropdown">
+                                    <a href="wishlist.html" class="wishlist-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" aria-label="Compare Products">
+                                        <i class="icon-user"></i>
+                                        <span class="wishlist-txt">Account</span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                                      aria-labelledby="profileDropdown">
+                                      {% comment %} <a class="dropdown-item preview-item">
+                                        <div class="preview-item-content">
+                                          <p class="preview-subject mb-1">Settings</p>
+                                        </div>
+                                      </a> {% endcomment %}
+                                      <div class="dropdown-divider"></div>
+                                      {% if request.user.is_authenticated %}
+                                      <a class="dropdown-item preview-item" href="{% url 'authentication:signout' %}">
+                                        <div class="preview-item-content">
+                                          <p class="preview-subject mb-1">Logout</p>
+                                        </div>
+                                      </a>
+                                      {% else %}
+                                      <a class="dropdown-item preview-item" href="{% url 'authentication:signin' %}">
+                                        <div class="preview-item-content">
+                                          <p class="preview-subject mb-1">Login</p>
+                                        </div>
+                                      </a>
+                                      {% endif %}
+                                    </div>
+                                  </li>
                             </div>
 
-                            <!-- <a href="wishlist.html" class="wishlist-link">
+                            <a href="wishlist.html" class="wishlist-link">
                                 <i class="icon-heart-o"></i>
                                 <span class="wishlist-count">3</span>
                                 <span class="wishlist-txt">wishlist</span>
-                            </a> -->
+                            </a>
 
                             <div class="dropdown cart-dropdown">
                                 <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
@@ -124,14 +147,7 @@
         <main class="main">
             <!-- Banner -->
             <div class="intro-slider-container">
-                <div class="intro-slider owl-carousel owl-simple owl-nav-inside" data-toggle="owl" data-owl-options='{
-                        "nav": false,
-                        "responsive": {
-                            "992": {
-                                "nav": true
-                            }
-                        }
-                    }'>
+                <div class="intro-slider owl-carousel owl-simple owl-nav-inside" data-toggle="owl" >
                     <div class="intro-slide" style="background-image: url({% static 'user/assets/images/demos/demo-13/slider/slide-1.png' %});">
                         <div class="container intro-content">
                             <div class="row">

@@ -27,55 +27,123 @@
     <title>Sign Up</title>
   </head>
   <body>
-    <div class="content">
+    <div class="content" style="padding: 2rem 0;">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-6 contents">
             <div class="row justify-content-center">
               <div class="col-md-12">
                 <div class="form-block">
-                  <div class="mb-6">
-                    <h3 style="text-align: center;"><strong>Sign Up</strong></h3>
+                  {% if email_taken %}
+                  <div class="alert alert-danger" role="alert">
+                    Email you had entered is already taken
                   </div>
-                  <form action="{% url 'authentication:signup' %}" method="post">
+                  {% endif %}
+                  <div class="mb-6">
+                    <h3 style="text-align: center; margin-bottom: 50px;"><strong>Sign Up</strong></h3>
+                  </div>
+                  <form action="{% url 'authentication:signup' %}" method="post" id="form">
                     {% csrf_token %}
                     <div class="form-group first">
-                      <label for="fullname">Full Name</label>
-                      <input type="text" class="form-control" id="fullname" name="fullname" required>
+                        <input type="text" class="form-control mb-2" id="fullname" name="fullname" Placeholder="Full Name" >
+                        <span id="fullname-error" class="text-danger"></span> <!-- Placeholder for error message -->
                     </div>
                     <div class="form-group last mb-4">
-                      <label for="email">Email</label>
-                      <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="text" class="form-control" id="email" name="email" Placeholder="Email">
+                        <span id="email-error" class="text-danger"></span> <!-- Placeholder for error message -->
                     </div>
                     <div class="form-group last mb-4">
-                      <label for="password">Password</label>
-                      <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control" id="password" name="password" Placeholder="Password">
+                        <span id="password-error" class="text-danger"></span> <!-- Placeholder for error message -->
                     </div>
-
+                
                     <input type="submit" value="Sign Up" class="btn btn-pill text-white btn-block btn-primary" style="background: #3399ff;">
-
+                
                     <span class="d-block text-center my-4 text-muted"> Already have an account? <a href='{% url 'authentication:signin' %}'>Sign In</a></span>
                     <span class="d-block text-center my-2 text-muted"> or sign up with</span>
-                    
+                
                     <div class="social-login text-center">
-                      <a href="#" class="facebook">
-                        <span class="icon-facebook mr-3"></span> 
-                      </a>
-                      <a href="#" class="google">
-                        <span class="icon-google mr-3"></span> 
-                      </a>
+                        <a href="#" class="facebook">
+                            <span class="icon-facebook mr-3"></span>
+                        </a>
+                        <a href="#" class="google">
+                            <span class="icon-google mr-3"></span>
+                        </a>
                     </div>
-                  </form>
+                  </form>                
                 </div>
               </div>
             </div>
-            
           </div>
-          
         </div>
       </div>
     </div>
-
+    <script>
+        document.getElementById("form").addEventListener("submit", function (event) {
+          var fullname = document.getElementById("fullname").value.trim();
+          var email = document.getElementById("email").value.trim();
+          var password = document.getElementById("password").value.trim();
+          var isValid = true;
+          
+          // Validate Full Name
+          if (fullname === "") {
+              isValid = false;
+              document.getElementById("fullname-error").textContent = "Please enter your full name.";
+          } else if (!isValidName(fullname)) {
+              isValid = false;
+              document.getElementById("fullname-error").textContent = "Please enter a valid full name (only alphabetic characters).";
+          } else {
+              document.getElementById("fullname-error").textContent = ""; // Clear error message if valid
+          }
+  
+          // Validate Email
+          if (email === "") {
+              isValid = false;
+              document.getElementById("email-error").textContent = "Please enter your email address.";
+          } else if (!isValidEmail(email)) {
+              isValid = false;
+              document.getElementById("email-error").textContent = "Please enter a valid email address.";
+          } else {
+              document.getElementById("email-error").textContent = ""; // Clear error message if valid
+          }
+  
+          // Validate Password
+          if (password === "") {
+              isValid = false;
+              document.getElementById("password-error").textContent = "Please enter your password.";
+          } else if (!isValidPassword(password)) {
+              isValid = false;
+              document.getElementById("password-error").textContent = "Password must contain at least 8 characters, 1 capital letter, and 1 special symbol.";
+          } else {
+              document.getElementById("password-error").textContent = ""; // Clear error message if valid
+          }
+  
+          if (!isValid) {
+              event.preventDefault(); // Prevent form submission if validation fails
+          }
+        });
+  
+      // Function to validate full name (only alphabetic characters)
+      function isValidName(name) {
+          var nameRegex = /^[A-Za-z]+$/;
+          return nameRegex.test(name);
+      }
+  
+      // Function to validate email format
+      function isValidEmail(email) {
+          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(email);
+      }
+  
+      // Function to validate password format
+      function isValidPassword(password) {
+          // Password must contain at least 8 characters, 1 capital letter, and 1 special symbol
+          var passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
+          return passwordRegex.test(password);
+      }
+    </script>  
+  
+    
     <script src="{% static 'authentication/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'authentication/js/popper.min.js' %}"></script>
     <script src="{% static 'authentication/js/bootstrap.min.js' %}"></script>

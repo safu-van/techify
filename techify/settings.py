@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #custom apps
+    'admin_techify',
     'home',
     'category',
     'product',

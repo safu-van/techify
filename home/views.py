@@ -5,8 +5,8 @@ from product.models import Product
 # Create your views here.
 
 def home(request):
-    categories = Category.objects.all()
-    products = Product.objects.all()
+    categories = Category.objects.exclude(is_available=False)
+    products = Product.objects.exclude(is_available=False)
     context = {
         'categories': categories,
         'products': products,

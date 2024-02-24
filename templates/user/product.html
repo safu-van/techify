@@ -149,20 +149,16 @@
                                         </figure><!-- End .product-main-image -->
 
                                         <div id="product-zoom-gallery" class="product-image-gallery">
-                                            <a class="product-gallery-item active" href="#" data-image="assets/images/products/single/1-big.jpg" data-zoom-image="assets/images/products/single/1-big.jpg">
-                                                <img src="assets/images/products/single/1-big.jpg" alt="product side">
+                                            <a class="product-gallery-item active" href="#" data-image="{{ product.thumbnail.url }}" data-zoom-image="{{ product.thumbnail.url }}">
+                                                <img src="{{ product.thumbnail.url }}" alt="product side">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/2.jpg" data-zoom-image="assets/images/products/single/2-big.jpg">
-                                                <img src="assets/images/products/single/2.jpg" alt="product cross">
+                                            <a class="product-gallery-item" href="#" data-image="{{ product.image2.url }}" data-zoom-image="{{ product.image2.url }}">
+                                                <img src="{{ product.image2.url }}" alt="product cross">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/3.jpg" data-zoom-image="assets/images/products/single/3-big.jpg">
-                                                <img src="assets/images/products/single/3-small.jpg" alt="product with model">
-                                            </a>
-
-                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/4.jpg" data-zoom-image="assets/images/products/single/4-big.jpg">
-                                                <img src="assets/images/products/single/4-small.jpg" alt="product back">
+                                            <a class="product-gallery-item" href="#" data-image="{{ product.image3.url }}" data-zoom-image="{{ product.image3.url }}">
+                                                <img src="{{ product.image3.url }}" alt="product with model">
                                             </a>
                                         </div><!-- End .product-image-gallery -->
                                     </div><!-- End .row -->
