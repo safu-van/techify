@@ -13,6 +13,7 @@ def category_action(request, category_id):
         category.is_available = True
         
     category.save()
+    
     return redirect('admin_techify:category_management')
 
 

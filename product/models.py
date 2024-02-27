@@ -12,11 +12,11 @@ from offer.models import Offer
 class Product(models.Model):
     name = models.CharField(max_length=200)
     price = models.FloatField()
-    thumbnail = models.ImageField(upload_to='images/product')
     stock = models.IntegerField()
     offer = models.ForeignKey(Offer, on_delete=models.SET_NULL, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     is_available = models.BooleanField(default=True)
+    thumbnail = models.ImageField(upload_to='images/product')
     image2 = models.ImageField(upload_to='images/product')
     image3 = models.ImageField(upload_to='images/product')
 

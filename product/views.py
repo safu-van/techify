@@ -12,10 +12,12 @@ def product_list(request):
 
 def product_view(request, product_id):
     product = Product.objects.get(id=product_id)
-    if product.is_available == True:
+    
+    if product.is_available:
         product_details = ProductDetails.objects.get(product=product)
         category = product.category
-        related_products = Product.objects.exclude(id=product_id).filter(category=category)
+        related_products = Product.objects.filter(category=category).exclude(id=product_id)
+        
         context = {
             'product': product,
             'product_details': product_details,
@@ -32,6 +34,7 @@ def category_product(request, category_id):
 
 def add_product(request):
     categories = Category.objects.all()
+    
     if request.method == 'POST':
         name = request.POST.get('product_name')
         category_name = request.POST.get('category')

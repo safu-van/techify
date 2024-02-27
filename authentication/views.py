@@ -48,6 +48,7 @@ def signin(request):
         else:
             user_isnotvalid = True
             return render(request, 'authentication/signin.html', {'user_isnotvalid': user_isnotvalid})
+        
     return render(request, 'authentication/signin.html')
 
 
