@@ -4,7 +4,7 @@ from django.db import models
 
 class Offer(models.Model):
     name = models.CharField(max_length=100)
-    offer_percentage = models.IntegerField()
+    discount = models.IntegerField()
     start_date = models.DateField()
     end_date = models.DateField()
     is_available = models.BooleanField(default=True)

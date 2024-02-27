@@ -41,7 +41,7 @@
                     <span class="nav-link">Navigation</span>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="{% url 'admin_techify:admin_home' %}">
+                    <a class="nav-link" href="{% url 'admin_techify:admin_dashboard' %}">
                         <span class="menu-icon">
                             <i class="mdi mdi-speedometer"></i>
                         </span>
@@ -49,7 +49,7 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="{% url 'admin_techify:users' %}">
+                    <a class="nav-link" href="{% url 'admin_techify:user_management' %}">
                         <span class="menu-icon">
                             <i class="mdi mdi-account"></i>
                         </span>
@@ -57,7 +57,7 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="{% url 'admin_techify:category' %}">
+                    <a class="nav-link" href="{% url 'admin_techify:category_management' %}">
                         <span class="menu-icon">
                             <i class="mdi mdi-playlist-play"></i>
                         </span>
@@ -65,7 +65,7 @@
                     </a>
                 </li>
                 <li class="nav-item menu-items">
-                    <a class="nav-link" href="{% url 'admin_techify:product' %}">
+                    <a class="nav-link" href="{% url 'admin_techify:product_management' %}">
                         <span class="menu-icon">
                             <i class="mdi mdi-table-large"></i>
                         </span>
@@ -158,8 +158,7 @@
                 <div class="content-wrapper">
                     <div class="page-header">
                         <h3 class="page-title">Product Details</h3>
-                        <button type="button" class="nav-link btn btn-success create-new-button"  data-toggle="modal"
-                        data-target="#addProductModal" >+ Add Product</button>
+                        <a type="button" href="{% url 'product:add_product' %}" class="nav-link btn btn-success create-new-button" >+ Add Product</a>
                     </div>
                     <div class="row">
                         <div class="col-lg-12 grid-margin stretch-card">
@@ -175,11 +174,11 @@
                                                     <th>Stock</th>
                                                     <th>Price</th>
                                                     <th>Action</th>
-                                                    <th>Edit</th>
+                                                    <th>Edit / Delete</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {% for product in product %}
+                                                {% for product in products %}
                                                 <tr>
                                                     <td>{{ forloop.counter }}</td>
                                                     <td>{{ product.name }}</td>
@@ -193,12 +192,31 @@
                                                     <td><a type="button" href="{% url 'product:product_action' product.id %}" class="btn btn-outline-success" style="width: 80px">Unblock</a>
                                                     </td>
                                                     {% endif %}
-                                                    <td><button type="button" data-toggle="modal"
-                                                            data-target="#editProductModal"
-                                                            class="btn btn-outline-secondary "
-                                                            style="width: 80px">Edit</button>
+                                                    <td>
+                                                        <a type="button" href="{% url 'product:edit_product' product.id %}" class="btn btn-outline-primary edit-category-btn mdi mdi-pencil" style="width: auto"></a>
+                                                        <a type="button" class="btn btn-outline-danger edit-category-btn mdi mdi-delete" style="width: auto" data-toggle="modal" data-target="#confirmationModal"></a>
+                          
                                                     </td>
                                                 </tr>
+                                                <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                          </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          Are you sure you want to delete this category?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                          <a type="button" href="{% url 'product:delete_product' product.id %}" class="btn btn-danger">Delete</a>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
                                                 {% endfor %}
                                             </tbody>
                                         </table>
@@ -211,165 +229,6 @@
             </div>
         </div>
     </div>
-
-    {% comment %} <!-- product edit modal -->
-    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="editProductForm">
-                        <div class="form-group">
-                            <label for="productName">Product Name</label>
-                            <input type="text" style="color: white;" class="form-control" id="productName" placeholder="Enter Product Name">
-                        </div>
-                        <div class="dropdown" style="margin-bottom: 15px;">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Category </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
-                              <a class="dropdown-item text-white" href="#">Laptop</a>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="stock">Stock</label>
-                            <input type="text" style="color: white;" class="form-control" id="stock" placeholder="Enter Stock">
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Price</label>
-                            <input type="text" style="color: white;" class="form-control" id="price" placeholder="Enter Price">
-                        </div>
-                        <div class="form-group">
-                            <label for="productImage">Thumbnail Image</label>
-                            <input type="file" class="form-control-file" id="productImage">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" id="saveChangesBtn">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div> {% endcomment %}
-
-    <!-- product add modal -->
-    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="addProductForm" method="post" action={% url 'product:add_product' %} enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="productName">Product Name</label>
-                            <input type="text" style="color: white;" class="form-control" id="productName" placeholder="Enter Product Name" name='name'>
-                        </div>
-                        <div class="dropdown" style="margin-bottom: 15px;">
-                            <label for="dropdown">Category:</label>
-                            <select id="dropdown" name="selected_option">
-                                {% for cat in category %}
-                                <option value="{{ cat.id }}">{{ cat.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="stock">Stock</label>
-                            <input type="text" style="color: white;" class="form-control" id="stock" placeholder="Enter Stock" name='stock'>
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Price</label>
-                            <input type="text" style="color: white;" class="form-control" id="price" placeholder="Enter Price" name='price'>
-                        </div>
-                        <div class="form-group">
-                            <label for="Description">Description</label>
-                            <textarea type="text" style="color: white;" class="form-control" id="Description" placeholder="Enter Description" rows="3" name='description'></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="additionalInformation">Additional Information</label>
-                            <textarea type="text" style="color: white;" class="form-control" id="additionalInformation" placeholder="Enter Additional Information" rows="6" name='additional_info'></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="thumbnailImage">Thumbnail Image</label>
-                            <input type="file" class="form-control-file" id="thumbnailImage" name='thumbnail_image'>
-                        </div>
-                        <div class="form-group">
-                            <label for="productImage">Image 2</label>
-                            <input type="file" class="form-control-file" id="productImage" name='image2'>
-                        </div>
-                        <div class="form-group">
-                            <label for="productImage">Image 3</label>
-                            <input type="file" class="form-control-file" id="productImage" name='image3'>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success" id="saveChangesBtn">Save changes</button>
-                        </div>
-                    </form>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-
-    {% comment %} <script>
-        document.getElementById("addProductForm").addEventListener("submit", function(event) {
-            // Prevent the form from submitting if validation fails
-            event.preventDefault();
-    
-            // Perform validation
-            var productName = document.getElementById("productName").value.trim();
-            var stock = parseInt(document.getElementById("stock").value);
-            var price = parseFloat(document.getElementById("price").value);
-            var description = document.getElementById("Description").value.trim();
-            var additionalInfo = document.getElementById("additionalInformation").value.trim();
-            var thumbnailImage = document.getElementById("thumbnailImage").value.trim();
-    
-            // Define validation rules
-            if (productName.length < 3) {
-                alert("Product name must be at least 3 characters long.");
-                return;
-            }
-    
-            if (stock < 0) {
-                alert("Stock must be zero or greater than zero.");
-                return;
-            }
-    
-            if (price <= 0 || isNaN(price)) {
-                alert("Price must be greater than zero.");
-                return;
-            }
-    
-            if (description.length === 0) {
-                alert("Please enter a description.");
-                return;
-            }
-    
-            if (additionalInfo.length === 0) {
-                alert("Please enter additional information.");
-                return;
-            }
-    
-            if (thumbnailImage === "") {
-                alert("Please select a thumbnail image.");
-                return;
-            }
-    
-            // If all validations pass, submit the form
-            this.submit();
-        });
-    </script> {% endcomment %}
     
 
     <script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>

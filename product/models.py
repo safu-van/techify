@@ -30,10 +30,16 @@ def delete_product_image(sender, instance, **kwargs):
     if instance.thumbnail:
         if os.path.isfile(instance.thumbnail.path):
             os.remove(instance.thumbnail.path)
+    if instance.image2:
+        if os.path.isfile(instance.image2.path):
+            os.remove(instance.image2.path)
+    if instance.image3:
+        if os.path.isfile(instance.image3.path):
+            os.remove(instance.image3.path)
     
 
 class ProductDetails(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='product_details')
     description = models.TextField()
     additional_information = models.TextField()
 

@@ -40,7 +40,7 @@
           <span class="nav-link">Navigation</span>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="{% url 'admin_techify:admin_home' %}">
+          <a class="nav-link" href="{% url 'admin_techify:admin_dashboard' %}">
             <span class="menu-icon">
               <i class="mdi mdi-speedometer"></i>
             </span>
@@ -48,7 +48,7 @@
           </a>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="{% url 'admin_techify:users' %}">
+          <a class="nav-link" href="{% url 'admin_techify:user_management' %}">
             <span class="menu-icon">
               <i class="mdi mdi-account"></i>
             </span>
@@ -56,7 +56,7 @@
           </a>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="{% url 'admin_techify:category' %}">
+          <a class="nav-link" href="{% url 'admin_techify:category_management' %}">
             <span class="menu-icon">
               <i class="mdi mdi-playlist-play"></i>
             </span>
@@ -64,7 +64,7 @@
           </a>
         </li>
         <li class="nav-item menu-items">
-          <a class="nav-link" href="{% url 'admin_techify:product' %}">
+          <a class="nav-link" href="{% url 'admin_techify:product_management' %}">
             <span class="menu-icon">
               <i class="mdi mdi-table-large"></i>
             </span>
@@ -110,10 +110,9 @@
               </div>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+              <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown" style="margin-left:0px;">
                 <div class="navbar-profile">
-                  <img class="img-xs rounded-circle" src="{% static 'admin/assets/images/faces/face15.jpg' %}" alt="">
-                  <p class="mb-0 d-none d-sm-block navbar-profile-name">Mohamed Safuvan</p>
+                  <p class="mb-0 d-none d-sm-block navbar-profile-name" style="margin-left:0px;">Mohamed Safuvan</p>
                   <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                 </div>
               </a>
