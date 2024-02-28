@@ -132,12 +132,12 @@
                   <div class="col-md-12 grid-margin stretch-card">
                      <div class="card">
                         <div class="card-body">
-                           <form class="forms-sample" method="post" enctype="multipart/form-data">
+                           <form class="forms-sample" method="post" enctype="multipart/form-data" action="{% url 'product:add_product' %}" >
                               {% csrf_token %}
                               <div class="form-group">
                                  <label for="productName">Product Name</label>
                                  <input type="text" style="color: white;" class="form-control" id="productName" placeholder="Enter Product Name" name="product_name" />
-                                 <span id="productNameError" style="color: red; font-size: 12px;"></span>
+                                 <span id="productNameError" style="color: red; font-size: 12px;">{{ errors.name }}</span>
                               </div>
                               <input type="hidden" id="selectedValue" name="category" />
                               <div class="dropdown" style="margin-top: 20px;">
@@ -147,28 +147,29 @@
                                     <a class="dropdown-item" onclick="selectOption('{{ category.name }}')" style="color: white;">{{ category.name }}</a>
                                     {% endfor %}
                                  </div>
+                                 <span  style="color: red; font-size: 12px;">{{ errors.category_name }}</span>
                               </div>
                               <div class="row" style="padding: 12px;">
                                  <div class="form-group" style="margin-top: 1rem; width: 45%; ">
                                     <label for="price">Price</label>
                                     <input type="text" style="color: white;" class="form-control" id="price" placeholder="Enter Price" name="price" />
-                                    <span id="priceError" style="color: red; font-size: 12px;"></span>
+                                    <span id="priceError" style="color: red; font-size: 12px;">{{ errors.price }}</span>
                                  </div>
                                  <div class="form-group" style="margin-top: 1rem; width: 45%; margin-left:48px;">
                                     <label for="stock">Stock</label>
                                     <input type="text" style="color: white;" class="form-control" id="stock" placeholder="Enter Stock" name="stock" />
-                                    <span id="stockError" style="color: red; font-size: 12px;"></span>
+                                    <span id="stockError" style="color: red; font-size: 12px;">{{ errors.stock }}</span>
                                  </div>
                               </div>
                               <div class="form-group">
                                  <label for="description">Description</label>
                                  <textarea style="color: white;" class="form-control" id="description" placeholder="Enter Description" name="description" rows="5"></textarea>
-                                 <span id="descriptionError" style="color: red; font-size: 12px;"></span>
+                                 <span id="descriptionError" style="color: red; font-size: 12px;">{{ errors.description }}</span>
                               </div>
                               <div class="form-group">
                                  <label for="additionalInformation">Additional Information</label>
                                  <textarea style="color: white;" class="form-control" id="additionalInformation" placeholder="Enter Additional Information" name="additional_information" rows="7"></textarea>
-                                 <span id="additionalInfoError" style="color: red; font-size: 12px;"></span>
+                                 <span id="additionalInfoError" style="color: red; font-size: 12px;">{{ errors.additional_info }}</span>
                               </div>
                               <div class="row" style="padding: 12px;">
                                  <div class="form-group">
@@ -181,7 +182,7 @@
                                        <button class="file-upload-browse btn btn-primary" type="button" onclick="document.getElementById('fileInput1').click()">Upload</button>
                                        </span>
                                     </div>
-                                    <span id="ImageError1" style="color: red; font-size: 12px;"></span>
+                                    <span id="ImageError1" style="color: red; font-size: 12px;">{{ errors.images }}</span>
                                  </div>
                                  <div class="form-group" style="margin-left: 5rem;">
                                     <label></label>
@@ -209,7 +210,7 @@
                                  </div>
                               </div>
                               <button type="submit" class="btn btn-success mr-2">Add</button>
-                              <a href="{% url 'admin_techify:category_management' %}" class="btn btn-dark">Cancel</a>
+                              <a href="{% url 'admin_techify:product_management' %}" class="btn btn-dark">Cancel</a>
                            </form>
                         </div>
                      </div>
@@ -242,6 +243,7 @@
              }
          }
       </script>
+     
       <script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>
       <script src="{% static 'admin/assets/js/off-canvas.js' %}"></script>
       <script src="{% static 'admin/assets/js/hoverable-collapse.js' %}"></script>
