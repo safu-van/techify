@@ -7,8 +7,9 @@ from django.dispatch import receiver
 from category.models import Category
 from offer.models import Offer
 
-# Create your models here.
 
+
+# Product Model
 class Product(models.Model):
     name = models.CharField(max_length=200)
     price = models.FloatField()
@@ -24,7 +25,7 @@ class Product(models.Model):
         return self.name
 
 
-# Delete the product image from the media folder when the product is deleted
+# Delete product image from media folder when product deleted
 @receiver(pre_delete, sender=Product)
 def delete_product_image(sender, instance, **kwargs):
     if instance.thumbnail:
@@ -38,6 +39,7 @@ def delete_product_image(sender, instance, **kwargs):
             os.remove(instance.image3.path)
     
 
+# Product Details Model
 class ProductDetails(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='product_details')
     description = models.TextField()

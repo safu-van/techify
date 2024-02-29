@@ -90,7 +90,7 @@
                     <div class="header-center" style="margin-left: 375px;">
                         <nav class="main-nav">
                             <ul class="menu ">
-                                <li class="megamenu-container active">
+                                <li >
                                     <a href="{% url 'home:home_page' %}">Home</a>
                                 </li>
                                 <li>
@@ -180,10 +180,18 @@
                                         <span class="new-price" style="color: red; font-size: 30px;">${{ product.price }}</span>
                                         <span class="old-price" style="font-size: 15px; padding-top: 10px;">Was <s>$290.00</s></span>
                                     </div><!-- End .product-price -->
-
+                                    
                                     <div class="product-content">
                                         <p>{{ product_details.description }}</p>
                                     </div><!-- End .product-content -->
+
+                                    <div class="product-content">
+                                        {% if product.stock == 0 %}
+                                        <span style="top: 101px; padding: 0px; background: #fff; color: #d30000;">Out of Stock</span>
+                                        {% elif product.stock <= 5 %}
+                                        <span style="top: 101px; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</span>
+                                        {% endif %}
+                                    </div>
 
                                     {% comment %} <div class="details-filter-row details-row-size">
                                         <label>Color:</label>
@@ -312,6 +320,7 @@
                         </div><!-- End .tab-content -->
                     </div><!-- End .product-details-tab -->
 
+                    {% if related_products %}
                     <h2 class="title text-center mb-4">Related Products</h2><!-- End .title text-center -->
 
                     <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
@@ -383,6 +392,7 @@
                         </div><!-- End .product -->
                         {% endfor %}
                     </div><!-- End .owl-carousel -->
+                    {% endif %}
                 </div><!-- End .container -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->

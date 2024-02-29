@@ -1,8 +1,8 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
-# Create your models here.
 
+# Custom User Manager
 class CustomUserManager(BaseUserManager):
 
     def _create_user(self, email, password=None, **extra_fields):
@@ -31,6 +31,7 @@ class CustomUserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
+# Custom User
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True)

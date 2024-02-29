@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 
 from category.models import Category
 
-# Create your views here.
 
+
+# Category Block/Unblock
 def category_action(request, category_id):
     category = Category.objects.get(id=category_id)
     
@@ -17,6 +18,7 @@ def category_action(request, category_id):
     return redirect('admin_techify:category_management')
 
 
+# Add Category
 def add_category(request):
     if request.method == 'POST':
         category_name = request.POST.get('category_name')
@@ -29,6 +31,7 @@ def add_category(request):
     return render(request, 'admin/add_category.html')
 
 
+# Edit Category
 def edit_category(request, category_id):
     edit_category = Category.objects.get(id=category_id)
     
@@ -45,6 +48,7 @@ def edit_category(request, category_id):
     return render(request, 'admin/edit_category.html', {'edit_category': edit_category})
 
 
+# Delete Category
 def delete_category(request, category_id):
     Category.objects.get(id=category_id).delete()
     return redirect('admin_techify:category_management')

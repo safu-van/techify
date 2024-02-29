@@ -407,7 +407,7 @@
                 <div class="tab-pane fade show active" id="mobile-menu-tab" role="tabpanel" aria-labelledby="mobile-menu-link">
                     <nav class="mobile-nav">
                         <ul class="mobile-menu">
-                            <li class="active">
+                            <li >
                                 <a href="#">Home</a>
                             </li>
                             <li>
@@ -444,6 +444,20 @@
             </div><!-- End .social-icons -->
         </div><!-- End .mobile-menu-wrapper -->
     </div><!-- End .mobile-menu-container -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var currentUrl = window.location.href;
+            var menuLinks = document.querySelectorAll(".main-nav .menu li a");
+    
+            menuLinks.forEach(function(link) {
+                if (link.href === currentUrl) {
+                    link.parentElement.classList.add("active");
+                }
+            });
+        });
+    </script>
+    
 
     <!-- Plugins JS File -->
     <script src="{% static 'user/assets/js/jquery.min.js' %}"></script>

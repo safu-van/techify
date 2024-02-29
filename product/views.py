@@ -3,13 +3,15 @@ from django.shortcuts import render,  redirect
 from product.models import Product, ProductDetails
 from category.models import Category
 
-# Create your views here.
 
+
+# List Products
 def product_list(request):
     products = Product.objects.filter(is_available=True).exclude(category__is_available=False)
     return render(request, 'user/product_list.html', {'products': products})
 
 
+# Product Individual View
 def product_view(request, product_id):
     product = Product.objects.get(id=product_id)
     
@@ -27,11 +29,13 @@ def product_view(request, product_id):
     return redirect('home:home_page')
 
 
+# List Products Based On Category
 def category_product(request, category_id):
     products = Product.objects.filter(category=category_id).exclude(is_available=False)
     return render(request, 'user/product_list.html', {'products': products})
 
 
+# Add Product
 def add_product(request):
     categories = Category.objects.all()
     
@@ -81,6 +85,7 @@ def add_product(request):
     return render(request, 'admin/add_product.html', {'categories':categories})
 
 
+# Product Block/Unblock
 def product_action(request, product_id):
     product = Product.objects.get(id=product_id)
     
@@ -93,11 +98,13 @@ def product_action(request, product_id):
     return redirect('admin_techify:product_management')
 
 
+# Delete Product
 def delete_product(request, product_id):
     Product.objects.get(id=product_id).delete()
     return redirect('admin_techify:product_management')
 
 
+# Edit Product
 def edit_product(request, product_id):
     product = Product.objects.get(id=product_id)
     categories = Category.objects.all()

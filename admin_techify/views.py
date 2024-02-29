@@ -5,9 +5,8 @@ from category.models import Category
 from authentication.models import User
 from product.models import Product
 
-# Create your views here.
 
-
+# Admin Dashboard
 @login_required(login_url = 'authentication:signin')
 def admin_dashboard(request):
     if request.user.is_superuser:
@@ -15,6 +14,7 @@ def admin_dashboard(request):
     return redirect('home:home_page')
 
 
+# User Management
 @login_required(login_url = 'authentication:signin')
 def user_management(request):
     if request.user.is_superuser:
@@ -23,6 +23,7 @@ def user_management(request):
     return redirect('home:home_page')
 
 
+# Category Management
 @login_required(login_url = 'authentication:signin')
 def category_management(request):
     if request.user.is_superuser:
@@ -31,6 +32,7 @@ def category_management(request):
     return redirect('home:home_page')
 
 
+# Product Management
 @login_required(login_url = 'authentication:signin')
 def product_management(request):
     if request.user.is_superuser:

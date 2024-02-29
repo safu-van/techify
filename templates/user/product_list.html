@@ -90,7 +90,7 @@
                     <div class="header-center" style="margin-left: 375px;">
                         <nav class="main-nav">
                             <ul class="menu ">
-                                <li class="megamenu-container active">
+                                <li >
                                     <a href="{% url 'home:home_page' %}">Home</a>
                                 </li>
                                 <li>
@@ -424,6 +424,20 @@
             </div><!-- End .social-icons -->
         </div><!-- End .mobile-menu-wrapper -->
     </div><!-- End .mobile-menu-container -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var currentUrl = window.location.href;
+            var menuLinks = document.querySelectorAll(".main-nav .menu li a");
+    
+            menuLinks.forEach(function(link) {
+                if (link.href === currentUrl) {
+                    link.parentElement.classList.add("active");
+                }
+            });
+        });
+    </script>
+    
 
     <!-- Plugins JS File -->
     <script src="{% static 'user/assets/js/jquery.min.js' %}"></script>

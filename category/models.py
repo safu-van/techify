@@ -4,8 +4,8 @@ from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django.db import models
 
-# Create your models here.
 
+# Category Model
 class Category(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='images/category')
@@ -14,7 +14,8 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
     
-# Delete the category image from the media folder when the category is deleted
+    
+# Delete category image from media folder when category deleted
 @receiver(pre_delete, sender=Category)
 def delete_product_image(sender, instance, **kwargs):
     if instance.image:

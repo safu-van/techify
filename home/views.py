@@ -3,8 +3,8 @@ from django.shortcuts import render
 from category.models import Category
 from product.models import Product
 
-# Create your views here.
 
+# Home Page
 def home(request):
     categories = Category.objects.exclude(is_available=False)
     products = Product.objects.filter(is_available=True).exclude(category__is_available=False)

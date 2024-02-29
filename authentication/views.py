@@ -3,9 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 
 from authentication.models import User
 
-# Create your views here.
 
-
+# Sign Up
 def signup(request):
     if request.user.is_authenticated:
         return redirect('home:home_page')
@@ -24,6 +23,7 @@ def signup(request):
     return render(request, 'authentication/signup.html')
 
 
+# Sign In
 def signin(request):
     if request.user.is_authenticated:
         return redirect('home:home_page')
@@ -52,12 +52,14 @@ def signin(request):
     return render(request, 'authentication/signin.html')
 
 
+# Sign Out
 def signout(request):
     if request.user.is_authenticated:
         logout(request)
     return redirect('home:home_page')
 
 
+# User Block/Unblock
 def user_action(request, user_id):
     user = User.objects.get(id=user_id)
     
