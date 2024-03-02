@@ -22,16 +22,6 @@ body{
 /* Main CSS OTP Verification New Changing */ 
 .wrapper{
     padding: 115px;
-    background-image:url("images/bg.png");
-    background-position:bottom center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-attachment: fixed;
-    min-height: 100%;
-    /* height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center; */
 }
 .wrapper .logo img{
     max-width:40%;

@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTP Verification</title>
+    <title>Verify Email</title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
@@ -25,31 +25,32 @@
     <section class="wrapper">
 		<div class="container">
 			<div class="col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 text-center">
-				<form class="rounded bg-white shadow p-5" action="{% url 'authentication:otp' %}" method="POST" id="otpForm">
+				<form class="rounded bg-white shadow p-5" method="POST" id="otpForm" action={% url 'authentication:verify_email' %}>
 					{% csrf_token %}
-					<h3 class="text-dark fw-bolder fs-4 mb-2">OTP Verification</h3>
+					<h3 class="text-dark fw-bolder fs-4 mb-2">Verify Email</h3>
 				
 					<div class="fw-normal text-muted">
-						Enter the verification code we sent to
+						Enter the verification code sent to
 					</div>  
 				
 					<div class="d-flex align-items-center justify-content-center fw-bold mb-4">
-						<span>mail</span>
+						<span>{{ email }}</span>
 					</div>
 				
 					<div class="otp_input text-start mb-2">
 						<div class="d-flex align-items-center justify-content-evenly mt-2">
-							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp1">
-							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp2">
-							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp3">
-							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp4">
+							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp1" data-index="1">
+							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp2" data-index="2">
+							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp3" data-index="3">
+							<input type="text" class="form-control otp" placeholder="" maxlength="1" name="otp4" data-index="4">
 						</div> 
 					</div>  
 				
 					<button type="submit" class="btn btn-primary submit_btn my-4">Submit</button> 
-				
+					
 					<div class="fw-normal text-muted mb-2">
-						Didn’t get the code ? <a href="#" class="text-primary fw-bold text-decoration-none">Resend</a>
+						Didn’t get the code ? <a href="{% url 'authentication:resend_otp' %}" id="resend-otp" class="text-primary fw-bold text-decoration-none" hidden>Resend</a>
+						<p id="resend-message">Resend OTP in <span id="timer">60</span> seconds</p>	
 					</div>
 				</form>
 			</div>
@@ -77,8 +78,54 @@
 				$(this).css('border-color', '');
 			});
 		});
-	</script>
+		const timerElement = document.getElementById('timer');
+        let seconds = 10;
+        let timer;
+    
+        function updateTimer() {
+            timerElement.textContent = seconds;
+            if (seconds === 0) {
+                clearInterval(timer);
+                // Enable the Resend OTP button 
+                document.getElementById('resend-otp').removeAttribute('hidden');
+                document.getElementById('resend-message').textContent = '';
+            }
+            seconds--;
+        }
+    
+        function startTimer() {
+            updateTimer();
+            timer = setInterval(updateTimer, 1000);
+        }
+    
+        startTimer();
 
+		document.addEventListener('DOMContentLoaded', function() {
+			const otpInputs = document.querySelectorAll('.otp');
+
+			otpInputs.forEach(function(input) {
+				input.addEventListener('input', function() {
+					const maxLength = parseInt(input.getAttribute('maxlength'));
+					const currentLength = input.value.length;
+
+					if (currentLength >= maxLength) {
+						const nextIndex = parseInt(input.getAttribute('data-index')) + 1;
+						const nextInput = document.querySelector(`input[data-index="${nextIndex}"]`);
+
+						if (nextInput) {
+							nextInput.focus();
+						}
+					} else if (currentLength === 0) {
+						const prevIndex = parseInt(input.getAttribute('data-index')) - 1;
+						const prevInput = document.querySelector(`input[data-index="${prevIndex}"]`);
+
+						if (prevInput) {
+							prevInput.focus();
+						}
+					}
+				});
+			});
+		});
+	</script>
 </body>
 </html>
-

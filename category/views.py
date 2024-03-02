@@ -48,8 +48,4 @@ def edit_category(request, category_id):
     return render(request, 'admin/edit_category.html', {'edit_category': edit_category})
 
 
-# Delete Category
-def delete_category(request, category_id):
-    Category.objects.get(id=category_id).delete()
-    return redirect('admin_techify:category_management')
     

@@ -98,12 +98,6 @@ def product_action(request, product_id):
     return redirect('admin_techify:product_management')
 
 
-# Delete Product
-def delete_product(request, product_id):
-    Product.objects.get(id=product_id).delete()
-    return redirect('admin_techify:product_management')
-
-
 # Edit Product
 def edit_product(request, product_id):
     product = Product.objects.get(id=product_id)

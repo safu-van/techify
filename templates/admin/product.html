@@ -174,7 +174,7 @@
                                                     <th>Stock</th>
                                                     <th>Price</th>
                                                     <th>Action</th>
-                                                    <th>Edit / Delete</th>
+                                                    <th>Edit</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -194,7 +194,6 @@
                                                     {% endif %}
                                                     <td>
                                                         <a type="button" href="{% url 'product:edit_product' product.id %}" class="btn btn-outline-primary edit-category-btn mdi mdi-pencil" style="width: auto"></a>
-                                                        <a type="button" href="{% url 'product:delete_product' product.id %}" class="btn btn-outline-danger edit-category-btn mdi mdi-delete" style="width: auto"></a>
                           
                                                     </td>
                                                 </tr>

@@ -1,7 +1,47 @@
+import random
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.conf import settings
+from django.core.mail import send_mail
 
 from authentication.models import User
+
+
+
+# Send otp to email
+def send_otp(request):
+    otp = random.randint(1000, 9999)
+    request.session['generated_otp'] = otp
+    
+    user_name = request.session.get('name')
+    subject = 'Techify Ecommerce'
+    message = f'Welcome {user_name},\n\n{otp} is your OTP for email verification.\nOTP is valid for 5 min'
+    recipient = request.session.get('email')
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [recipient], fail_silently=False)
+    
+
+# Resend otp
+def resend_otp(request):
+    send_otp(request)
+    return redirect('authentication:verify_email')
+
+     
+
+# Verify email and save user
+def verify_email(request):
+    email = request.session.get('email')
+    
+    if request.method == 'POST':
+        otp1 = request.POST.get("otp1")
+        otp2 = request.POST.get("otp2")
+        otp3 = request.POST.get("otp3")
+        otp4 = request.POST.get("otp4")
+        otp_code = otp1 + otp2 + otp3 + otp4
+        generated_otp = request.session.get('generated_otp')
+        if int(generated_otp) == int(otp_code):
+            return redirect('home:home_page')
+    return render(request, 'authentication/otp.html', {'email':email})
 
 
 # Sign Up
@@ -17,9 +57,16 @@ def signup(request):
         if User.objects.filter(email=email).exists():
             email_taken = True
             return render(request, 'authentication/signup.html', {'email_taken': email_taken})
+        
+        request.session['name'] = name
+        request.session['email'] = email
+        request.session['password'] = password
+        
+        send_otp(request)
+        return redirect('authentication:verify_email')
 
-        create_user = User.objects.create_user(full_name=name, email=email, password=password)
-        create_user.save()
+        # create_user = User.objects.create_user(full_name=name, email=email, password=password)
+        # create_user.save()
     return render(request, 'authentication/signup.html')
 
 
@@ -72,14 +119,3 @@ def user_action(request, user_id):
      
     return redirect('admin_techify:user_management')
 
-
-# def otp(request):
-#     if request.method == 'POST':
-#         otp1 = request.POST.get("otp1")
-#         otp2 = request.POST.get("otp2")
-#         otp3 = request.POST.get("otp3")
-#         otp4 = request.POST.get("otp4")
-
-#         otp_code = otp1 + otp2 + otp3 + otp4
-#         print(otp_code)
-#     return render(request, 'authentication/otp.html')
