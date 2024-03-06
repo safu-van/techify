@@ -144,18 +144,20 @@
                     <div class="table-responsive">
                       <table class="table">
                         <thead>
-                          <tr>
+                          <tr style="text-align: center;">
                             <th>#</th>
                             <th>Category</th>
+                            <th>Product Count</th>
                             <th>Action</th>
                             <th>Edit</th>
                           </tr>
                         </thead>
                         <tbody>
                           {% for category in categories %}
-                          <tr>
+                          <tr style="text-align: center;">
                             <td>{{ forloop.counter }}</td>
                             <td>{{ category.name }}</td>
+                            <td>{{ category.products_count }}</td>
                             {% if category.is_available %}
                             <td>
                               <a type="button" href="{% url 'category:category_action' category.id %}" class="btn btn-outline-danger" style="width: 80px">Block</a>

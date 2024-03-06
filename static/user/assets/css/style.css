@@ -6883,8 +6883,6 @@ a:focus {
   margin-bottom: 0;
   border: none;
   border-top: .1rem solid #ebebeb; }
-  .card:last-child {
-    border-bottom: .1rem solid #ebebeb; }
 
 .card-header {
   position: relative;

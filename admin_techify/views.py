@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+
 
 from category.models import Category
 from authentication.models import User
@@ -25,9 +27,9 @@ def user_management(request):
 
 # Category Management
 @login_required(login_url = 'authentication:signin')
-def category_management(request):
+def category_management(request): 
     if request.user.is_superuser:
-        categories = Category.objects.all().order_by('id')
+        categories = Category.objects.annotate(products_count=Count('product')).order_by('id')
         return render(request, 'admin/category.html', {'categories': categories})
     return redirect('home:home_page')
 
@@ -36,11 +38,6 @@ def category_management(request):
 @login_required(login_url = 'authentication:signin')
 def product_management(request):
     if request.user.is_superuser:
-        categories = Category.objects.all()
-        products = Product.objects.all()
-        context = {
-            'categories': categories,
-            'products': products,
-        }
-        return render(request, 'admin/product.html', context)
+        products = Product.objects.all().order_by('id')
+        return render(request, 'admin/product.html', {'products': products})
     return redirect('home:home_page')

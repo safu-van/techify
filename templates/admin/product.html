@@ -167,7 +167,7 @@
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
-                                                <tr>
+                                                <tr style="text-align: center;">
                                                     <th>#</th>
                                                     <th>Name</th>
                                                     <th>Category</th>
@@ -179,7 +179,7 @@
                                             </thead>
                                             <tbody>
                                                 {% for product in products %}
-                                                <tr>
+                                                <tr style="text-align: center;">
                                                     <td>{{ forloop.counter }}</td>
                                                     <td>{{ product.name }}</td>
                                                     <td>{{ product.category }}</td>
