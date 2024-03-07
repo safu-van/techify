@@ -163,7 +163,9 @@
                                         </div><!-- End .product-action-vertical -->
         
                                         <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to cart</span></a>
+                                            <input type='hidden' value='1' class='product-quantity'>
+                                            <input type='hidden' value='{{ product.id }}' class='product-id'>
+                                            <a class="btn-product btn-cart add-to-cart-btn" title="Add to cart"><span>add to cart</span></a>
                                         </div><!-- End .product-action -->
                                     </figure><!-- End .product-media -->
         
@@ -453,6 +455,27 @@
 
     <!-- Main JS File -->
     <script src="{% static 'user/assets/js/main.js' %}"></script>
+
+    <script>
+        // add to cart 
+        $('.add-to-cart-btn').on('click', function(){
+            let quantity  = $(this).siblings('.product-quantity').val();
+            let product_id = $(this).siblings('.product-id').val();
+
+            console.log('quantity :', quantity);
+            console.log('product_id :', product_id);
+
+            $.ajax({
+                url: "{% url 'cart:add_to_cart' %}",
+                data: {
+                    'id': product_id,
+                    'qty': quantity
+                },
+                dataType: 'json',
+            })
+
+        })
+    </script>
 
 </body>
 </html>
