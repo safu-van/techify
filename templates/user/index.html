@@ -70,7 +70,7 @@
                         <div class="header-dropdown-link">
                             <div class="dropdown compare-dropdown">
                                 <li class="nav-item dropdown" style="list-style-type: none;">
-                                    <a href="wishlist.html" class="wishlist-link">
+                                    <a href="#" class="wishlist-link">
                                         <i class="icon-user"></i>
                                         <span class="wishlist-txt">Account</span>
                                     </a>
@@ -99,16 +99,18 @@
                                 </li>
                             </div>
 
-                            <a href="wishlist.html" class="wishlist-link">
+                            <a href="#" class="wishlist-link">
                                 <i class="icon-heart-o"></i>
-                                <span class="wishlist-count">3</span>
+                                {% comment %} <span class="wishlist-count">3</span> {% endcomment %}
                                 <span class="wishlist-txt">wishlist</span>
                             </a>
 
                             <div class="dropdown cart-dropdown">
                                 <a href="{% url 'cart:cart' %}" class="dropdown-toggle" >
                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">2</span>
+                                    {% if cart_count %}
+                                    <span class="cart-count"></span>
+                                    {% endif %}
                                     <span class="cart-txt">Cart</span>
                                 </a>
                             </div><!-- End .cart-dropdown -->
@@ -246,17 +248,11 @@
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
                                         </div><!-- End .product-action-vertical -->
-
-                                        <div class="product-action">
-                                            <input type='hidden' value='1' class='product-quantity'>
-                                            <input type='hidden' value='{{ product.id }}' class='product-id'>
-                                            <a class="btn-product btn-cart add-to-cart-btn" title="Add to cart"><span>add to cart</span></a>
-                                        </div><!-- End .product-action -->
                                     </figure><!-- End .product-media -->
 
                                     <div class="product-body">
                                         <div class="product-cat">
-                                            <a href="#">{{ product.category }}</a>
+                                            <a href="{% url 'product:category_product' product.category.id%}">{{ product.category }}</a>
                                         </div><!-- End .product-cat -->
                                         <h3 class="product-title"><a href="{% url 'product:product_view' product.id %}">{{ product.name }}</a></h3><!-- End .product-title -->
                                         <div class="product-price">
@@ -474,27 +470,6 @@
                 }
             });
         });
-    </script>
-
-    <script>
-        // add to cart 
-        $('.add-to-cart-btn').on('click', function(){
-            let quantity  = $(this).siblings('.product-quantity').val();
-            let product_id = $(this).siblings('.product-id').val();
-
-            console.log('quantity :', quantity);
-            console.log('product_id :', product_id);
-
-            $.ajax({
-                url: "{% url 'cart:add_to_cart' %}",
-                data: {
-                    'id': product_id,
-                    'qty': quantity
-                },
-                dataType: 'json',
-            })
-
-        })
     </script>
 
 </body>

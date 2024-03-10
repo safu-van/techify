@@ -60,23 +60,48 @@
                     <div class="header-right">
                         <div class="header-dropdown-link">
                             <div class="dropdown compare-dropdown">
-                                <a href="wishlist.html" class="wishlist-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
-                                    <i class="icon-heart-o"></i>
-                                    <span class="wishlist-count">3</span>
-                                    <span class="wishlist-txt">wishlist</span>
-                                </a>
+                                <li class="nav-item dropdown" style="list-style-type: none;">
+                                    <a href="#" class="wishlist-link">
+                                        <i class="icon-user"></i>
+                                        <span class="wishlist-txt">Account</span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                                      aria-labelledby="profileDropdown">
+                                      {% comment %} <a class="dropdown-item preview-item">
+                                        <div class="preview-item-content">
+                                          <p class="preview-subject mb-1">Settings</p>
+                                        </div>
+                                      </a> {% endcomment %}
+                                      <div class="dropdown-divider"></div>
+                                      {% if request.user.is_authenticated %}
+                                      <a class="dropdown-item preview-item" href="{% url 'authentication:signout' %}">
+                                        <div class="preview-item-content">
+                                          <p class="preview-subject mb-1">Logout</p>
+                                        </div>
+                                      </a>
+                                      {% else %}
+                                      <a class="dropdown-item preview-item" href="{% url 'authentication:signin' %}">
+                                        <div class="preview-item-content">
+                                          <p class="preview-subject mb-1">Login</p>
+                                        </div>
+                                      </a>
+                                      {% endif %}
+                                    </div>
+                                </li>
                             </div>
 
-                            <!-- <a href="wishlist.html" class="wishlist-link">
+                            <a href="#" class="wishlist-link">
                                 <i class="icon-heart-o"></i>
-                                <span class="wishlist-count">3</span>
+                                {% comment %} <span class="wishlist-count">3</span> {% endcomment %}
                                 <span class="wishlist-txt">wishlist</span>
-                            </a> -->
+                            </a>
 
                             <div class="dropdown cart-dropdown">
-                                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <a href="{% url 'cart:cart' %}" class="dropdown-toggle" >
                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">2</span>
+                                    {% if cart_count %}
+                                    <span class="cart-count">{{ request.session.cart_count }}</span>
+                                    {% endif %}
                                     <span class="cart-txt">Cart</span>
                                 </a>
                             </div><!-- End .cart-dropdown -->
@@ -90,7 +115,7 @@
                     <div class="header-center" style="margin-left: 375px;">
                         <nav class="main-nav">
                             <ul class="menu ">
-                                <li >
+                                <li class="megamenu-container">
                                     <a href="{% url 'home:home_page' %}">Home</a>
                                 </li>
                                 <li>
@@ -229,7 +254,11 @@
                                     </div><!-- End .details-filter-row --> {% endcomment %}
 
                                     <div class="product-details-action">
-                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <input type='hidden' value='1' id='product-quantity'>
+                                        <input type='hidden' value='{{ product.id }}' id='product-id'>
+                                        <a class="btn-product btn-cart " id="add-to-cart-btn" title="Add to cart"><span>add to cart</span></a>
+
+                                        {% comment %} <a href="#" class="btn-product btn-cart"><span>add to cart</span></a> {% endcomment %}
                                         <div class="details-action-wrapper">
                                             <a href="#" class="btn-product btn-wishlist" style="width: 198px; height: 38.45px;"><span>Add to Wishlist</span></a>
                                         </div><!-- End .details-action-wrapper -->
@@ -541,6 +570,24 @@
     <script src="{% static 'user/assets/js/jquery.magnific-popup.min.js' %}"></script>
     <!-- Main JS File -->
     <script src="{% static 'user/assets/js/main.js' %}"></script>
+
+    <script>
+        // add to cart 
+        $('#add-to-cart-btn').on('click', function(){
+            let quantity  = $(this).siblings('#product-quantity').val();
+            let product_id = $(this).siblings('#product-id').val();
+
+            $.ajax({
+                url: "{% url 'cart:add_to_cart' %}",
+                data: {
+                    'id': product_id,
+                    'qty': quantity
+                },
+                dataType: 'json',
+            })
+
+        })
+    </script>
 
 </body>
 </html>

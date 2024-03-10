@@ -28,6 +28,28 @@
     <link rel="stylesheet" href="{% static 'user/assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'user/assets/css/skins/skin-demo-13.css' %}">
     <link rel="stylesheet" href="{% static 'user/assets/css/demos/demo-13.css' %}">
+    
+    <style>
+        
+    
+        .cart-product-quantity input[type="button"] {
+            text-align: center; /* Center-align the text inside the button */
+            padding: 0; /* Reset padding */
+            width: 1.5rem; /* Adjust width as needed */
+            border: 1px solid #ccc; 
+            color: #3399ff;
+        }
+    
+        .cart-product-quantity input[type="button"]:hover {
+            background: #3399ff;
+            color: white;
+        }
+    
+        .quantity-input {
+            text-align: center; /* Center-align the text inside the input */
+            border: 1px solid #ccc;
+        }
+    </style>
 
 </head>
 
@@ -64,7 +86,7 @@
                         <div class="header-dropdown-link">
                             <div class="dropdown compare-dropdown">
                                 <li class="nav-item dropdown" style="list-style-type: none;">
-                                    <a href="wishlist.html" class="wishlist-link">
+                                    <a href="#" class="wishlist-link">
                                         <i class="icon-user"></i>
                                         <span class="wishlist-txt">Account</span>
                                     </a>
@@ -93,16 +115,18 @@
                                 </li>
                             </div>
 
-                            <a href="wishlist.html" class="wishlist-link">
+                            <a href="#" class="wishlist-link">
                                 <i class="icon-heart-o"></i>
-                                <span class="wishlist-count">3</span>
+                                {% comment %} <span class="wishlist-count">3</span> {% endcomment %}
                                 <span class="wishlist-txt">wishlist</span>
                             </a>
 
                             <div class="dropdown cart-dropdown">
-                                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <a href="{% url 'cart:cart' %}" class="dropdown-toggle" >
                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">2</span>
+                                    {% if cart_count %}
+                                    <span class="cart-count">{{ cart_count }}</span>
+                                    {% endif %}
                                     <span class="cart-txt">Cart</span>
                                 </a>
                             </div><!-- End .cart-dropdown -->
@@ -116,7 +140,7 @@
                     <div class="header-center" style="margin-left: 375px;">
                         <nav class="main-nav">
                             <ul class="menu ">
-                                <li class="megamenu-container active">
+                                <li class="megamenu-container">
                                     <a href="{% url 'home:home_page' %}">Home</a>
                                 </li>
                                 <li>
@@ -142,48 +166,62 @@
             <div class="page-content" style="padding-top: 5rem;">
             	<div class="cart">
 	                <div class="container">
-	                	<div class="row">
-	                		<div class="col-lg-9">
-	                			<table class="table table-cart table-mobile">
-									<thead>
-										<tr>
-											<th>Product</th>
-											<th>Price</th>
-											<th>Quantity</th>
-											<th>Total</th>
-											<th></th>
-										</tr>
-									</thead>
+	                	<div class="row ">
+	                		<div class="col-lg-9" >
+                                <div id="refresh2">
+                                    <table class="table table-cart table-mobile" >
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
 
-									<tbody>
-                                        {% for item in cart_details %}
-										<tr>
-											<td class="product-col">
-												<div class="product">
-													<figure class="product-media">
-														<a href="#">
-															<img src="{{ item.product_image }}" alt="Product image">
-														</a>
-													</figure>
+                                        <tbody >
+                                            {% if cart_details %}
+                                            {% for item in cart_details %}
+                                            <tr >
+                                                <td class="product-col">
+                                                    <div class="product">
+                                                        <figure class="product-media">
+                                                            <a href="#">
+                                                                <img src="{{ item.product_image }}" alt="Product image">
+                                                            </a>
+                                                        </figure>
 
-													<h3 class="product-title">
-														<a href="#">{{ item.product_name }}</a>
-													</h3><!-- End .product-title -->
-												</div><!-- End .product -->
-											</td>
-											<td class="price-col">${{ item.product_price }}</td>
-											<td class="quantity-col">
-                                                <div class="cart-product-quantity">
-                                                    <input type="number" class="form-control" value="{{ item.quantity }}" min="1" max="10" step="1" data-decimals="0" required>
-                                                </div><!-- End .cart-product-quantity -->                                 
-                                            </td>
-											<td class="total-col">{{ item.total_price }}</td>
-											<td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
-										</tr>
-                                        
-                                        {% endfor %}
-									</tbody>
-								</table><!-- End .table table-wishlist -->
+                                                        <h3 class="product-title">
+                                                            <a href="#">{{ item.product_name }}</a>
+                                                        </h3><!-- End .product-title -->
+                                                    </div><!-- End .product -->
+                                                </td>
+                                                <td class="price-col">${{ item.product_price }}</td>
+                                                <td class="quantity-col">
+                                                    <div class="quantity-container">
+                                                        
+                                                        <div class="quantity-container">
+                                                            <div class="cart-product-quantity">
+                                                                <input style="width: 2rem" class="btn-rounded decrease-btn" type="button" value="-" />
+                                                                <input style="width: 3rem" class="btn-rounded quantity-input text-center" type="text" value="{{ item.quantity }}" min="1" max="{{ item.stock_of_product }}" required readonly />
+                                                                <input style="width: 2rem" class="btn-rounded increase-btn" type="button" value="+" />
+                                                            </div><!-- End .cart-product-quantity -->
+                                                        </div>
+                                                    </div> 
+
+                                                </td>
+                                                <td class="total-col" >{{ item.total_price }}</td>
+                                                <td class="remove-col"><button class="btn-remove" data-item-id="{{ item.item_id }}"><i class="icon-close"></i></button></td>
+                                            </tr>
+                                            
+                                            {% endfor %}
+                                            {% else %}
+                                            <th>No item in the cart...</p>
+                                            {% endif %}
+                                        </tbody>
+                                    </table><!-- End .table table-wishlist -->
+                                </div>
 	                		</div><!-- End .col-lg-9 -->
 	                		<aside class="col-lg-3">
 	                			<div class="summary summary-cart">
@@ -200,7 +238,7 @@
 
 	                				<h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
 
-	                				<table class="table table-summary">
+	                				<table class="table table-summary" id="refresh">
 	                					<tbody>
 
 	                						<tr class="summary-shipping-row">
@@ -513,5 +551,63 @@
     <script src="{% static 'user/assets/js/bootstrap-input-spinner.js' %}"></script>
     <!-- Main JS File -->
     <script src="{% static 'user/assets/js/main.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.btn-remove').click(function() {
+                var itemId = $(this).data('item-id');
+                if (itemId) {
+                    removeItem(itemId);
+                } else {
+                    console.error('Invalid itemId:', itemId);
+                }
+            });
+    
+            function removeItem(itemId) {
+                $.ajax({
+                    url: '/cart/remove-from-cart/' + itemId + '/',
+                    type: 'GET',
+                    success: function(response) {
+                        $('.btn-remove[data-item-id="' + itemId + '"]').closest('tr').remove();
+                        $('#refresh').load(window.location.href + '#refresh'); // Reloads the div content
+                        //$('.refresh1').load(window.location.href + ' .refresh1'); 
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+        });
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get all sets of buttons
+            const decreaseBtns = document.querySelectorAll('.decrease-btn');
+            const increaseBtns = document.querySelectorAll('.increase-btn');
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+    
+            // Add event listener to each decrease button
+            decreaseBtns.forEach((decreaseBtn, index) => {
+                decreaseBtn.addEventListener('click', function() {
+                    let currentValue = parseInt(quantityInputs[index].value);
+                    if (currentValue > 1) {
+                        quantityInputs[index].value = currentValue - 1;
+                    }
+                });
+            });
+    
+            // Add event listener to each increase button
+            increaseBtns.forEach((increaseBtn, index) => {
+                increaseBtn.addEventListener('click', function() {
+                    let currentValue = parseInt(quantityInputs[index].value);
+                    let maxValue = parseInt(quantityInputs[index].getAttribute('max'));
+                    if (currentValue < maxValue) {
+                        quantityInputs[index].value = currentValue + 1;
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
