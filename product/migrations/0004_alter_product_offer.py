@@ -5,16 +5,20 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('offer', '0002_offer_is_available'),
-        ('product', '0003_product_is_available_product_offer'),
+        ("offer", "0002_offer_is_available"),
+        ("product", "0003_product_is_available_product_offer"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='offer',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='offer.offer'),
+            model_name="product",
+            name="offer",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="offer.offer",
+            ),
         ),
     ]

@@ -4,22 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('product', '0009_rename_image_product_thumbnail_alter_product_name'),
+        ("product", "0009_rename_image_product_thumbnail_alter_product_name"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='image2',
-            field=models.ImageField(default=1, upload_to='images/product'),
+            model_name="product",
+            name="image2",
+            field=models.ImageField(default=1, upload_to="images/product"),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='product',
-            name='image3',
-            field=models.ImageField(default=1, upload_to='images/product'),
+            model_name="product",
+            name="image3",
+            field=models.ImageField(default=1, upload_to="images/product"),
             preserve_default=False,
         ),
     ]

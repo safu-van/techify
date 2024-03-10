@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('product', '0008_alter_productdetails_product'),
+        ("product", "0008_alter_productdetails_product"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='product',
-            old_name='image',
-            new_name='thumbnail',
+            model_name="product",
+            old_name="image",
+            new_name="thumbnail",
         ),
         migrations.AlterField(
-            model_name='product',
-            name='name',
+            model_name="product",
+            name="name",
             field=models.CharField(max_length=200),
         ),
     ]

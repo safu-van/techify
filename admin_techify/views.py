@@ -9,35 +9,37 @@ from product.models import Product
 
 
 # Admin Dashboard
-@login_required(login_url = 'authentication:signin')
+@login_required(login_url="authentication:signin")
 def admin_dashboard(request):
     if request.user.is_superuser:
-        return render(request, 'admin/index.html')
-    return redirect('home:home_page')
+        return render(request, "admin/index.html")
+    return redirect("home:home_page")
 
 
 # User Management
-@login_required(login_url = 'authentication:signin')
+@login_required(login_url="authentication:signin")
 def user_management(request):
     if request.user.is_superuser:
-        users = User.objects.exclude(is_superuser=True).order_by('id')
-        return render(request, 'admin/user.html', {'users': users})
-    return redirect('home:home_page')
+        users = User.objects.exclude(is_superuser=True).order_by("id")
+        return render(request, "admin/user.html", {"users": users})
+    return redirect("home:home_page")
 
 
 # Category Management
-@login_required(login_url = 'authentication:signin')
-def category_management(request): 
+@login_required(login_url="authentication:signin")
+def category_management(request):
     if request.user.is_superuser:
-        categories = Category.objects.annotate(products_count=Count('product')).order_by('id')
-        return render(request, 'admin/category.html', {'categories': categories})
-    return redirect('home:home_page')
+        categories = Category.objects.annotate(
+            products_count=Count("product")
+        ).order_by("id")
+        return render(request, "admin/category.html", {"categories": categories})
+    return redirect("home:home_page")
 
 
 # Product Management
-@login_required(login_url = 'authentication:signin')
+@login_required(login_url="authentication:signin")
 def product_management(request):
     if request.user.is_superuser:
-        products = Product.objects.all().order_by('id')
-        return render(request, 'admin/product.html', {'products': products})
-    return redirect('home:home_page')
+        products = Product.objects.all().order_by("id")
+        return render(request, "admin/product.html", {"products": products})
+    return redirect("home:home_page")

@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class AdminTechifyConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'admin_techify'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "admin_techify"
