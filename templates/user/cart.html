@@ -168,7 +168,7 @@
 	                <div class="container">
 	                	<div class="row ">
 	                		<div class="col-lg-9" >
-                                <div id="refresh2">
+                                <div>
                                     <table class="table table-cart table-mobile" >
                                         <thead>
                                             <tr>
@@ -197,21 +197,21 @@
                                                         </h3><!-- End .product-title -->
                                                     </div><!-- End .product -->
                                                 </td>
-                                                <td class="price-col">${{ item.product_price }}</td>
+                                                <td class="price-col" data-product-id="{{ item.item_id }}">${{ item.product_price }}</td>
                                                 <td class="quantity-col">
                                                     <div class="quantity-container">
                                                         
                                                         <div class="quantity-container">
                                                             <div class="cart-product-quantity">
-                                                                <input style="width: 2rem" class="btn-rounded decrease-btn" type="button" value="-" />
+                                                                <input style="width: 2rem" class="btn-rounded decrease-btn" type="button" value="-" data-product-id="{{ item.item_id }}" />
                                                                 <input style="width: 3rem" class="btn-rounded quantity-input text-center" type="text" value="{{ item.quantity }}" min="1" max="{{ item.stock_of_product }}" required readonly />
-                                                                <input style="width: 2rem" class="btn-rounded increase-btn" type="button" value="+" />
+                                                                <input style="width: 2rem" class="btn-rounded increase-btn" type="button" value="+" data-product-id="{{ item.item_id }}" />
                                                             </div><!-- End .cart-product-quantity -->
                                                         </div>
                                                     </div> 
 
                                                 </td>
-                                                <td class="total-col" >{{ item.total_price }}</td>
+                                                <td class="total-col" data-product-id="{{ item.item_id }}"  >{{ item.total_price }}</td>
                                                 <td class="remove-col"><button class="btn-remove" data-item-id="{{ item.item_id }}"><i class="icon-close"></i></button></td>
                                             </tr>
                                             
@@ -569,8 +569,7 @@
                     type: 'GET',
                     success: function(response) {
                         $('.btn-remove[data-item-id="' + itemId + '"]').closest('tr').remove();
-                        $('#refresh').load(window.location.href + '#refresh'); // Reloads the div content
-                        //$('.refresh1').load(window.location.href + ' .refresh1'); 
+                        $('#refresh').load(window.location.href + ' #refresh'); // Reloads the div content
                     },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
@@ -586,17 +585,71 @@
             const decreaseBtns = document.querySelectorAll('.decrease-btn');
             const increaseBtns = document.querySelectorAll('.increase-btn');
             const quantityInputs = document.querySelectorAll('.quantity-input');
-    
+        
+            function sendQuantityToBackend(index, newValue, productId) {
+                // Make an AJAX request to your backend endpoint
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'update_quantity/', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            // If the request is successful, refresh the table content and total price
+                            updateTotalPrice(productId, newValue);
+                            refreshTableAndTotalPrice();
+                            
+                        } else {
+                            // Handle error if needed
+                            console.error('Error updating quantity:', xhr.statusText);
+                        }
+                    }
+                };
+                const data = JSON.stringify({ index: index, value: newValue, productId: productId });
+                xhr.send(data);
+            } 
+            
+            // Function to update the total price for a specific product
+            function updateTotalPrice(productId, value) {
+
+                const totalPriceElement = document.querySelector(`.total-col[data-product-id="${productId}"]`);
+                const totalPrice = document.querySelector(`.price-col[data-product-id="${productId}"]`);
+                const totalPriceText = totalPrice.textContent;
+                const totalPriceValue = parseFloat(totalPriceText.replace(/[^\d.]/g, ''));
+                const total = totalPriceValue * value;
+                intToFloat(total, 1)
+                function intToFloat(num, decimalPlaces) {
+                    tota = num.toFixed(decimalPlaces);
+                }
+                console.log(tota)
+
+                totalPriceElement.textContent = tota;
+                
+            }
+            
+            // Function to refresh the table and total price content
+            function refreshTableAndTotalPrice() {
+                // Load the content of the entire page from the current URL
+                $('#refresh').load(window.location.href + ' #refresh', function(response, status, xhr) {
+                    if (status === 'error') {
+                        // Handle error if needed
+                        console.error('Error refreshing table and total price:', xhr.statusText);
+                    }
+                });
+            }
+
+        
             // Add event listener to each decrease button
             decreaseBtns.forEach((decreaseBtn, index) => {
                 decreaseBtn.addEventListener('click', function() {
                     let currentValue = parseInt(quantityInputs[index].value);
                     if (currentValue > 1) {
                         quantityInputs[index].value = currentValue - 1;
+                        let productId = decreaseBtn.getAttribute('data-product-id');
+                        sendQuantityToBackend(index, currentValue - 1, productId);
                     }
                 });
             });
-    
+        
             // Add event listener to each increase button
             increaseBtns.forEach((increaseBtn, index) => {
                 increaseBtn.addEventListener('click', function() {
@@ -604,10 +657,12 @@
                     let maxValue = parseInt(quantityInputs[index].getAttribute('max'));
                     if (currentValue < maxValue) {
                         quantityInputs[index].value = currentValue + 1;
+                        let productId = increaseBtn.getAttribute('data-product-id');
+                        sendQuantityToBackend(index, currentValue + 1, productId);
                     }
                 });
             });
-        });
-    </script>
+        });        
+    </script> 
 </body>
 </html>

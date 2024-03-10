@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from cart.models import CartItems
 from product.models import Product
 from authentication.models import User
+
+import json
 
 
 def cart(request):
@@ -74,5 +77,27 @@ def update_quantity(request):
     item = CartItems.objects.get(id=item_id)
     item.quantity = int(quantity)
     item.save()
-
     return JsonResponse(data={}, status=204, safe=False)
+
+
+@csrf_exempt
+def update_quantity(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            product_id = data.get('productId')
+            value = data.get('value')
+            user = request.user.id
+            
+            item = CartItems.objects.get(id=product_id, user_id=user)
+            item.quantity = value
+            item.save()
+
+            # Return a JSON response indicating success
+            return JsonResponse({'message': 'Quantity received successfully'}, status=200)
+        except json.JSONDecodeError:
+            # Return a JSON response indicating failure due to invalid JSON
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    else:
+        # Return a JSON response indicating failure for non-POST requests
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
