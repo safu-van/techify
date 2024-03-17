@@ -61,7 +61,7 @@
                         <div class="header-dropdown-link">
                             <div class="dropdown compare-dropdown">
                                 <li class="nav-item dropdown" style="list-style-type: none;">
-                                    <a href="#" class="wishlist-link">
+                                    <a href="{% url 'account:account' %}" class="wishlist-link">
                                         <i class="icon-user"></i>
                                         <span class="wishlist-txt">Account</span>
                                     </a>
@@ -100,7 +100,7 @@
                                 <a href="{% url 'cart:cart' %}" class="dropdown-toggle" >
                                     <i class="icon-shopping-cart"></i>
                                     {% if cart_count %}
-                                    <span class="cart-count">{{ request.session.cart_count }}</span>
+                                    <span class="cart-count"></span>
                                     {% endif %}
                                     <span class="cart-txt">Cart</span>
                                 </a>
@@ -115,7 +115,7 @@
                     <div class="header-center" style="margin-left: 375px;">
                         <nav class="main-nav">
                             <ul class="menu ">
-                                <li class="megamenu-container">
+                                <li class="megamenu-container active">
                                     <a href="{% url 'home:home_page' %}">Home</a>
                                 </li>
                                 <li>
@@ -125,7 +125,7 @@
                                     <a href="#">Wishlist</a>
                                 </li>
                                 <li>
-                                    <a href="#">Account</a>
+                                    <a href="{% url 'account:account' %}">Account</a>
                                 </li>
                                 <li>
                                     <a href="#">Contact</a>
@@ -252,9 +252,11 @@
                                             <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
                                         </div><!-- End .product-details-quantity -->
                                     </div><!-- End .details-filter-row --> {% endcomment %}
-
+                                    <div style="width: 90px;">
+                                        <input type='number' value='1' id='product-quantity' style="width: 90px;" min="1" max="{{ product.stock }}" product-stock="{{ product.stock }}"/>
+                                    </div>
+                                    <br>
                                     <div class="product-details-action">
-                                        <input type='hidden' value='1' id='product-quantity'>
                                         <input type='hidden' value='{{ product.id }}' id='product-id'>
                                         <a class="btn-product btn-cart " id="add-to-cart-btn" title="Add to cart"><span>add to cart</span></a>
 
@@ -391,10 +393,6 @@
                                 <div class="product-action-vertical">
                                     <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
                                 </div><!-- End .product-action-vertical -->
-
-                                <div class="product-action">
-                                    <a href="#" class="btn-product btn-cart" title="Add to cart"><span>add to cart</span></a>
-                                </div><!-- End .product-action -->
                             </figure><!-- End .product-media -->
 
                             <div class="product-body">
@@ -574,19 +572,20 @@
     <script>
         // add to cart 
         $('#add-to-cart-btn').on('click', function(){
-            let quantity  = $(this).siblings('#product-quantity').val();
-            let product_id = $(this).siblings('#product-id').val();
-
-            $.ajax({
-                url: "{% url 'cart:add_to_cart' %}",
-                data: {
-                    'id': product_id,
-                    'qty': quantity
-                },
-                dataType: 'json',
-            })
-
-        })
+            let quantity  = document.getElementById('product-quantity').value;
+            let product_id = document.getElementById('product-id').value;
+            let productStock = parseInt($('#product-quantity').attr('product-stock'));
+            if (quantity <= productStock && quantity <= 10) {
+                $.ajax({
+                    url: "{% url 'cart:add_to_cart' %}",
+                    data: {
+                        'id': product_id,
+                        'qty': quantity
+                    },
+                    dataType: 'json',
+                });
+            }
+        });
     </script>
 
 </body>

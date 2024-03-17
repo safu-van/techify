@@ -61,7 +61,7 @@
                         <div class="header-dropdown-link">
                             <div class="dropdown compare-dropdown">
                                 <li class="nav-item dropdown" style="list-style-type: none;">
-                                    <a href="#" class="wishlist-link">
+                                    <a href="{% url 'account:account' %}" class="wishlist-link">
                                         <i class="icon-user"></i>
                                         <span class="wishlist-txt">Account</span>
                                     </a>
@@ -100,7 +100,7 @@
                                 <a href="{% url 'cart:cart' %}" class="dropdown-toggle" >
                                     <i class="icon-shopping-cart"></i>
                                     {% if cart_count %}
-                                    <span class="cart-count">{{ cart_count }}</span>
+                                    <span class="cart-count"></span>
                                     {% endif %}
                                     <span class="cart-txt">Cart</span>
                                 </a>
@@ -125,7 +125,7 @@
                                     <a href="#">Wishlist</a>
                                 </li>
                                 <li>
-                                    <a href="#">Account</a>
+                                    <a href="{% url 'account:account' %}">Account</a>
                                 </li>
                                 <li>
                                     <a href="#">Contact</a>
@@ -160,10 +160,11 @@
         					<div class="toolbox-sort">
         						<label for="sortby">Sort by:</label>
         						<div class="select-custom">
-									<select name="sortby" id="sortby" class="form-control">
-										<option value="popularity" selected="selected">Most Popular</option>
-										<option value="rating">Most Rated</option>
-										<option value="date">Date</option>
+									<select name="sortby" id="sortby" class="form-control" >
+                                        <option value="" selected disabled>Select an option</option>
+										<option value="A">Price: low to high</option>
+										<option value="B">Price: high to low</option>
+										<option value="C">New Arrivals</option>
 									</select>
 								</div>
         					</div><!-- End .toolbox-sort -->
@@ -474,6 +475,28 @@
 
     <!-- Main JS File -->
     <script src="{% static 'user/assets/js/main.js' %}"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#sortby').change(function(){
+                var selectedValue = $(this).val();
+                // Send selectedValue to backend using AJAX
+                $.ajax({
+                    url: '/', // URL of your backend endpoint
+                    type: 'GET', // or 'GET' depending on your backend
+                    data: {sortby: selectedValue},
+                    success: function(response){
+                        // Handle success response from backend if needed
+                        console.log('Data sent to backend successfully.');
+                    },
+                    error: function(xhr, status, error){
+                        // Handle error
+                        console.error('Error sending data to backend:', error);
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>

@@ -1,8 +1,4 @@
-import os
-
 from django.db import models
-from django.db.models.signals import pre_delete
-from django.dispatch import receiver
 
 from category.models import Category
 from offer.models import Offer
@@ -22,20 +18,6 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return self.name
-
-
-# Delete product image from media folder when product deleted
-@receiver(pre_delete, sender=Product)
-def delete_product_image(sender, instance, **kwargs):
-    if instance.thumbnail:
-        if os.path.isfile(instance.thumbnail.path):
-            os.remove(instance.thumbnail.path)
-    if instance.image2:
-        if os.path.isfile(instance.image2.path):
-            os.remove(instance.image2.path)
-    if instance.image3:
-        if os.path.isfile(instance.image3.path):
-            os.remove(instance.image3.path)
 
 
 # Product Details Model

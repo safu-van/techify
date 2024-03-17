@@ -8,13 +8,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Cart</title>
+    <title>Techify</title>
+
+    <meta name="keywords" content="Techify Electronics Ecommerce">
+    <meta name="description" content="Techify - Ecommerce Website">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'favicon/favicon.ico' %}" >
+
+    <meta name="apple-mobile-web-app-title" content="Techify">
+    <meta name="application-name" content="Techify">
 
     <link rel="stylesheet" href="{% static 'user/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
 
@@ -28,28 +34,6 @@
     <link rel="stylesheet" href="{% static 'user/assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'user/assets/css/skins/skin-demo-13.css' %}">
     <link rel="stylesheet" href="{% static 'user/assets/css/demos/demo-13.css' %}">
-    
-    <style>
-        
-    
-        .cart-product-quantity input[type="button"] {
-            text-align: center; /* Center-align the text inside the button */
-            padding: 0; /* Reset padding */
-            width: 1.5rem; /* Adjust width as needed */
-            border: 1px solid #ccc; 
-            color: #3399ff;
-        }
-    
-        .cart-product-quantity input[type="button"]:hover {
-            background: #3399ff;
-            color: white;
-        }
-    
-        .quantity-input {
-            text-align: center; /* Center-align the text inside the input */
-            border: 1px solid #ccc;
-        }
-    </style>
 
 </head>
 
@@ -75,7 +59,7 @@
                             <form action="#" method="get">
                                 <div class="header-search-wrapper search-wrapper-wide">
                                     <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product" required>
                                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                                 </div><!-- End .header-search-wrapper -->
                             </form>
@@ -140,7 +124,7 @@
                     <div class="header-center" style="margin-left: 375px;">
                         <nav class="main-nav">
                             <ul class="menu ">
-                                <li class="megamenu-container active">
+                                <li class="megamenu-container">
                                     <a href="{% url 'home:home_page' %}">Home</a>
                                 </li>
                                 <li>
@@ -163,114 +147,175 @@
         </header><!-- End .header -->
 
         <main class="main">
-            <div class="page-content" style="padding-top: 5rem;">
-            	<div class="cart">
+            <div class="page-content">
+            	<div class="checkout">
 	                <div class="container">
-	                	<div class="row ">
-	                		<div class="col-lg-9" >
-                                <div>
-                                    <table class="table table-cart table-mobile" >
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Price</th>
-                                                <th>Quantity</th>
-                                                <th>Total</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
+            			<form action="#">
+		                	<div class="row" style="margin-top: 5rem">
+		                		<div class="col-lg-9">
+                                    <h4>Billing Address</h4>
+                                        <div class="row">
+                                            <div style="background: #f9f9f9; width: 23rem; padding: 2rem; border: .1rem solid #ebebeb; margin-right: 4rem; margin-bottom: 2rem;">
+                                                <div>
+                                                    <input type="radio" name='address' style="accent-color: blue; " id="address">
+                                                    <label for="address">use this address</label>
+                                                </div>
+                                                <div>
+                                                    <div style="width: 100%; margin-top: 1rem; margin-bottom: 0.2rem;">
+                                                        <span><strong>name</strong></span>
+                                                    </div>
+                                                    <div style="width: 100%; margin-bottom: 0.2rem;">
+                                                        <span>phone</span>
+                                                    </div>
+                                                    <div style="width: 100%; margin-bottom: 0.2rem;">
+                                                        <span>city</span>
+                                                    </div>
+                                                    <div style="width: 100%; margin-bottom: 0.2rem;">
+                                                        <span>landmark</span>
+                                                    </div>
+                                                    <div style="width: 100%; margin-bottom: 0.2rem;">
+                                                        <span>state, country</span>
+                                                    </div>
 
-                                        <tbody >
-                                            {% if cart_details %}
-                                            {% for item in cart_details %}
-                                            <tr >
-                                                <td class="product-col">
-                                                    <div class="product">
-                                                        <figure class="product-media">
-                                                            <a href="#">
-                                                                <img src="{{ item.product_image }}" alt="Product image">
-                                                            </a>
-                                                        </figure>
+                                                </div>
+                                                <div class="row" style="margin-top: 2rem; ">
+                                                    <div class="col-4">
+                                                        <button style="border: none; background: #f9f9f9; ">
+                                                            <a href="#" class="btn btn-primary text-white rounded-pill" style="min-width: 55px;" >Edit</a>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <button style="border: none; background: #f9f9f9;">
+                                                            <a href="#" class="btn btn-danger text-white rounded-pill" style="min-width: 55px;" >Remove</a>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>                                            
+                                        </div>
+		                		</div><!-- End .col-lg-9 -->
+		                		<aside class="col-lg-3">
+		                			<div class="summary">
+		                				<h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
 
-                                                        <h3 class="product-title">
-                                                            <a href="#">{{ item.product_name }}</a>
-                                                        </h3><!-- End .product-title -->
-                                                    </div><!-- End .product -->
-                                                </td>
-                                                <td class="price-col" data-product-id="{{ item.item_id }}">${{ item.product_price }}</td>
-                                                <td class="quantity-col">
-                                                    <div class="quantity-container">
-                                                        
-                                                        <div class="quantity-container">
-                                                            <div class="cart-product-quantity">
-                                                                <input style="width: 2rem" class="btn-rounded decrease-btn" type="button" value="-" data-product-id="{{ item.item_id }}" />
-                                                                <input style="width: 3rem" class="btn-rounded quantity-input text-center" type="text" value="{{ item.quantity }}" min="1" max="{{ item.stock_of_product }}" required readonly />
-                                                                <input style="width: 2rem" class="btn-rounded increase-btn" type="button" value="+" data-product-id="{{ item.item_id }}" />
-                                                            </div><!-- End .cart-product-quantity -->
-                                                        </div>
-                                                    </div> 
+		                				<table class="table table-summary">
+		                					<thead>
+		                						<tr>
+		                							<th>Product</th>
+		                							<th>Total</th>
+		                						</tr>
+		                					</thead>
 
-                                                </td>
-                                                <td class="total-col" data-product-id="{{ item.item_id }}"  >{{ item.total_price }}</td>
-                                                <td class="remove-col"><button class="btn-remove" data-item-id="{{ item.item_id }}"><i class="icon-close"></i></button></td>
-                                            </tr>
-                                            
-                                            {% endfor %}
-                                            {% else %}
-                                            <th>No item in the cart...</p>
-                                            {% endif %}
-                                        </tbody>
-                                    </table><!-- End .table table-wishlist -->
-                                </div>
-	                		</div><!-- End .col-lg-9 -->
-	                		<aside class="col-lg-3">
-	                			<div class="summary summary-cart">
-                                    <div class="cart-discount" style="padding-bottom: 2rem;">
-			            				<form action="#">
-			            					<div class="input-group">
-				        						<input type="text" class="form-control" required placeholder="Apply Coupon">
-				        						<div class="input-group-append">
-													<button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
-												</div><!-- .End .input-group-append -->
-			        						</div><!-- End .input-group -->
-			            				</form>
-			            			</div><!-- End .cart-discount -->
+		                					<tbody>
+		                						<tr>
+		                							<td><a href="#">Beige knitted elastic runner shoes</a></td>
+		                							<td>$84.00</td>
+		                						</tr>
 
-	                				<h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
+		                						<tr>
+		                							<td><a href="#">Blue utility pinafore denimdress</a></td>
+		                							<td>$76,00</td>
+		                						</tr>
+		                						<tr class="summary-subtotal">
+		                							<td>Subtotal:</td>
+		                							<td>$160.00</td>
+		                						</tr><!-- End .summary-subtotal -->
+		                						<tr>
+		                							<td>Shipping:</td>
+		                							<td>Free shipping</td>
+		                						</tr>
+		                						<tr class="summary-total">
+		                							<td>Total:</td>
+		                							<td>$160.00</td>
+		                						</tr><!-- End .summary-total -->
+		                					</tbody>
+		                				</table><!-- End .table table-summary -->
 
-	                				<table class="table table-summary" id="refresh">
-	                					<tbody>
+		                				<div class="accordion-summary" id="accordion-payment">
+										    <div class="card">
+										        <div class="card-header" id="heading-1">
+										            <h2 class="card-title">
+										                <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+										                    Direct bank transfer
+										                </a>
+										            </h2>
+										        </div><!-- End .card-header -->
+										        <div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-payment">
+										            <div class="card-body">
+										                Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+										            </div><!-- End .card-body -->
+										        </div><!-- End .collapse -->
+										    </div><!-- End .card -->
 
-	                						<tr class="summary-shipping-row">
-	                							<td>Subtotal</td>
-                                            <td>${{ total }}</td>
-	                						</tr><!-- End .summary-shipping-row -->
+										    <div class="card">
+										        <div class="card-header" id="heading-2">
+										            <h2 class="card-title">
+										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+										                    Check payments
+										                </a>
+										            </h2>
+										        </div><!-- End .card-header -->
+										        <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-payment">
+										            <div class="card-body">
+										                Ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. 
+										            </div><!-- End .card-body -->
+										        </div><!-- End .collapse -->
+										    </div><!-- End .card -->
 
-	                						<tr class="summary-shipping-row">
-	                							<td>Discount</td>
-	                							<td>-$0.00</td>
-	                						</tr><!-- End .summary-shipping-row -->
+										    <div class="card">
+										        <div class="card-header" id="heading-3">
+										            <h2 class="card-title">
+										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+										                    Cash on delivery
+										                </a>
+										            </h2>
+										        </div><!-- End .card-header -->
+										        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
+										            <div class="card-body">Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. 
+										            </div><!-- End .card-body -->
+										        </div><!-- End .collapse -->
+										    </div><!-- End .card -->
 
-	                						<tr class="summary-shipping-row">
-	                							<td>Shipping</td>
-	                							<td>$0.00</td>
-	                						</tr><!-- End .summary-shipping-row -->
+										    <div class="card">
+										        <div class="card-header" id="heading-4">
+										            <h2 class="card-title">
+										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+										                    PayPal <small class="float-right paypal-link">What is PayPal?</small>
+										                </a>
+										            </h2>
+										        </div><!-- End .card-header -->
+										        <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
+										            <div class="card-body">
+										                Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
+										            </div><!-- End .card-body -->
+										        </div><!-- End .collapse -->
+										    </div><!-- End .card -->
 
-	                						<tr class="summary-total">
-	                							<td>Total:</td>
-	                							<td>${{ total }}</td>
-	                						</tr><!-- End .summary-total -->
-	                					</tbody>
-	                				</table><!-- End .table table-summary -->
+										    <div class="card">
+										        <div class="card-header" id="heading-5">
+										            <h2 class="card-title">
+										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
+										                    Credit Card (Stripe)
+										                    <img src="assets/images/payments-summary.png" alt="payments cards">
+										                </a>
+										            </h2>
+										        </div><!-- End .card-header -->
+										        <div id="collapse-5" class="collapse" aria-labelledby="heading-5" data-parent="#accordion-payment">
+										            <div class="card-body"> Donec nec justo eget felis facilisis fermentum.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Lorem ipsum dolor sit ame.
+										            </div><!-- End .card-body -->
+										        </div><!-- End .collapse -->
+										    </div><!-- End .card -->
+										</div><!-- End .accordion -->
 
-	                				<a href="{% url 'cart:checkout' %}" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
-	                			</div><!-- End .summary -->
-
-		            			<a href="{% url 'home:home_page' %}" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
-	                		</aside><!-- End .col-lg-3 -->
-	                	</div><!-- End .row -->
+		                				<button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+		                					<span class="btn-text">Place Order</span>
+		                					<span class="btn-hover-text">Proceed to Checkout</span>
+		                				</button>
+		                			</div><!-- End .summary -->
+		                		</aside><!-- End .col-lg-3 -->
+		                	</div><!-- End .row -->
+            			</form>
 	                </div><!-- End .container -->
-                </div><!-- End .cart -->
+                </div><!-- End .checkout -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->
 
@@ -541,6 +586,7 @@
         </div><!-- End .mobile-menu-wrapper -->
     </div><!-- End .mobile-menu-container -->
 
+
     <!-- Plugins JS File -->
     <script src="{% static 'user/assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'user/assets/js/bootstrap.bundle.min.js' %}"></script>
@@ -548,121 +594,8 @@
     <script src="{% static 'user/assets/js/jquery.waypoints.min.js' %}"></script>
     <script src="{% static 'user/assets/js/superfish.min.js' %}"></script>
     <script src="{% static 'user/assets/js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'user/assets/js/bootstrap-input-spinner.js' %}"></script>
     <!-- Main JS File -->
     <script src="{% static 'user/assets/js/main.js' %}"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('.btn-remove').click(function() {
-                var itemId = $(this).data('item-id');
-                if (itemId) {
-                    removeItem(itemId);
-                } else {
-                    console.error('Invalid itemId:', itemId);
-                }
-            });
-    
-            function removeItem(itemId) {
-                $.ajax({
-                    url: '/cart/remove-from-cart/' + itemId + '/',
-                    type: 'GET',
-                    success: function(response) {
-                        $('.btn-remove[data-item-id="' + itemId + '"]').closest('tr').remove();
-                        $('#refresh').load(window.location.href + ' #refresh'); // Reloads the div content
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                    }
-                });
-            }
-        });
-
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get all sets of buttons
-            const decreaseBtns = document.querySelectorAll('.decrease-btn');
-            const increaseBtns = document.querySelectorAll('.increase-btn');
-            const quantityInputs = document.querySelectorAll('.quantity-input');
-        
-            function sendQuantityToBackend(index, newValue, productId) {
-                // Make an AJAX request to your backend endpoint
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'update_quantity/', true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            // If the request is successful, refresh the table content and total price
-                            updateTotalPrice(productId, newValue);
-                            refreshTableAndTotalPrice();
-                            
-                        } else {
-                            // Handle error if needed
-                            console.error('Error updating quantity:', xhr.statusText);
-                        }
-                    }
-                };
-                const data = JSON.stringify({ index: index, value: newValue, productId: productId });
-                xhr.send(data);
-            } 
-            
-            // Function to update the total price for a specific product
-            function updateTotalPrice(productId, value) {
-
-                const totalPriceElement = document.querySelector(`.total-col[data-product-id="${productId}"]`);
-                const totalPrice = document.querySelector(`.price-col[data-product-id="${productId}"]`);
-                const totalPriceText = totalPrice.textContent;
-                const totalPriceValue = parseFloat(totalPriceText.replace(/[^\d.]/g, ''));
-                const total = totalPriceValue * value;
-                intToFloat(total, 1)
-                function intToFloat(num, decimalPlaces) {
-                    tota = num.toFixed(decimalPlaces);
-                }
-                console.log(tota)
-
-                totalPriceElement.textContent = tota;
-                
-            }
-            
-            // Function to refresh the table and total price content
-            function refreshTableAndTotalPrice() {
-                // Load the content of the entire page from the current URL
-                $('#refresh').load(window.location.href + ' #refresh', function(response, status, xhr) {
-                    if (status === 'error') {
-                        // Handle error if needed
-                        console.error('Error refreshing table and total price:', xhr.statusText);
-                    }
-                });
-            }
-
-        
-            // Add event listener to each decrease button
-            decreaseBtns.forEach((decreaseBtn, index) => {
-                decreaseBtn.addEventListener('click', function() {
-                    let currentValue = parseInt(quantityInputs[index].value);
-                    if (currentValue > 1) {
-                        quantityInputs[index].value = currentValue - 1;
-                        let productId = decreaseBtn.getAttribute('data-product-id');
-                        sendQuantityToBackend(index, currentValue - 1, productId);
-                    }
-                });
-            });
-        
-            // Add event listener to each increase button
-            increaseBtns.forEach((increaseBtn, index) => {
-                increaseBtn.addEventListener('click', function() {
-                    let currentValue = parseInt(quantityInputs[index].value);
-                    let maxValue = parseInt(quantityInputs[index].getAttribute('max'));
-                    if (currentValue < maxValue && currentValue < 10) {
-                        quantityInputs[index].value = currentValue + 1;
-                        let productId = increaseBtn.getAttribute('data-product-id');
-                        sendQuantityToBackend(index, currentValue + 1, productId);
-                    }
-                });
-            });
-        });        
-    </script> 
 </body>
 </html>

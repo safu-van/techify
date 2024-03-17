@@ -59,7 +59,7 @@
                             <form action="#" method="get">
                                 <div class="header-search-wrapper search-wrapper-wide">
                                     <label for="q" class="sr-only">Search</label>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
+                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product" required>
                                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                                 </div><!-- End .header-search-wrapper -->
                             </form>
@@ -70,7 +70,7 @@
                         <div class="header-dropdown-link">
                             <div class="dropdown compare-dropdown">
                                 <li class="nav-item dropdown" style="list-style-type: none;">
-                                    <a href="#" class="wishlist-link">
+                                    <a href="{% url 'account:account' %}" class="wishlist-link">
                                         <i class="icon-user"></i>
                                         <span class="wishlist-txt">Account</span>
                                     </a>
@@ -134,7 +134,7 @@
                                     <a href="#">Wishlist</a>
                                 </li>
                                 <li>
-                                    <a href="#">Account</a>
+                                    <a href="{% url 'account:account' %}">Account</a>
                                 </li>
                                 <li>
                                     <a href="#">Contact</a>
@@ -187,11 +187,11 @@
                             <a href="{% url 'product:category_product' category.id %}" class="cat-block">
                                 <figure>
                                     <span>
-                                        <img src="{{ category.image.url }}" alt="Category image">
+                                        <img src="{{ category.image.url }}" alt="Category image" style="width: 130px;">
                                     </span>
                                 </figure>
 
-                                <h3 class="cat-block-title" style="margin-top: 5px;">{{ category.name }}</h3><!-- End .cat-block-title -->
+                                <h3 class="cat-block-title" style="margin-top: 2rem;">{{ category.name }}</h3><!-- End .cat-block-title -->
                             </a>
                         </div><!-- End .col-sm-4 col-lg-2 -->
                         {% endfor %}

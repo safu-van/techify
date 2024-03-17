@@ -31,6 +31,8 @@ def resend_otp(request):
 # Verify email and save user
 def verify_email(request):
     email = request.session.get("email")
+    password = request.session.get("password")
+    name = request.session.get("name")
 
     if request.method == "POST":
         otp1 = request.POST.get("otp1")
@@ -40,6 +42,8 @@ def verify_email(request):
         otp_code = otp1 + otp2 + otp3 + otp4
         generated_otp = request.session.get("generated_otp")
         if int(generated_otp) == int(otp_code):
+            User.objects.create_user(email=email, password=password, full_name=name)
+            del request.session['generated_otp']
             return redirect("home:home_page")
     return render(request, "authentication/otp.html", {"email": email})
 
