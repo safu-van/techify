@@ -36,6 +36,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             margin-left: 0;
+            margin-right: 0;
         }
         
         .address-container h2 {
@@ -191,7 +192,7 @@
             	<div class="dashboard">
 	                <div class="container">
 	                	<div class="row">
-	                		<aside class="col-md-4 col-lg-3">
+	                		{% comment %} <aside class="col-md-4 col-lg-3">
 	                			<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
 								    <li class="nav-item">
 								        <a class="nav-link" href="{% url 'account:account'  %}">Account Settings</a>
@@ -206,15 +207,16 @@
 								        <a class="nav-link" href="{% url 'account:change_password'  %}">Change Password</a>
 								    </li>
 								</ul>
-	                		</aside><!-- End .col-lg-3 -->
+	                		</aside><!-- End .col-lg-3 --> {% endcomment %}
 
-	                		<div class="col-md-8 col-lg-9">
+	                		<div class="col-md-12 col-lg-12">
 	                			<div class="tab-content">
-                                    <h3>Edit your address</h3>
-								    <div class="row">
+                                    <h3 style="text-align: center;">Edit your address</h3>
+								    <div class="row" style="justify-content: center;">
 								    	<div class="address-container col-6" style="margin-bottom: 1rem;">                                        
                                             <form method="POST" onsubmit="return validateForm()">
                                                 {% csrf_token %}
+                                                <input type="hidden" name="previous_url" value="{{ previous_url }}">
                                                 <div style="margin-bottom: 1rem;">
                                                     <label><strong>Full Name :</strong></label><br>
                                                     <input type="text" id="name" style="border: 1px solid #ccc; border-radius: 5px; width: 100%;" name="name" value="{{ address.name }}" ><br>

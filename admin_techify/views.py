@@ -6,6 +6,7 @@ from django.db.models import Count
 from category.models import Category
 from authentication.models import User
 from product.models import Product
+from account.models import Orders
 
 
 # Admin Dashboard
@@ -42,4 +43,13 @@ def product_management(request):
     if request.user.is_superuser:
         products = Product.objects.all().order_by("id")
         return render(request, "admin/product.html", {"products": products})
+    return redirect("home:home_page")
+
+
+# Order Management
+@login_required(login_url="authentication:signin")
+def order_management(request):
+    if request.user.is_superuser:
+        orders = Orders.objects.all().order_by("-id")
+        return render(request, "admin/orders.html", {"orders": orders})
     return redirect("home:home_page")

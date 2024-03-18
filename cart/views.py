@@ -1,12 +1,17 @@
+import json
+
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum
 
 from cart.models import CartItems
 from product.models import Product
 from authentication.models import User
+from account.models import UserAddress, Orders
 
-import json
+from datetime import date
+
 
 
 def cart(request):
@@ -48,20 +53,24 @@ def add_to_cart(request):
         product_id = request.GET.get("id")
         quantity = request.GET.get("qty")
         user_id = request.user.id
-
+        
         product = Product.objects.get(id=product_id)
         stock_of_product = product.stock
+        total = float(product.price) * int(quantity)
+
 
         if CartItems.objects.filter(product_id=product_id, user_id=user_id).exists():
             item = CartItems.objects.get(product_id=product_id, user_id=user_id)
-            if item.quantity < stock_of_product:
+            check = item.quantity + int(quantity)
+            if item.quantity < stock_of_product and check < stock_of_product :
+                item.total = total
                 item.quantity = quantity
                 item.save()
         else:
             if stock_of_product > 0:
                 user = User.objects.get(id=user_id)
                 new_item = CartItems.objects.create(
-                    product_id=product, quantity=quantity, user_id=user
+                    product_id=product, quantity=quantity, user_id=user, total=total
                 )
                 new_item.save()
         return JsonResponse(data={}, status=204, safe=False)
@@ -84,6 +93,7 @@ def update_quantity(request):
             user = request.user.id
 
             item = CartItems.objects.get(id=product_id, user_id=user)
+            item.total = item.product_id.price * value
             item.quantity = value
             item.save()
             return JsonResponse(
@@ -96,4 +106,47 @@ def update_quantity(request):
 
 
 def checkout(request):
-    return render(request, 'user/checkout.html')
+    user_id = request.user.id
+    if request.method == "POST":
+        address_id = request.POST.get('selectedAddressId')
+        total_sum = request.POST.get('total_sum')
+        status = "PENDING"
+        ordered_date = date.today()
+        ordered_products = CartItems.objects.filter(user_id=user_id)
+        user = User.objects.get(id=user_id)
+        delivery_address = UserAddress.objects.get(id=address_id)
+
+        for product in ordered_products:
+            item = Product.objects.get(name=product.product_id)
+            item.stock = item.stock - product.quantity
+            item.save()
+            ordered_items = Orders.objects.create(
+                user=user, ordered_date=ordered_date, total=total_sum, status=status, address=delivery_address, product=item
+            )
+            ordered_items.save()
+
+        CartItems.objects.filter(user_id=user_id).delete()
+
+        
+        return redirect('cart:order_success')
+    addresses = UserAddress.objects.filter(user=user_id, status=True)
+    products = CartItems.objects.filter(user_id=user_id).annotate(sub_total=Sum('total'))
+    sub_total = products.aggregate(sub_total=Sum('total'))['sub_total']
+    shipping = 'Free shipping'
+    if sub_total < 50:
+        shipping = 20
+    if shipping == 20:
+        total = sub_total + 20
+    else:
+        total = sub_total    
+    context = {
+        'addresses': addresses,
+        'products': products,
+        'sub_total': sub_total,
+        'shipping': shipping,
+        'total': total,
+    }
+    return render(request, 'user/checkout.html', context)
+
+def order_success(request):
+    return render(request, 'user/order_success.html')

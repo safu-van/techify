@@ -173,21 +173,25 @@
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>Name</th>
-                          <th>Email</th>
+                          <th>Product</th>
+                          <th>Ordered Date</th>
+                          <th>Amount</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {% for user in users %}
+                        {% for order in orders %}
                         <tr>
                           <td>{{ forloop.counter }}</td>
-                          <td>{{ user.full_name }}</td>
-                          <td>{{ user.email }}</td>
-                          {% if user.is_active %}
-                          <td><a href="{% url 'authentication:user_action' user.id %}" type="button" class="btn btn-outline-danger " style="width: 80px">Block</a></td>
+                          <td>{{ order.product.name }}</td>
+                          <td>{{ order.ordered_date }}</td>
+                          <td>{{ order.total }}</td>
+                          {% if order.status == "PENDING" %}
+                          <td><a href="{% url 'account:order_status' order.id 'SHIPPED' %}" type="button" class="btn btn-outline-warning " style="width: 80px">Shipped</a></td>
+                          {% elif order.status == "SHIPPED" %}
+                          <td><a href="{% url 'account:order_status' order.id 'DELIVERD' %}" type="button" class="btn btn-outline-success " style="width: 80px">Delivered </a></td>
                           {% else %}
-                          <td><a href="{% url 'authentication:user_action' user.id %}" type="button" class="btn btn-outline-success " style="width: 80px">Unblock</a></td>
+                          <td>Delivered</td>
                           {% endif %}
                         </tr>
                         {% endfor %}

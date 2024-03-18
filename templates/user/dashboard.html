@@ -217,12 +217,12 @@
                                                 {% csrf_token %}
                                                 <div style="margin-bottom: 1.2rem;">
                                                     <label style="margin-right: 10px"><strong>Name :</strong></label>
-                                                    <input type="text" id="name" style="border: 1px solid #ccc; border-radius: 5px; width: 200px;" value="{{ user.full_name }}" name="name"><br>
+                                                    <input type="text" id="name" style="border: 1px solid #ccc; border-radius: 5px; width: 100%;" value="{{ user.full_name }}" name="name"><br>
                                                     <div id="name-error" style="color: red;"></div>
                                                 </div>
                                                 <div style="margin-bottom: 1.2rem;">
                                                     <label style="margin-right: 13px"><strong>Email :</strong></label>
-                                                    <input type="text" style="border: none; width: 200px; background: white;" value="{{ user.email }}" disabled><br>
+                                                    <input type="text" style="border: none; width: 100%; background: white;" value="{{ user.email }}" disabled><br>
                                                 </div>
                                                 <div style="flex-direction: row-reverse; display: flex; margin-top: 2rem;">
                                                     <button style="border: none; background: white;">

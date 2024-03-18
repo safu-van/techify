@@ -150,170 +150,132 @@
             <div class="page-content">
             	<div class="checkout">
 	                <div class="container">
-            			<form action="#">
 		                	<div class="row" style="margin-top: 5rem">
 		                		<div class="col-lg-9">
                                     <h4>Billing Address</h4>
                                         <div class="row">
+                                            <a href="{% url 'account:add_address' %}" style="background: #fff; width: 23rem; padding: 2rem; border: 0.2rem dashed #ebebeb; margin-right: 4rem; margin-bottom: 2rem; height: 279.1px">
+                                                <div>
+                                                    <div>
+                                                        <div style="text-align: center; margin-top: 6rem; ">
+                                                            <span style="font-size: 50px; color: #3399ff; line-height: 1;">+</span>
+                                                            <h4 style="color: #3399ff;">Add Address</h4>
+                                                        </div>
+                                                    </div> 
+                                                </div>         
+                                            </a>  
+                                            {% for address in addresses %}	                                 
                                             <div style="background: #f9f9f9; width: 23rem; padding: 2rem; border: .1rem solid #ebebeb; margin-right: 4rem; margin-bottom: 2rem;">
                                                 <div>
-                                                    <input type="radio" name='address' style="accent-color: blue; " id="address">
-                                                    <label for="address">use this address</label>
+                                                    <input type="radio" name="address" class="addressRadio" style="accent-color: blue;" id="address1" data-address-id="{{ address.id }}">
+                                                    <label for="address1">Deliver to this address</label>
                                                 </div>
                                                 <div>
                                                     <div style="width: 100%; margin-top: 1rem; margin-bottom: 0.2rem;">
-                                                        <span><strong>name</strong></span>
+                                                        <span><strong>{{ address.name }}</strong></span>
                                                     </div>
                                                     <div style="width: 100%; margin-bottom: 0.2rem;">
-                                                        <span>phone</span>
+                                                        <span>{{ address.phone }}</span>
                                                     </div>
                                                     <div style="width: 100%; margin-bottom: 0.2rem;">
-                                                        <span>city</span>
+                                                        <span>{{ address.city }}</span>
                                                     </div>
                                                     <div style="width: 100%; margin-bottom: 0.2rem;">
-                                                        <span>landmark</span>
+                                                        <span>{{ address.landmark }}</span>
                                                     </div>
                                                     <div style="width: 100%; margin-bottom: 0.2rem;">
-                                                        <span>state, country</span>
+                                                        <span>{{ address.state }}, {{ address.country }}</span>
                                                     </div>
 
                                                 </div>
                                                 <div class="row" style="margin-top: 2rem; ">
                                                     <div class="col-4">
                                                         <button style="border: none; background: #f9f9f9; ">
-                                                            <a href="#" class="btn btn-primary text-white rounded-pill" style="min-width: 55px;" >Edit</a>
+                                                            <a href="{% url 'account:edit_address' address.id %}" class="btn btn-primary text-white rounded-pill" style="min-width: 55px;" >Edit</a>
                                                         </button>
                                                     </div>
                                                     <div class="col-4">
                                                         <button style="border: none; background: #f9f9f9;">
-                                                            <a href="#" class="btn btn-danger text-white rounded-pill" style="min-width: 55px;" >Remove</a>
+                                                            <a href="{% url 'account:remove_address' address.id %}" class="btn btn-danger text-white rounded-pill" style="min-width: 55px;" >Remove</a>
                                                         </button>
                                                     </div>
                                                 </div>
-                                            </div>                                            
+                                            </div>
+                                            {% endfor %}                                          
                                         </div>
 		                		</div><!-- End .col-lg-9 -->
 		                		<aside class="col-lg-3">
 		                			<div class="summary">
 		                				<h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+                                        <form  method="POST">
+                                            {% csrf_token %}
+                                            <table class="table table-summary">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Product</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
 
-		                				<table class="table table-summary">
-		                					<thead>
-		                						<tr>
-		                							<th>Product</th>
-		                							<th>Total</th>
-		                						</tr>
-		                					</thead>
+                                                <tbody>
+                                                    {% for product in products%}
+                                                    <tr>
+                                                        <td><a href="#">{{ product.product_id.name}}</a></td>
+                                                        <td>${{ product.total }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                    <tr class="summary-subtotal">
+                                                        <td>Subtotal:</td>
+                                                        <td>${{ sub_total }}</td>
+                                                    </tr><!-- End .summary-subtotal -->
+                                                    <tr>
+                                                        <td>Shipping:</td>
+                                                        {% if shipping|add:0 is shipping %}
+                                                        <td>${{ shipping }}</td>
+                                                        {% else %}
+                                                        <td>{{ shipping }}</td>
+                                                        {% endif %}
+                                                    </tr>
+                                                    <tr class="summary-total">
+                                                        <td>Total:</td>
+                                                        <td style='text-align: end;'>${{ total }}</td>
+                                                        <input type="hidden" name="total_sum" value="{{ total }}" />
+                                                    </tr><!-- End .summary-total -->
+                                                </tbody>
+                                            </table><!-- End .table table-summary -->
 
-		                					<tbody>
-		                						<tr>
-		                							<td><a href="#">Beige knitted elastic runner shoes</a></td>
-		                							<td>$84.00</td>
-		                						</tr>
+                                            {% comment %} <div class="accordion-summary" id="accordion-payment">
+                                                <div class="card">
+                                                    <div class="card-header" id="heading-3">
+                                                        <h2 class="card-title">
+                                                            <a class="collapsed" >
+                                                                Cash on delivery
+                                                            </a>
+                                                        </h2>
+                                                    </div><!-- End .card-header -->
+                                                </div><!-- End .card --> {% endcomment %}
 
-		                						<tr>
-		                							<td><a href="#">Blue utility pinafore denimdress</a></td>
-		                							<td>$76,00</td>
-		                						</tr>
-		                						<tr class="summary-subtotal">
-		                							<td>Subtotal:</td>
-		                							<td>$160.00</td>
-		                						</tr><!-- End .summary-subtotal -->
-		                						<tr>
-		                							<td>Shipping:</td>
-		                							<td>Free shipping</td>
-		                						</tr>
-		                						<tr class="summary-total">
-		                							<td>Total:</td>
-		                							<td>$160.00</td>
-		                						</tr><!-- End .summary-total -->
-		                					</tbody>
-		                				</table><!-- End .table table-summary -->
+                                                {% comment %} <div class="card">
+                                                    <div class="card-header" id="heading-4">
+                                                        <h2 class="card-title">
+                                                            <a class="collapsed">
+                                                                Online Payment
+                                                            </a>
+                                                        </h2>
+                                                    </div><!-- End .card-header -->
+                                                </div><!-- End .card --> {% endcomment %}
+                                            </div><!-- End .accordion -->
+                                        
+                                            <input type="hidden" id="selectedAddressId" name="selectedAddressId" style="display: none;">
 
-		                				<div class="accordion-summary" id="accordion-payment">
-										    <div class="card">
-										        <div class="card-header" id="heading-1">
-										            <h2 class="card-title">
-										                <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-										                    Direct bank transfer
-										                </a>
-										            </h2>
-										        </div><!-- End .card-header -->
-										        <div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-payment">
-										            <div class="card-body">
-										                Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
-										            </div><!-- End .card-body -->
-										        </div><!-- End .collapse -->
-										    </div><!-- End .card -->
-
-										    <div class="card">
-										        <div class="card-header" id="heading-2">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-										                    Check payments
-										                </a>
-										            </h2>
-										        </div><!-- End .card-header -->
-										        <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-payment">
-										            <div class="card-body">
-										                Ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. 
-										            </div><!-- End .card-body -->
-										        </div><!-- End .collapse -->
-										    </div><!-- End .card -->
-
-										    <div class="card">
-										        <div class="card-header" id="heading-3">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-										                    Cash on delivery
-										                </a>
-										            </h2>
-										        </div><!-- End .card-header -->
-										        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
-										            <div class="card-body">Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. 
-										            </div><!-- End .card-body -->
-										        </div><!-- End .collapse -->
-										    </div><!-- End .card -->
-
-										    <div class="card">
-										        <div class="card-header" id="heading-4">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-										                    PayPal <small class="float-right paypal-link">What is PayPal?</small>
-										                </a>
-										            </h2>
-										        </div><!-- End .card-header -->
-										        <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
-										            <div class="card-body">
-										                Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
-										            </div><!-- End .card-body -->
-										        </div><!-- End .collapse -->
-										    </div><!-- End .card -->
-
-										    <div class="card">
-										        <div class="card-header" id="heading-5">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
-										                    Credit Card (Stripe)
-										                    <img src="assets/images/payments-summary.png" alt="payments cards">
-										                </a>
-										            </h2>
-										        </div><!-- End .card-header -->
-										        <div id="collapse-5" class="collapse" aria-labelledby="heading-5" data-parent="#accordion-payment">
-										            <div class="card-body"> Donec nec justo eget felis facilisis fermentum.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Lorem ipsum dolor sit ame.
-										            </div><!-- End .card-body -->
-										        </div><!-- End .collapse -->
-										    </div><!-- End .card -->
-										</div><!-- End .accordion -->
-
-		                				<button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
-		                					<span class="btn-text">Place Order</span>
-		                					<span class="btn-hover-text">Proceed to Checkout</span>
-		                				</button>
+                                            <button type="submit" onclick="validateForm()" class="btn btn-outline-primary-2 btn-order btn-block">
+                                                <span class="btn-text">Place Order</span>
+                                                <span class="btn-hover-text">Proceed</span>
+                                            </button>
+                                        </form>
 		                			</div><!-- End .summary -->
 		                		</aside><!-- End .col-lg-3 -->
 		                	</div><!-- End .row -->
-            			</form>
 	                </div><!-- End .container -->
                 </div><!-- End .checkout -->
             </div><!-- End .page-content -->
@@ -596,6 +558,45 @@
     <script src="{% static 'user/assets/js/owl.carousel.min.js' %}"></script>
     <!-- Main JS File -->
     <script src="{% static 'user/assets/js/main.js' %}"></script>
+    
+    {% comment %} <script>
+        // Get all radio buttons with class "addressRadio"
+        var addressRadios = document.querySelectorAll('.addressRadio');
+    
+        // Add click event listeners to each radio button
+        addressRadios.forEach(function(radio) {
+            radio.addEventListener('click', function() {
+                // Get the ID of the selected address from data-address-id attribute
+                var addressId = radio.getAttribute('data-address-id');
+    
+                // Set the selected address ID to the input field
+                document.getElementById('selectedAddressId').value = addressId;
+            });
+        });
+    </script> {% endcomment %}
+    <script>
+        function validateForm() {
+            // Get all radio buttons with class "addressRadio"
+            var addressRadios = document.querySelectorAll('.addressRadio');
+            
+            var atLeastOneSelected = false;
+    
+            // Loop through each radio button to check if at least one is selected
+            addressRadios.forEach(function(radio) {
+                if (radio.checked) {
+                    atLeastOneSelected = true;
+                    // Set the selected address ID to the input field
+                    document.getElementById('selectedAddressId').value = radio.getAttribute('data-address-id');
+                }
+            });
+    
+            // If at least one address is not selected, show an error message and prevent form submission
+            if (!atLeastOneSelected) {
+                alert("Please select at least one address.");
+                event.preventDefault(); // Prevent form submission
+            }
+        }
+    </script>
 
 </body>
 </html>

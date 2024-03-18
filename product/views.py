@@ -9,7 +9,6 @@ def product_list(request):
     sort_by = request.GET.get('sortby')
     print(sort_by)
     if sort_by == "A":
-        print('a')
         products = Product.objects.filter(is_available=True).exclude(category__is_available=False).order_by("price")
         return render(request, "user/product_list.html", {"products": products})
     elif sort_by == "B":
