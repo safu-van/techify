@@ -6,30 +6,55 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('account', '0003_alter_useraddress_phone'),
-        ('product', '0011_alter_productdetails_product'),
+        ("account", "0003_alter_useraddress_phone"),
+        ("product", "0011_alter_productdetails_product"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='useraddress',
-            name='status',
+            model_name="useraddress",
+            name="status",
             field=models.BooleanField(default=True),
         ),
         migrations.CreateModel(
-            name='Orders',
+            name="Orders",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ordered_date', models.DateField()),
-                ('total', models.IntegerField()),
-                ('status', models.CharField(max_length=100)),
-                ('deliverd_date', models.DateField(null=True)),
-                ('address', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.useraddress')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product.product')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("ordered_date", models.DateField()),
+                ("total", models.IntegerField()),
+                ("status", models.CharField(max_length=100)),
+                ("deliverd_date", models.DateField(null=True)),
+                (
+                    "address",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="account.useraddress",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="product.product",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

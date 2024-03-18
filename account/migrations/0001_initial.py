@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,17 +14,31 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='UserAddress',
+            name="UserAddress",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('phone', models.IntegerField()),
-                ('country', models.CharField(max_length=100)),
-                ('state', models.CharField(max_length=100)),
-                ('city', models.CharField(max_length=100)),
-                ('landmark', models.CharField(max_length=255)),
-                ('flat_no', models.CharField(max_length=100)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("phone", models.IntegerField()),
+                ("country", models.CharField(max_length=100)),
+                ("state", models.CharField(max_length=100)),
+                ("city", models.CharField(max_length=100)),
+                ("landmark", models.CharField(max_length=255)),
+                ("flat_no", models.CharField(max_length=100)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

@@ -15,7 +15,6 @@ class UserAddress(models.Model):
     status = models.BooleanField(default=True)
 
 
-
 class Orders(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ordered_date = models.DateField()
@@ -24,4 +23,3 @@ class Orders(models.Model):
     deliverd_date = models.DateField(null=True)
     address = models.ForeignKey(UserAddress, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-

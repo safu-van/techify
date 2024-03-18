@@ -43,7 +43,7 @@ def verify_email(request):
         generated_otp = request.session.get("generated_otp")
         if int(generated_otp) == int(otp_code):
             User.objects.create_user(email=email, password=password, full_name=name)
-            del request.session['generated_otp']
+            del request.session["generated_otp"]
             return redirect("home:home_page")
     return render(request, "authentication/otp.html", {"email": email})
 

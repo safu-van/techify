@@ -6,21 +6,35 @@ from category.models import Category
 
 # List Products
 def product_list(request):
-    sort_by = request.GET.get('sortby')
+    sort_by = request.GET.get("sortby")
     print(sort_by)
     if sort_by == "A":
-        products = Product.objects.filter(is_available=True).exclude(category__is_available=False).order_by("price")
+        products = (
+            Product.objects.filter(is_available=True)
+            .exclude(category__is_available=False)
+            .order_by("price")
+        )
         return render(request, "user/product_list.html", {"products": products})
     elif sort_by == "B":
-        products = Product.objects.filter(is_available=True).exclude(category__is_available=False).order_by("-price")
+        products = (
+            Product.objects.filter(is_available=True)
+            .exclude(category__is_available=False)
+            .order_by("-price")
+        )
         return render(request, "user/product_list.html", {"products": products})
     elif sort_by == "C":
-        products = Product.objects.filter(is_available=True).exclude(category__is_available=False).order_by("id")
+        products = (
+            Product.objects.filter(is_available=True)
+            .exclude(category__is_available=False)
+            .order_by("id")
+        )
         return render(request, "user/product_list.html", {"products": products})
     else:
-        products = Product.objects.filter(is_available=True).exclude(
-            category__is_available=False
-        ).order_by("-id")
+        products = (
+            Product.objects.filter(is_available=True)
+            .exclude(category__is_available=False)
+            .order_by("-id")
+        )
     return render(request, "user/product_list.html", {"products": products})
 
 
