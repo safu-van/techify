@@ -7,7 +7,6 @@ from category.models import Category
 # List Products
 def product_list(request):
     sort_by = request.GET.get("sortby")
-    print(sort_by)
     if sort_by == "A":
         products = (
             Product.objects.filter(is_available=True)

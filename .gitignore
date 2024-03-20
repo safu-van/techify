@@ -1,4 +1,3 @@
-#gitignore
-
+# Environment
+.env
 env
-media
