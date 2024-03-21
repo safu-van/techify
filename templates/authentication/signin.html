@@ -54,19 +54,15 @@
                     </div>
                     
                     <div class="d-flex mb-5 align-items-center">
-                      {% comment %} <label class="control control--checkbox mb-0"><span class="caption">Remember me</span>
-                        <input type="checkbox" checked="checked"/>
-                        <div class="control__indicator"></div>
-                      </label> {% endcomment %}
-                      <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password?</a></span> 
+                      <span class="ml-auto"><a href="#" class="forgot-pass" style="color: #3399ff;">Forgot Password?</a></span> 
                     </div>
                     <input type="submit" value="Sign In" class="btn btn-pill text-white btn-block btn-primary" style="background: #3399ff;">
                 
-                    <span class="d-block text-center my-4 text-muted"> Don't have an account? <a href='{% url 'authentication:signup' %}'>Sign Up</a></span>
-                    <span class="d-block text-center my-2 text-muted"> or sign in with</span>
+                    <span class="d-block text-center my-4 text-muted"> Don't have an account? <a href='{% url 'authentication:signup' %}' style="color: #3399ff;">Sign Up</a></span>
+                    <span class="d-block text-center my-2 text-muted"> or continue with</span>
                 
                     <div class="social-login text-center">
-                        <a href="#" class="facebook">
+                        <a href="#" class="facebook mr-1">
                             <span class="icon-facebook mr-3"></span>
                         </a>
                         <a href="#" class="google">

@@ -34,14 +34,14 @@
             <div class="row justify-content-center">
               <div class="col-md-12">
                 <div class="form-block">
+                  <div class="mb-6">
+                    <h3 style="text-align: center; margin-bottom: 50px;"><strong>Sign Up</strong></h3>
+                  </div>
                   {% if email_taken %}
                   <div class="alert alert-danger" role="alert">
                     Email you had entered is already taken
                   </div>
                   {% endif %}
-                  <div class="mb-6">
-                    <h3 style="text-align: center; margin-bottom: 50px;"><strong>Sign Up</strong></h3>
-                  </div>
                   <form action="{% url 'authentication:signup' %}" method="post" id="form">
                     {% csrf_token %}
                     <div class="form-group first">
@@ -52,18 +52,18 @@
                         <input type="text" class="form-control" id="email" name="email" Placeholder="Email">
                         <span id="email-error" class="text-danger"></span> <!-- Placeholder for error message -->
                     </div>
-                    <div class="form-group last mb-4">
+                    <div class="form-group last mb-5">
                         <input type="password" class="form-control" id="password" name="password" Placeholder="Password">
                         <span id="password-error" class="text-danger"></span> <!-- Placeholder for error message -->
                     </div>
                 
                     <input type="submit" value="Sign Up" class="btn btn-pill text-white btn-block btn-primary" style="background: #3399ff;">
                 
-                    <span class="d-block text-center my-4 text-muted"> Already have an account? <a href='{% url 'authentication:signin' %}'>Sign In</a></span>
-                    <span class="d-block text-center my-2 text-muted"> or sign up with</span>
+                    <span class="d-block text-center my-4 text-muted"> Already have an account? <a href='{% url 'authentication:signin' %}' style="color: #3399ff;">Sign In</a></span>
+                    <span class="d-block text-center my-2 text-muted"> or continue with</span>
                 
                     <div class="social-login text-center">
-                        <a href="#" class="facebook">
+                        <a href="#" class="facebook mr-1">
                             <span class="icon-facebook mr-3"></span>
                         </a>
                         <a href="#" class="google">
@@ -91,7 +91,7 @@
               document.getElementById("fullname-error").textContent = "Please enter your full name.";
           } else if (!isValidName(fullname)) {
               isValid = false;
-              document.getElementById("fullname-error").textContent = "Please enter a valid full name (only alphabetic characters).";
+              document.getElementById("fullname-error").textContent = "Please enter a valid name.";
           } else {
               document.getElementById("fullname-error").textContent = ""; // Clear error message if valid
           }
@@ -113,7 +113,7 @@
               document.getElementById("password-error").textContent = "Please enter your password.";
           } else if (!isValidPassword(password)) {
               isValid = false;
-              document.getElementById("password-error").textContent = "Password must contain at least 8 characters, 1 capital letter, and 1 special symbol.";
+              document.getElementById("password-error").textContent = "Password must contain at least 8 characters, 1 capital letter and 1 symbol.";
           } else {
               document.getElementById("password-error").textContent = ""; // Clear error message if valid
           }
