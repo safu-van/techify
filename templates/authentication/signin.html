@@ -1,126 +1,110 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
-    <link rel="icon" type="image/x-icon" href="{% static 'favicon/favicon.ico' %}" >
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="{% static 'authentication/fonts/icomoon/style.css' %}">
-
-    <link rel="stylesheet" href="{% static 'authentication/css/owl.carousel.min.css' %}">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'authentication/css/bootstrap.min.css' %}">
-    
-    <!-- Style -->
-    <link rel="stylesheet" href="{% static 'authentication/css/style.css' %}">
-
-    <title>Sign In</title>
-  </head>
-  <body>
-    <div class="content" style="padding: 3rem 0;">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-6 contents">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+      <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+      <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+      <link rel="icon" type="image/x-icon" href="{% static 'favicon/favicon.ico' %}" >
+      <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'authentication/fonts/icomoon/style.css' %}">
+      <link rel="stylesheet" href="{% static 'authentication/css/owl.carousel.min.css' %}">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="{% static 'authentication/css/bootstrap.min.css' %}">
+      <!-- Style -->
+      <link rel="stylesheet" href="{% static 'authentication/css/style.css' %}">
+      <title>Sign In</title>
+   </head>
+   <body>
+      <div class="content" style="padding: 3rem 0;">
+         <div class="container">
             <div class="row justify-content-center">
-              <div class="col-md-12">
-                <div class="form-block">
-                  {% if user_isnotvalid %}
-                  <div class="alert alert-danger" role="alert">
-                    Invalid Credentials!
+               <div class="col-md-6 contents">
+                  <div class="row justify-content-center">
+                     <div class="col-md-12">
+                        <div class="form-block">
+                           {% if user_isnotvalid %}
+                           <div class="alert alert-danger" role="alert">
+                              Invalid Credentials!
+                           </div>
+                           {% endif %}
+                           <div class="mb-6">
+                              <h3 style="text-align: center; margin-bottom: 40px;"><strong>Sign In</strong></h3>
+                           </div>
+                           <form action="{% url 'authentication:signin' %}" method="post" id="form">
+                              {% csrf_token %}
+                              <div class="form-group last mb-4">
+                                 <input type="text" class="form-control" id="email" name="email" Placeholder="Email">
+                                 <span id="email-error" class="text-danger"></span> 
+                              </div>
+                              <div class="form-group last mb-4">
+                                 <input type="password" class="form-control" id="password" name="password" Placeholder="Password">
+                                 <span id="password-error" class="text-danger"></span> 
+                              </div>
+                              <div class="d-flex mb-5 align-items-center">
+                                 <span class="ml-auto"><a href="#" class="forgot-pass" style="color: #3399ff;">Forgot Password?</a></span> 
+                              </div>
+                              <input type="submit" value="Sign In" class="btn btn-pill text-white btn-block btn-primary" style="background: #3399ff;">
+                              <span class="d-block text-center my-4 text-muted"> Don't have an account? <a href='{% url 'authentication:signup' %}' style="color: #3399ff;">Sign Up</a></span>
+                              <span class="d-block text-center my-2 text-muted"> or continue with</span>
+                              <div class="social-login text-center">
+                                 <a href="#" class="facebook mr-1">
+                                 <span class="icon-facebook mr-3"></span>
+                                 </a>
+                                 <a href="#" class="google">
+                                 <span class="icon-google mr-3"></span>
+                                 </a>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
                   </div>
-                  {% endif %}
-                  <div class="mb-6">
-                    <h3 style="text-align: center; margin-bottom: 40px;"><strong>Sign In</strong></h3>
-                  </div>
-                  <form action="{% url 'authentication:signin' %}" method="post" id="form">
-                    {% csrf_token %}
-                    <div class="form-group last mb-4">
-                        <input type="text" class="form-control" id="email" name="email" Placeholder="Email">
-                        <span id="email-error" class="text-danger"></span> <!-- Placeholder for error message -->
-                    </div>
-                    <div class="form-group last mb-4">
-                        <input type="password" class="form-control" id="password" name="password" Placeholder="Password">
-                        <span id="password-error" class="text-danger"></span> <!-- Placeholder for error message -->
-                    </div>
-                    
-                    <div class="d-flex mb-5 align-items-center">
-                      <span class="ml-auto"><a href="#" class="forgot-pass" style="color: #3399ff;">Forgot Password?</a></span> 
-                    </div>
-                    <input type="submit" value="Sign In" class="btn btn-pill text-white btn-block btn-primary" style="background: #3399ff;">
-                
-                    <span class="d-block text-center my-4 text-muted"> Don't have an account? <a href='{% url 'authentication:signup' %}' style="color: #3399ff;">Sign Up</a></span>
-                    <span class="d-block text-center my-2 text-muted"> or continue with</span>
-                
-                    <div class="social-login text-center">
-                        <a href="#" class="facebook mr-1">
-                            <span class="icon-facebook mr-3"></span>
-                        </a>
-                        <a href="#" class="google">
-                            <span class="icon-google mr-3"></span>
-                        </a>
-                    </div>
-                  </form>  
-                </div>
-              </div>
+               </div>
             </div>
-            
-          </div>
-          
-        </div>
+         </div>
       </div>
-    </div>
-
-    <script>
-      document.getElementById("form").addEventListener("submit", function (event) {
-        var email = document.getElementById("email").value.trim();
-        var password = document.getElementById("password").value.trim();
-        var isValid = true;
-
-        // Validate Email
-        if (email === "") {
-            isValid = false;
-            document.getElementById("email-error").textContent = "Please enter your email address.";
-        } else if (!isValidEmail(email)) {
-            isValid = false;
-            document.getElementById("email-error").textContent = "Please enter a valid email address.";
-        } else {
-            document.getElementById("email-error").textContent = ""; // Clear error message if valid
-        }
-
-        // Validate Password
-        if (password === "") {
-            isValid = false;
-            document.getElementById("password-error").textContent = "Please enter your password.";
-        } else {
-            document.getElementById("password-error").textContent = ""; // Clear error message if valid
-        }
-
-        if (!isValid) {
-            event.preventDefault(); // Prevent form submission if validation fails
-        }
-      });
-
-      // Function to validate email format
-      function isValidEmail(email) {
-          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          return emailRegex.test(email);
-      }
-
-    </script>  
-
-    <script src="{% static 'authentication/js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'authentication/js/popper.min.js' %}"></script>
-    <script src="{% static 'authentication/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'authentication/js/main.js' %}"></script>
-  </body>
+      <script>
+         document.getElementById("form").addEventListener("submit", function (event) {
+           var email = document.getElementById("email").value.trim();
+           var password = document.getElementById("password").value.trim();
+           var isValid = true;
+         
+           // Validate Email
+           if (email === "") {
+               isValid = false;
+               document.getElementById("email-error").textContent = "Please enter your email address.";
+           } else if (!isValidEmail(email)) {
+               isValid = false;
+               document.getElementById("email-error").textContent = "Please enter a valid email address.";
+           } else {
+               document.getElementById("email-error").textContent = ""; 
+           }
+         
+           // Validate Password
+           if (password === "") {
+               isValid = false;
+               document.getElementById("password-error").textContent = "Please enter your password.";
+           } else {
+               document.getElementById("password-error").textContent = ""; 
+           }
+         
+           if (!isValid) {
+               event.preventDefault(); 
+           }
+         });
+         
+         // Function to validate email format
+         function isValidEmail(email) {
+             var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+             return emailRegex.test(email);
+         }
+         
+      </script>  
+      <script src="{% static 'authentication/js/jquery-3.3.1.min.js' %}"></script>
+      <script src="{% static 'authentication/js/popper.min.js' %}"></script>
+      <script src="{% static 'authentication/js/bootstrap.min.js' %}"></script>
+      <script src="{% static 'authentication/js/main.js' %}"></script>
+   </body>
 </html>

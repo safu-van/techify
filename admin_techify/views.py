@@ -6,7 +6,7 @@ from django.db.models import Count
 from category.models import Category
 from authentication.models import User
 from product.models import Product
-from account.models import Orders
+from cart.models import Orders
 
 
 # Admin Dashboard
@@ -21,7 +21,7 @@ def admin_dashboard(request):
 @login_required(login_url="authentication:signin")
 def user_management(request):
     if request.user.is_superuser:
-        users = User.objects.exclude(is_superuser=True).order_by("id")
+        users = User.objects.exclude(is_superuser=True).order_by("-id")
         return render(request, "admin/user.html", {"users": users})
     return redirect("home:home_page")
 
@@ -32,7 +32,7 @@ def category_management(request):
     if request.user.is_superuser:
         categories = Category.objects.annotate(
             products_count=Count("product")
-        ).order_by("id")
+        ).order_by("-id")
         return render(request, "admin/category.html", {"categories": categories})
     return redirect("home:home_page")
 
@@ -41,7 +41,7 @@ def category_management(request):
 @login_required(login_url="authentication:signin")
 def product_management(request):
     if request.user.is_superuser:
-        products = Product.objects.all().order_by("id")
+        products = Product.objects.all().order_by("-id")
         return render(request, "admin/product.html", {"products": products})
     return redirect("home:home_page")
 

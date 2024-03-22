@@ -83,7 +83,6 @@
                               <div style="margin-bottom: 1rem;">
                                  <label><strong>Landmark :</strong></label><br>
                                  <input type="text" id="landmark" style="border: 1px solid #ccc; border-radius: 5px; width: 100%;" name="landmark" ><br>
-                                 <div id="landmark-error" style="color: red;"></div>
                               </div>
                               <div style="margin-bottom: 1rem;">
                                  <label><strong>State :</strong></label><br>
@@ -296,7 +295,6 @@
        var name = document.getElementById("name").value;
        var phone = document.getElementById("phone").value;
        var city = document.getElementById("city").value;
-       var landmark = document.getElementById("landmark").value;
        var state = document.getElementById("state").value;
        var country = document.getElementById("country").value;
        
@@ -319,13 +317,6 @@
            return false;
        } else {
            document.getElementById("city-error").textContent = "";
-       }
-       
-       if (landmark.trim() === "") {
-           document.getElementById("landmark-error").textContent = "Please enter a nearest landmark.";
-           return false;
-       } else {
-           document.getElementById("landmark-error").textContent = "";
        }
        
        if (state.trim() === "") {

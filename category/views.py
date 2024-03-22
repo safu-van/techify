@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 
 from category.models import Category
 
 
 # Category Block/Unblock
 def category_action(request, category_id):
-    category = Category.objects.get(id=category_id)
+    try:
+        category = Category.objects.get(id=category_id)
+    except ObjectDoesNotExist:
+        pass
 
     if category.is_available:
         category.is_available = False
@@ -32,7 +36,10 @@ def add_category(request):
 
 # Edit Category
 def edit_category(request, category_id):
-    edit_category = Category.objects.get(id=category_id)
+    try:
+        edit_category = Category.objects.get(id=category_id)
+    except ObjectDoesNotExist:
+        pass
 
     if request.method == "POST":
         category_name = request.POST.get("category_name")

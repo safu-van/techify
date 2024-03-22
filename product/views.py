@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 
 from product.models import Product, ProductDetails
 from category.models import Category
@@ -6,43 +7,26 @@ from category.models import Category
 
 # List Products
 def product_list(request):
-    sort_by = request.GET.get("sortby")
-    if sort_by == "A":
-        products = (
-            Product.objects.filter(is_available=True)
-            .exclude(category__is_available=False)
-            .order_by("price")
-        )
-        return render(request, "user/product_list.html", {"products": products})
-    elif sort_by == "B":
-        products = (
-            Product.objects.filter(is_available=True)
-            .exclude(category__is_available=False)
-            .order_by("-price")
-        )
-        return render(request, "user/product_list.html", {"products": products})
-    elif sort_by == "C":
-        products = (
-            Product.objects.filter(is_available=True)
-            .exclude(category__is_available=False)
-            .order_by("id")
-        )
-        return render(request, "user/product_list.html", {"products": products})
-    else:
-        products = (
-            Product.objects.filter(is_available=True)
-            .exclude(category__is_available=False)
-            .order_by("-id")
-        )
+    products = (
+        Product.objects.filter(is_available=True)
+        .exclude(category__is_available=False)
+        .order_by("-id")
+    )
     return render(request, "user/product_list.html", {"products": products})
 
 
 # Product Individual View
 def product_view(request, product_id):
-    product = Product.objects.get(id=product_id)
+    try:
+        product = Product.objects.get(id=product_id)
+    except ObjectDoesNotExist:
+        pass
 
     if product.is_available:
-        product_details = ProductDetails.objects.get(product=product)
+        try:
+            product_details = ProductDetails.objects.get(product=product)
+        except ObjectDoesNotExist:
+            pass
         category = product.category
         related_products = Product.objects.filter(category=category).exclude(
             id=product_id
@@ -124,7 +108,10 @@ def add_product(request):
 
 # Product Block/Unblock
 def product_action(request, product_id):
-    product = Product.objects.get(id=product_id)
+    try:
+        product = Product.objects.get(id=product_id)
+    except ObjectDoesNotExist:
+        pass
 
     if product.is_available:
         product.is_available = False
@@ -137,7 +124,10 @@ def product_action(request, product_id):
 
 # Edit Product
 def edit_product(request, product_id):
-    product = Product.objects.get(id=product_id)
+    try:
+        product = Product.objects.get(id=product_id)
+    except ObjectDoesNotExist:
+        pass
     categories = Category.objects.all()
     product_details = product.product_details
 
@@ -179,8 +169,11 @@ def edit_product(request, product_id):
         product.stock = stock
         product.price = price
 
-        category = Category.objects.get(name=category_name)
-        product.category = category
+        try:
+            category = Category.objects.get(name=category_name)
+            product.category = category
+        except ObjectDoesNotExist:
+            pass
 
         product_details.description = description
         product_details.additional_information = additional_info

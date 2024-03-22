@@ -1,6 +1,6 @@
 {% extends 'user/base.html' %}
 {% load static %}
-{% block title %}Address{% endblock %}
+{% block title %}Account{% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'user/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
 <link rel="stylesheet" href="{% static 'user/assets/css/bootstrap.min.css' %}">
@@ -60,10 +60,10 @@
                <aside class="col-md-4 col-lg-3">
                   <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
                      <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'account:account'  %}">Account Settings</a>
+                        <a class="nav-link active" href="{% url 'account:account_settings'  %}">Account Settings</a>
                      </li>
                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account:orders'  %}">My Orders</a>
+                        <a class="nav-link" href="{% url 'account:orders'  %}">Orders</a>
                      </li>
                      <li class="nav-item">
                         <a class="nav-link" href="{% url 'account:address'  %}">Adresses</a>
@@ -82,7 +82,7 @@
                               {% csrf_token %}
                               <div style="margin-bottom: 1.2rem;">
                                  <label style="margin-right: 10px"><strong>Name :</strong></label>
-                                 <input type="text" id="name" style="border: 1px solid #ccc; border-radius: 5px; width: 100%;" value="{{ user.full_name }}" name="name"><br>
+                                 <input type="text" id="name" style="border: 1px solid #ccc; border-radius: 5px; width: 100%;" value="{{ user.name }}" name="name"><br>
                                  <div id="name-error" style="color: red;"></div>
                               </div>
                               <div style="margin-bottom: 1.2rem;">

@@ -17,7 +17,7 @@
    padding: 20px;
    border: 1px solid #ccc;
    border-radius: 5px;
-   margin-left: 0;
+   margin-left: 1rem;
    margin-right: 0;
    }
    .address-container h2 {
@@ -60,10 +60,10 @@
                <aside class="col-md-4 col-lg-3">
                   <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account:account'  %}">Account Settings</a>
+                        <a class="nav-link" href="{% url 'account:account_settings'  %}">Account Settings</a>
                      </li>
                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account:orders'  %}">My Orders</a>
+                        <a class="nav-link" href="{% url 'account:orders'  %}">Orders</a>
                      </li>
                      <li class="nav-item">
                         <a class="nav-link active" href="{% url 'account:address'  %}">Adresses</a>
@@ -84,15 +84,15 @@
                               </div>
                            </div>
                         </a>
-                        {% for address in addressess %}								    	
-                        <div class="address-container col-6" style="margin-bottom: 1rem;">
+                        {% for address in addresses %}								    	
+                        <div class="address-container col-6" style="margin-bottom: 1rem; height: 263.8px;">
                            <p class="name">{{ address.name }}</p>
                            <p class="street">{{ address.phone }}</p>
                            <p class="street">{{ address.city }}</p>
                            <p class="city">{{ address.landmark }}</p>
                            <p class="state">{{ address.state }}</p>
                            <p class="country">{{ address.country }}</p>
-                           <div class="row" style="margin-top: 1rem;">
+                           <div class="row" style="margin-top: 1rem; position: absolute; top: 19rem;">
                               <div class="col-6">
                                  <button style="border: none; background: white;">
                                  <a href="{% url 'account:edit_address' address.id %}" class="btn btn-primary text-white" style="border-radius: 30px;" >Edit</a>

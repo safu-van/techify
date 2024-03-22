@@ -4,11 +4,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.exceptions import ObjectDoesNotExist
 
 from authentication.models import User
 
 
-# Send otp to email
+# Send otp to mail
 def send_otp(request):
     otp = random.randint(1000, 9999)
     request.session["generated_otp"] = otp
@@ -24,6 +25,7 @@ def send_otp(request):
 
 # Resend otp
 def resend_otp(request):
+    del request.session["generated_otp"]
     send_otp(request)
     return redirect("authentication:verify_email")
 
@@ -41,10 +43,15 @@ def verify_email(request):
         otp4 = request.POST.get("otp4")
         otp_code = otp1 + otp2 + otp3 + otp4
         generated_otp = request.session.get("generated_otp")
+
         if int(generated_otp) == int(otp_code):
-            User.objects.create_user(email=email, password=password, full_name=name)
             del request.session["generated_otp"]
+            User.objects.create_user(email=email, password=password, name=name)
+            user = authenticate(request, email=email, password=password)
+            login(request, user)
+            
             return redirect("home:home_page")
+        
     return render(request, "authentication/otp.html", {"email": email})
 
 
@@ -52,7 +59,7 @@ def verify_email(request):
 def signup(request):
     if request.user.is_authenticated:
         return redirect("home:home_page")
-
+    
     if request.method == "POST":
         name = request.POST.get("fullname")
         email = request.POST.get("email")
@@ -71,8 +78,6 @@ def signup(request):
         send_otp(request)
         return redirect("authentication:verify_email")
 
-        # create_user = User.objects.create_user(full_name=name, email=email, password=password)
-        # create_user.save()
     return render(request, "authentication/signup.html")
 
 
@@ -80,14 +85,14 @@ def signup(request):
 def signin(request):
     if request.user.is_authenticated:
         return redirect("home:home_page")
-
+    
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
 
         try:
-            get_user = User.objects.filter(email=email).get()
-        except User.DoesNotExist:
+            get_user = User.objects.get(email=email)
+        except ObjectDoesNotExist:
             pass
 
         user = authenticate(request, email=email, password=password)
@@ -118,13 +123,14 @@ def signout(request):
 
 # User Block/Unblock
 def user_action(request, user_id):
-    user = User.objects.get(id=user_id)
-
-    if user.is_active:
-        user.is_active = False
-    else:
-        user.is_active = True
-
-    user.save()
+    try:
+        user = User.objects.get(id=user_id)
+        if user.is_active:
+            user.is_active = False
+        else:
+            user.is_active = True
+        user.save()
+    except ObjectDoesNotExist:
+        pass
 
     return redirect("admin_techify:user_management")
