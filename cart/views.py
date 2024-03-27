@@ -66,27 +66,25 @@ def add_to_cart(request):
     stock_of_product = product.stock
     total = float(product.price) * int(quantity)
 
+    response_data = {}
+
     if CartItems.objects.filter(product_id=product_id, user_id=user_id).exists():
-        try:
-            item = CartItems.objects.get(product_id=product_id, user_id=user_id)
-        except ObjectDoesNotExist:
-            pass
-        check = item.quantity + int(quantity)
-        if item.quantity < stock_of_product and check < stock_of_product:
-            item.total = total
-            item.quantity = quantity
-            item.save()
+        response_data['message'] = "Item already added to cart"
     else:
-        if stock_of_product > 0:
+        if stock_of_product > 0 and int(quantity) <= stock_of_product:
             try:
                 user = User.objects.get(id=user_id)
+                new_item = CartItems.objects.create(
+                    product_id=product, quantity=quantity, user_id=user, total=total
+                )
+                new_item.save()
+                response_data['message'] = "Item added to cart"
             except ObjectDoesNotExist:
                 pass
-            new_item = CartItems.objects.create(
-                product_id=product, quantity=quantity, user_id=user, total=total
-            )
-            new_item.save()
-    return JsonResponse(data={}, status=204, safe=False)
+        else:
+            response_data['message'] = "Insufficient stock"
+
+    return JsonResponse(response_data, status=200)
 
 
 # Remove from Cart
@@ -97,7 +95,7 @@ def remove_from_cart(request, item_id):
         item.delete()
     except ObjectDoesNotExist:
         pass
-    return JsonResponse(data={}, status=204, safe=False)
+    return JsonResponse(data={}, status=204)
 
 # Update Product quantity 
 @csrf_exempt

@@ -21,6 +21,13 @@
             <div class="col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 text-center">
                <form class="rounded bg-white shadow p-5" method="POST" id="otpForm" action={% url 'authentication:verify_email' %}>
                {% csrf_token %}
+               {% if messages %}
+               {% for message in messages %}
+               <div class="alert alert-danger" role="alert">
+                  {{ message }}
+               </div>
+               {% endfor %}
+               {% endif %}
                <h3 class="text-dark fw-bolder fs-4 mb-2">Verify Email</h3>
                <div class="fw-normal text-muted">
                   Enter the verification code sent to
@@ -46,6 +53,7 @@
          </div>
       </section>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <script>
          $(document).ready(function() {
          	$('#otpForm').submit(function(event) {
@@ -113,7 +121,24 @@
          			}
          		});
          	});
+         });     
+         {% if message %}
+         const Toast = Swal.mixin({
+            toast: true,
+            position: "top",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
          });
+         Toast.fire({
+            icon: "success",
+            title: "otp has sent to your email"
+         });
+         {% endif %}    
       </script>
    </body>
 </html>

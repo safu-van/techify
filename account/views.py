@@ -13,17 +13,22 @@ from datetime import date
 @login_required(login_url="authentication:signin")
 def account_settings(request):
     user_id = request.user.id
-
+    message = False
     try:
         user = User.objects.get(id=user_id)
         if request.method == "POST":
             name = request.POST.get("name")
             user.name = name
             user.save()
+            message = "name_updated"
     except ObjectDoesNotExist:
         pass
 
-    return render(request, "user/account.html", {"user": user})
+    context = {
+        "user": user,
+        "message": message
+    }    
+    return render(request, "user/account.html", context)
 
 
 # My Orders
@@ -61,7 +66,16 @@ def address(request):
     user_id = request.user.id
     addresses = UserAddress.objects.filter(user=user_id, status=True)
 
-    return render(request, "user/address.html", {"addresses": addresses})
+    if 'message' in request.session:
+        message = request.session.pop('message')
+    else:
+        message = False
+    
+    context = {
+        "addresses": addresses,
+        "message": message,
+    }
+    return render(request, "user/address.html", context)
 
 
 # Remove Address
@@ -89,7 +103,7 @@ def add_address(request):
         previous_url = request.META.get("HTTP_REFERER")
     except Exception:
         pass
-
+    
     if request.method == "POST":
         name = request.POST.get("name")
         phone = request.POST.get("phone")
@@ -115,6 +129,7 @@ def add_address(request):
             country=country,
         )
         add_address.save()
+        request.session['message'] = "address_added"
 
         return redirect(url)
 
@@ -150,6 +165,7 @@ def edit_address(request, address_id):
         address.state = state
         address.country = country
         address.save()
+        request.session['message'] = "address_edited"
 
         return redirect(url)
 
@@ -177,8 +193,9 @@ def change_password(request):
         if user.check_password(current_password):
             user.set_password(new_password)
             user.save()
+            message = "password_changed"
         else:
-            message = True
+            message = "invalid_password"
 
     return render(request, "user/change_password.html", {"message": message})
 

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # custom apps
+    # Custom Apps
     "admin_techify",
     "home",
     "category",
@@ -74,6 +74,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # Custom Context Processors
+                "cart.context_processors.cart_items_count",
+                "account.context_processors.user_name",
             ],
         },
     },
