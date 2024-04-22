@@ -40,7 +40,7 @@ def user_management(request):
 @login_required(login_url="authentication:signin")
 def brand_management(request):
     if request.user.is_superuser:
-        brands = Brand.objects.all().order_by("-id")
+        brands = Brand.objects.annotate(products_count=Count("product")).order_by("-id")
         return render(request, "custom_admin/brand.html", {"brands": brands})
     return redirect("home:home_page")
 

@@ -24,11 +24,11 @@
                         <h5>Select a time interval:</h5>
                         <form method="POST" id="time_interval_form">
                             {% csrf_token %}
-                            <label><input type="radio" name="time_interval" value="Today"> Today</label><br>
-                            <label><input type="radio" name="time_interval" value="Weekly"> Weekly</label><br>
-                            <label><input type="radio" name="time_interval" value="Monthly"> Monthly</label><br>
-                            <label><input type="radio" name="time_interval" value="Yearly"> Yearly</label><br>
-                            <label><input type="radio" name="time_interval" value="Custom" id="custom_radio"> Custom</label><br>
+                            <label style="color: #6c7293;"><input type="radio" name="time_interval" value="Today"> Today</label><br>
+                            <label style="color: #6c7293;"><input type="radio" name="time_interval" value="Weekly"> Weekly</label><br>
+                            <label style="color: #6c7293;"><input type="radio" name="time_interval" value="Monthly"> Monthly</label><br>
+                            <label style="color: #6c7293;"><input type="radio" name="time_interval" value="Yearly"> Yearly</label><br>
+                            <label style="color: #6c7293;"><input type="radio" name="time_interval" value="Custom" id="custom_radio"> Custom</label><br>
                             <div id="custom_dates" style="display: none;">
                                 <div style="width: 48%; float: left;">
                                     <label for="start_date" class="text-muted font-weight-light">From date:</label>

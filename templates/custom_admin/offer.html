@@ -9,6 +9,11 @@
 <link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
 <link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
 <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+<style>
+   .table.white-text th {
+      color: white;
+   }
+</style>
 {% endblock %}
 {% block content %}
 <div class="main-panel">
@@ -22,7 +27,7 @@
             <div class="card">
                <div class="card-body">
                   <div class="table-responsive">
-                     <table class="table">
+                     <table class="table white-text">
                         <thead>
                            <tr style="text-align: center;">
                               <th>#</th>
