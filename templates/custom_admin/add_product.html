@@ -26,16 +26,28 @@
                      <input type="text" style="color: white;" class="form-control" id="productName" placeholder="Enter Product Name" name="product_name" />
                      <span id="productNameError" style="color: red; font-size: 12px;"></span>
                   </div>
-                  <input type="hidden" id="selectedValue" name="category" />
-                  <div class="dropdown" style="margin-top: 20px;">
-                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</button>
-                     <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
-                        {% for category in categories %}
-                        <a class="dropdown-item" onclick="selectOption('{{ category.name }}')" style="color: white;">{{ category.name }}</a>
-                        {% endfor %}
+                  <div style="display: flex;">
+                     <input type="hidden" id="selectedBrand" name="brand" />
+                     <div class="dropdown" style="margin-top: 20px;">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Brand</button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
+                           {% for brand in brands %}
+                           <a class="dropdown-item" onclick="selectBrand('{{ brand.name }}')" style="color: white;">{{ brand.name }}</a>
+                           {% endfor %}
+                        </div><br>
+                        <span id="brandError" style="color: red; font-size: 12px;"></span>
+                     </div>
+                     <input type="hidden" id="selectedCategory" name="category" />
+                     <div class="dropdown" style="margin-top: 20px; margin-left: 3rem;">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
+                           {% for category in categories %}
+                           <a class="dropdown-item" onclick="selectCategory('{{ category.name }}')" style="color: white;">{{ category.name }}</a>
+                           {% endfor %}
+                        </div><br>
+                        <span id="categoryError" style="color: red; font-size: 12px;"></span>
                      </div>
                   </div>
-                  <span id="categoryError" style="color: red; font-size: 12px;"></span>
                   <div class="row" style="padding: 12px;">
                      <div class="form-group" style="margin-top: 1rem; width: 45%; ">
                         <label for="price">Price</label>
@@ -136,7 +148,8 @@
    function validateForm() {
       
       var productName = document.getElementById("productName").value.trim();
-      var category = document.getElementById("selectedValue").value.trim();
+      var category = document.getElementById("selectedCategory").value.trim();
+      var brand = document.getElementById("selectedBrand").value.trim();
       var price = document.getElementById("price").value.trim();
       var stock = document.getElementById("stock").value.trim();
       var description = document.getElementById("description").value.trim();
@@ -147,6 +160,7 @@
   
       var productNameError = document.getElementById("productNameError");
       var categoryError = document.getElementById("categoryError");
+      var brandError = document.getElementById("brandError");
       var priceError = document.getElementById("priceError");
       var stockError = document.getElementById("stockError");
       var descriptionError = document.getElementById("descriptionError");
@@ -159,6 +173,7 @@
   
       productNameError.innerHTML = "";
       categoryError.innerHTML = "";
+      brandError.innerHTML = "";
       priceError.innerHTML = "";
       stockError.innerHTML = "";
       descriptionError.innerHTML = "";
@@ -173,6 +188,10 @@
       }
       if (category.length === 0) {
           categoryError.innerHTML = "Choose a category";
+          isValid = false;
+      }
+      if (brand.length === 0) {
+          brandError.innerHTML = "Choose a brand";
           isValid = false;
       }
       if (price.length === 0 || isNaN(Number(price)) || Number(price) <= 0) {
@@ -225,9 +244,14 @@
       return isValid;
   }
   
-   function selectOption(option) {
+   function selectCategory(option) {
        document.getElementById("dropdownMenuOutlineButton2").innerHTML = option;
-       document.getElementById("selectedValue").value = option;
+       document.getElementById("selectedCategory").value = option;
+   }
+
+   function selectBrand(option) {
+       document.getElementById("dropdownMenuOutlineButton1").innerHTML = option;
+       document.getElementById("selectedBrand").value = option;
    }
    
    function updateFilePath(input, previewImageId) {

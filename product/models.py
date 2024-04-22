@@ -5,6 +5,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 from category.models import Category
+from brand.models import Brand
 from offer.models import Offer
 
 
@@ -15,6 +16,7 @@ class Product(models.Model):
     stock = models.IntegerField()
     offer = models.ForeignKey(Offer, on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     is_available = models.BooleanField(default=True)
     thumbnail = models.ImageField(upload_to="images/product")
     image2 = models.ImageField(upload_to="images/product")
