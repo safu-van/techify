@@ -1,0 +1,72 @@
+{% extends 'custom_admin/base.html' %}
+{% load static %}
+{% block title %}Brand{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/css/vendor.bundle.base.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="main-panel">
+   <div class="content-wrapper">
+      <div class="page-header">
+         <h3 class="page-title">Brand Details</h3>
+         <a type="button" href="{% url 'brand:add_brand' %}" class="nav-link btn btn-success create-new-button">+ Add Brand</a>
+      </div>
+      <div class="row">
+         <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+               <div class="card-body">
+                  <div class="table-responsive">
+                     <table class="table">
+                        <thead>
+                           <tr style="text-align: center;">
+                              <th>#</th>
+                              <th>Brand</th>
+                              <th>Product Count</th>
+                              <th>Edit</th>
+                              <th>Action</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for brand in brands %}
+                           <tr style="text-align: center;">
+                              <td>{{ forloop.counter }}</td>
+                              <td>{{ brand.name }}</td>
+                              <td>{{ brand.products_count }}</td>
+                              <td>
+                                 <a type="button" href="{% url 'brand:edit_brand' brand.id %}" class="btn btn-outline-primary edit-category-btn mdi mdi-pencil" style="width: auto"></a>
+                              </td>
+                              <td>
+                                 {% if brand.is_available %}
+                                    <a type="button" href="{% url 'brand:brand_action' brand.id %}" class="btn btn-outline-danger" style="width: 80px">Block</a>
+                                 {% else %}
+                                    <a type="button" href="{% url 'brand:brand_action' brand.id %}" class="btn btn-outline-success" style="width: 80px">Unblock</a>
+                                 {% endif %}
+                              </td>                              
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>
+<script src="{% static 'admin/assets/js/off-canvas.js' %}"></script>
+<script src="{% static 'admin/assets/js/hoverable-collapse.js' %}"></script>
+<script src="{% static 'admin/assets/js/misc.js' %}"></script>
+<script src="{% static 'admin/assets/js/settings.js' %}"></script>
+<script src="{% static 'admin/assets/js/todolist.js' %}"></script>
+{% endblock %}

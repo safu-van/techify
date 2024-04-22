@@ -11,6 +11,7 @@ from django.http import HttpResponse
 from xhtml2pdf import pisa
 
 from category.models import Category
+from brand.models import Brand
 from authentication.models import User
 from product.models import Product
 from cart.models import Orders
@@ -32,6 +33,15 @@ def user_management(request):
     if request.user.is_superuser:
         users = User.objects.exclude(is_superuser=True).order_by("-id")
         return render(request, "custom_admin/user.html", {"users": users})
+    return redirect("home:home_page")
+
+
+# Brand Management
+@login_required(login_url="authentication:signin")
+def brand_management(request):
+    if request.user.is_superuser:
+        brands = Brand.objects.all().order_by("-id")
+        return render(request, "custom_admin/brand.html", {"brands": brands})
     return redirect("home:home_page")
 
 

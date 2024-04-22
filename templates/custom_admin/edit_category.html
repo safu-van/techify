@@ -28,7 +28,7 @@
                   {% csrf_token %}  
                   <div class="form-group">
                      <label for="categoryName">Category Name</label>
-                     <input type="text" style="color: white;" class="form-control" id="categoryName" value="{{ edit_category.name }}" name="category_name">
+                     <input type="text" style="color: white;" class="form-control" id="categoryName" placeholder="Enter Category Name" value="{{ edit_category.name }}" name="category_name">
                      <span id="categoryNameError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="form-group">

@@ -7,6 +7,7 @@ app_name = "admin_techify"
 urlpatterns = [
     path("", views.admin_dashboard, name="admin_dashboard"),
     path("category-management/", views.category_management, name="category_management"),
+    path("brand-management/", views.brand_management, name="brand_management"),
     path("user-management/", views.user_management, name="user_management"),
     path("product-management/", views.product_management, name="product_management"),
     path("order-management/", views.order_management, name="order_management"),

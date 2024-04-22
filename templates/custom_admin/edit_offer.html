@@ -28,12 +28,12 @@
                   {% csrf_token %}  
                   <div class="form-group">
                      <label for="offerName">Offer Name</label>
-                     <input type="text" style="color: white;" class="form-control" id="offerName" value="{{ offer.name }}" name="offer_name">
+                     <input type="text" style="color: white;" class="form-control" id="offerName" placeholder="Enter Offer Name" value="{{ offer.name }}" name="offer_name">
                      <span id="offerNameError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="form-group">
                      <label for="discount">Discount (%)</label>
-                     <input type="text" style="color: white;" class="form-control" id="discount" value="{{ offer.discount }}" name="discount">
+                     <input type="text" style="color: white;" class="form-control" id="discount" placeholder="Enter Discount Percentage (%)" value="{{ offer.discount }}" name="discount">
                      <span id="discountError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="form-group">
@@ -49,7 +49,7 @@
                   
                   <div style="display: flex; justify-content: end; margin-top: 2rem">
                      <a href="{% url 'admin_techify:offer_management' %}" class="btn btn-dark mr-2">Back</a>
-                     <button type="submit" class="btn btn-success">Add</button>
+                     <button type="submit" class="btn btn-success">Update</button>
                   </div>
                </form>
             </div>

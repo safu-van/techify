@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "admin_techify",
     "home",
     "category",
+    "brand",
     "product",
     "offer",
     "authentication",

@@ -28,22 +28,22 @@
                   {% csrf_token %}  
                   <div class="form-group">
                      <label for="couponName">Coupon Name</label>
-                     <input type="text" style="color: white;" class="form-control" id="couponName" value="{{ update_coupon.name }}" name="coupon_name">
+                     <input type="text" style="color: white;" class="form-control" id="couponName" placeholder="Enter Coupon Name" value="{{ update_coupon.name }}" name="coupon_name">
                      <span id="couponNameError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="form-group">
                      <label for="couponCode">Coupon Code</label>
-                     <input type="text" style="color: white;" class="form-control" id="couponCode" value="{{ update_coupon.code }}" name="coupon_code">
+                     <input type="text" style="color: white;" class="form-control" id="couponCode" placeholder="Enter Coupon Code" value="{{ update_coupon.code }}" name="coupon_code">
                      <span id="couponCodeError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="form-group">
                      <label for="discount">Discount (%)</label>
-                     <input type="text" style="color: white;" class="form-control" id="discount" value="{{ update_coupon.discount_percentage }}" name="discount">
+                     <input type="text" style="color: white;" class="form-control" id="discount" placeholder="Enter Discount Percentage (%)" value="{{ update_coupon.discount_percentage }}" name="discount">
                      <span id="discountError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="form-group">
                      <label for="userLimit">User Limit</label>
-                     <input type="text" style="color: white;" class="form-control" id="userLimit" value="{{ update_coupon.limit }}" name="user_limit">
+                     <input type="text" style="color: white;" class="form-control" id="userLimit" placeholder="Enter User Limit" value="{{ update_coupon.limit }}" name="user_limit">
                      <span id="userLimitError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="form-group">

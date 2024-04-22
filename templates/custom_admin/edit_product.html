@@ -23,7 +23,7 @@
                   {% csrf_token %}
                   <div class="form-group">
                      <label for="productName">Product Name</label>
-                     <input type="text" style="color: white;" class="form-control" id="productName" value="{{ product.name }}" name="product_name" />
+                     <input type="text" style="color: white;" class="form-control" id="productName" placeholder="Enter Product Name" value="{{ product.name }}" name="product_name" />
                      <span id="productNameError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <input type="hidden" id="selectedValue" value="{{ product.category.name }}" name="category" />
@@ -39,23 +39,23 @@
                   <div class="row" style="padding: 12px;">
                      <div class="form-group" style="margin-top: 1rem; width: 45%; ">
                         <label for="price">Price</label>
-                        <input type="text" style="color: white;" class="form-control" id="price" value="{{ product.price }}" name="price" />
+                        <input type="text" style="color: white;" class="form-control" id="price" placeholder="Enter Price" value="{{ product.price }}" name="price" />
                         <span id="priceError" style="color: red; font-size: 12px;"></span>
                      </div>
                      <div class="form-group" style="margin-top: 1rem; width: 45%; margin-left:48px;">
                         <label for="stock">Stock</label>
-                        <input type="text" style="color: white;" class="form-control" id="stock" value="{{ product.stock }}" name="stock" />
+                        <input type="text" style="color: white;" class="form-control" id="stock" placeholder="Enter Stock" value="{{ product.stock }}" name="stock" />
                         <span id="stockError" style="color: red; font-size: 12px;"></span>
                      </div>
                   </div>
                   <div class="form-group">
                      <label for="description">Description</label>
-                     <textarea style="color: white;" class="form-control" id="description" name="description" rows="5">{{ product_details.description }}</textarea>
+                     <textarea style="color: white;" class="form-control" id="description" placeholder="Enter Description" name="description" rows="5">{{ product_details.description }}</textarea>
                      <span id="descriptionError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="form-group">
                      <label for="additionalInformation">Additional Information</label>
-                     <textarea style="color: white;" class="form-control" id="additionalInformation" name="additional_information" rows="7">{{ product_details.additional_information }}</textarea>
+                     <textarea style="color: white;" class="form-control" id="additionalInformation" placeholder="Enter Additional Information" name="additional_information" rows="7">{{ product_details.additional_information }}</textarea>
                      <span id="additionalInfoError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="row" style="padding: 12px;">

@@ -25,6 +25,7 @@ urlpatterns = [
     path("", include("home.urls")),
     path("admin/", include("admin_techify.urls")),
     path("category/", include("category.urls")),
+    path("brand/", include("brand.urls")),
     path("product/", include("product.urls")),
     path("offer/", include("offer.urls")),
     path("authentication/", include("authentication.urls")),

@@ -1,0 +1,67 @@
+{% extends 'custom_admin/base.html' %}
+{% load static %}
+{% block title %}Add Brand{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/css/vendor.bundle.base.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="main-panel">
+   <div class="content-wrapper">
+      <div class="page-header">
+         <h3 class="page-title">Add New Brand</h3>
+      </div>
+      <div class="col-md-6 grid-margin stretch-card">
+         <div class="card">
+            <div class="card-body">
+               {% if brand_exists %}
+               <div class="alert alert-danger" role="alert">
+                  Brand already exists
+               </div>
+               {% endif %}
+               <form class="forms-sample" method="post" action="{% url 'brand:add_brand' %}" enctype="multipart/form-data" onsubmit="return validateForm()">
+                  {% csrf_token %}  
+                  <div class="form-group">
+                     <label for="brandName">Brand Name</label>
+                     <input type="text" style="color: white;" class="form-control" id="brandName" placeholder="Enter Brand Name" name="brand_name">
+                     <span id="brandNameError" style="color: red; font-size: 12px;"></span>
+                  </div>
+                  <div style="display: flex; justify-content: end; margin-top: 2rem">
+                     <a href="{% url 'admin_techify:brand_management' %}" class="btn btn-dark mr-2">Back</a>
+                     <button type="submit" class="btn btn-success">Add</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>
+<script src="{% static 'admin/assets/js/off-canvas.js' %}"></script>
+<script src="{% static 'admin/assets/js/hoverable-collapse.js' %}"></script>
+<script src="{% static 'admin/assets/js/misc.js' %}"></script>
+<script src="{% static 'admin/assets/js/settings.js' %}"></script>
+<script src="{% static 'admin/assets/js/todolist.js' %}"></script>
+<script>
+   function validateForm() {
+       var brandName = document.getElementById("brandName").value;
+       var brandNameError = document.getElementById("brandNameError");
+       var isValid = true;
+   
+       brandNameError.innerHTML = "";
+   
+       if (brandName.trim().length === 0) {
+           brandNameError.innerHTML = "Enter a brand name.";
+           isValid = false;
+       }   
+       return isValid;
+   }
+</script>
+{% endblock %}
