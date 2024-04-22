@@ -1,0 +1,140 @@
+{% extends 'custom_admin/base.html' %}
+{% load static %}
+{% block title %}Add Coupon{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/css/vendor.bundle.base.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="main-panel">
+   <div class="content-wrapper">
+      <div class="page-header">
+         <h3 class="page-title">Add New Coupon</h3>
+      </div>
+      <div class="col-md-6 grid-margin stretch-card">
+         <div class="card">
+            <div class="card-body">
+               {% if error_message %}
+               <div class="alert alert-danger" role="alert">
+                  {{ error_message }}
+               </div>
+               {% endif %}
+               <form class="forms-sample" method="POST" action="{% url 'coupon:add_coupon' %}" onsubmit="return validateForm()">
+                  {% csrf_token %}  
+                  <div class="form-group">
+                     <label for="couponName">Coupon Name</label>
+                     <input type="text" style="color: white;" class="form-control" id="couponName" placeholder="Enter Coupon Name" name="coupon_name">
+                     <span id="couponNameError" style="color: red; font-size: 12px;"></span>
+                  </div>
+                  <div class="form-group">
+                     <label for="couponCode">Coupon Code</label>
+                     <input type="text" style="color: white;" class="form-control" id="couponCode" placeholder="Enter Coupon Code" name="coupon_code">
+                     <span id="couponCodeError" style="color: red; font-size: 12px;"></span>
+                  </div>
+                  <div class="form-group">
+                     <label for="discount">Discount (%)</label>
+                     <input type="text" style="color: white;" class="form-control" id="discount" placeholder="Enter Discount Percentage (%)" name="discount">
+                     <span id="discountError" style="color: red; font-size: 12px;"></span>
+                  </div>
+                  <div class="form-group">
+                     <label for="userLimit">User Limit</label>
+                     <input type="text" style="color: white;" class="form-control" id="userLimit" placeholder="Enter User Limit" name="user_limit">
+                     <span id="userLimitError" style="color: red; font-size: 12px;"></span>
+                  </div>
+                  <div class="form-group">
+                     <label for="expiryDate">Expiry Date</label>
+                     <input type="date" style="color: white;" class="form-control" id="expiryDate" name="expiry_date">
+                     <span id="expiryDateError" style="color: red; font-size: 12px;"></span>
+                 </div>
+                  
+                  <div style="display: flex; justify-content: end; margin-top: 2rem">
+                     <a href="{% url 'admin_techify:coupon_management' %}" class="btn btn-dark mr-2">Back</a>
+                     <button type="submit" class="btn btn-success">Add</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>
+<script src="{% static 'admin/assets/js/off-canvas.js' %}"></script>
+<script src="{% static 'admin/assets/js/hoverable-collapse.js' %}"></script>
+<script src="{% static 'admin/assets/js/misc.js' %}"></script>
+<script src="{% static 'admin/assets/js/settings.js' %}"></script>
+<script src="{% static 'admin/assets/js/todolist.js' %}"></script>
+<script>
+   function validateForm() {
+       var couponName = document.getElementById("couponName").value;
+       var couponCode = document.getElementById("couponCode").value;
+       var discount = document.getElementById("discount").value;
+       var userLimit = document.getElementById("userLimit").value;
+       var today = new Date();
+       var expiryDate = document.getElementById("expiryDate").value;
+       var couponNameError = document.getElementById("couponNameError");
+       var couponCodeError = document.getElementById("couponCodeError");
+       var discountError = document.getElementById("discountError");
+       var userLimitError = document.getElementById("userLimitError");
+       var expiryDateError = document.getElementById("expiryDateError")
+       var isValid = true;
+
+       couponNameError.innerHTML = "";
+       couponCodeError.innerHTML = "";
+       discountError.innerHTML = "";
+       userLimitError.innerHTML = "";
+   
+       if (couponName.trim().length === 0) {
+           couponNameError.innerHTML = "Enter a coupon name.";
+           isValid = false;
+       }
+       if (couponCode.trim().length === 0) {
+         couponCodeError.innerHTML = "Enter a coupon code.";
+         isValid = false;
+       } else if (couponCode.trim().length > 15) {
+         couponCodeError.innerHTML = "Coupon code should be less than 15 characters.";
+         isValid = false;
+       } else if (/\s/.test(couponCode)) {
+         couponCodeError.innerHTML = "Coupon code should not contain spaces.";
+         isValid = false;
+       }
+       if (discount.trim().length === 0) {
+           discountError.innerHTML = "Enter discount percentage (%).";
+           isValid = false;
+       }else {
+         var discountValue = parseInt(discount);
+         if (isNaN(discountValue) || discountValue < 1 || discountValue > 100) {
+             discountError.innerHTML = "Discount must be a number between 1 and 100.";
+             isValid = false;
+         }
+       }
+       if (userLimit.trim().length === 0) {
+           userLimitError.innerHTML = "Enter user limit.";
+           isValid = false;
+       }else {
+         var userLimitValue = parseInt(userLimit);
+         if (isNaN(userLimitValue) || userLimitValue < 1 ) {
+             userLimitError.innerHTML = "User limit must be a number greater than 1.";
+             isValid = false;
+         }
+       }
+       if (!expiryDate) {
+           expiryDateError.innerHTML = "Please enter an expiry date.";
+           isValid = false;
+       }
+       expiryDate = new Date(expiryDate);
+       if (expiryDate <= today) {
+           expiryDateError.innerHTML = "Expiry date should be greater than today's date.";
+           isValid = false;
+       }
+   
+       return isValid;
+   }
+</script>
+{% endblock %}

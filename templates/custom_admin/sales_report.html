@@ -1,0 +1,180 @@
+{% extends 'custom_admin/base.html' %}
+{% load static %}
+{% block title %}Sales Report{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/css/vendor.bundle.base.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
+<link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="main-panel">
+   <div class="content-wrapper">
+      <div class="page-header">
+         <h3 class="page-title">Sales Report</h3>
+      </div>
+      <div class="row">
+         <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+               <div class="card-body">
+                    <div>
+                        <h5>Select a time interval:</h5>
+                        <form method="POST" id="time_interval_form">
+                            {% csrf_token %}
+                            <label><input type="radio" name="time_interval" value="Today"> Today</label><br>
+                            <label><input type="radio" name="time_interval" value="Weekly"> Weekly</label><br>
+                            <label><input type="radio" name="time_interval" value="Monthly"> Monthly</label><br>
+                            <label><input type="radio" name="time_interval" value="Yearly"> Yearly</label><br>
+                            <label><input type="radio" name="time_interval" value="Custom" id="custom_radio"> Custom</label><br>
+                            <div id="custom_dates" style="display: none;">
+                                <div style="width: 48%; float: left;">
+                                    <label for="start_date" class="text-muted font-weight-light">From date:</label>
+                                    <input type="date" name="start_date" id="start_date" class="form-control">
+                                </div>
+                                <div style="width: 48%; float: right;">
+                                    <label for="start_date" class="text-muted font-weight-light">To date:</label>
+                                    <input type="date" name="end_date" id="end_date" class="form-control">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="float: right; margin-top: 1rem;">Generate Report</button>
+                        </form>
+                    </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>
+<script src="{% static 'admin/assets/js/off-canvas.js' %}"></script>
+<script src="{% static 'admin/assets/js/hoverable-collapse.js' %}"></script>
+<script src="{% static 'admin/assets/js/misc.js' %}"></script>
+<script src="{% static 'admin/assets/js/settings.js' %}"></script>
+<script src="{% static 'admin/assets/js/todolist.js' %}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var form = document.getElementById("time_interval_form");
+        var customRadio = document.getElementById("custom_radio");
+        var startDateInput = document.getElementById("start_date");
+        var endDateInput = document.getElementById("end_date");
+
+        form.addEventListener("submit", function(event) {
+            if (!validateForm()) {
+                event.preventDefault();
+            }
+        });
+
+        customRadio.addEventListener("change", function() {
+            if (customRadio.checked) {
+                document.getElementById("custom_dates").style.display = "block";
+            } else {
+                document.getElementById("custom_dates").style.display = "none";
+            }
+        });
+
+        function validateForm() {
+            var selectedRadio = document.querySelector('input[name="time_interval"]:checked');
+            if (!selectedRadio) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                    }
+                 });
+                 Toast.fire({
+                    icon: "warning",
+                    title: "Select a time interval"
+                });
+                return false;
+            }
+            if (selectedRadio.value === "Custom") {
+                if (!startDateInput.value || !endDateInput.value) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3500,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                        }
+                     });
+                     Toast.fire({
+                        icon: "warning",
+                        title: "Provide From date & To date"
+                    });
+                    return false;
+                }
+                var startDate = new Date(startDateInput.value);
+                var endDate = new Date(endDateInput.value);
+                var today = new Date();
+                if (startDate > today) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3500,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                        }
+                     });
+                     Toast.fire({
+                        icon: "warning",
+                        title: "From date should be today or less than today"
+                    });
+                    return false;
+                }
+                if (endDate > today) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3500,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                        }
+                     });
+                     Toast.fire({
+                        icon: "warning",
+                        title: "To date should be today or less than today"
+                    });
+                    return false;
+                } else if (endDate < startDate) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3500,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                        }
+                     });
+                     Toast.fire({
+                        icon: "warning",
+                        title: "To date should be greater than From date"
+                    });
+                    return false;
+                }
+            }
+            return true;
+        }
+    });
+</script>
+{% endblock %}
