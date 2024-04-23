@@ -16,9 +16,9 @@
    <div class="page-content">
       <div class="container">
          <div class="toolbox">
-            {% comment %} <div class="toolbox-left">
+            <div class="toolbox-left">
                <a href="#" class="sidebar-toggler"><i class="icon-bars"></i>Filters</a>
-            </div> {% endcomment %}
+            </div>
             <div class="toolbox-right">
                <form method="POST" action="{% url 'product:product_list' %}">
                   {% csrf_token %}
@@ -36,7 +36,7 @@
               </form>
             </div>
          </div>
-         <div class="products" style="height: 50rem;">
+         <div class="products" >
             <div class="row" >
                {% for product in products %}
                <div class="col-6 col-md-4 col-lg-4 col-xl-3">
@@ -78,100 +78,76 @@
                {% endfor %}
             </div>
             {% if not products %}
-            <div style="text-align: center; margin-top: 20rem;">
+            <div style="text-align: center; margin-top: 20rem; height: 50rem;">
                <h2>Empty</h2>
                <span>Sorry, The Product is not Available</span>
             </div>
             {% endif %}
          </div>
-         {% comment %} <div class="sidebar-filter-overlay"></div>
+         <div class="sidebar-filter-overlay"></div>
          <aside class="sidebar-shop sidebar-filter">
-            <div class="sidebar-filter-wrapper">
-               <div class="widget widget-clean">
-                  <label><i class="icon-close"></i>Filters</label>
-                  <a href="#" class="sidebar-filter-clear">Clean All</a>
-               </div>
-               <div class="widget widget-collapsible">
-                  <h3 class="widget-title">
-                     <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
-                     Category
-                     </a>
-                  </h3>
-                  <div class="collapse show" id="widget-1">
-                     <div class="widget-body">
-                        <div class="filter-items filter-items-count">
-                           <div class="filter-item">
-                              <div class="custom-control custom-checkbox">
-                                 <input type="checkbox" class="custom-control-input" id="cat-1">
-                                 <label class="custom-control-label" for="cat-1">Dresses</label>
-                              </div>
-                              <span class="item-count">3</span>
-                           </div>
-                        </div>
-                     </div>
+            <form id="filter-form" method="post" action="{% url 'product:filtered_products' %}" onsubmit="return validateForm()">
+               {% csrf_token %}
+               <div class="sidebar-filter-wrapper">
+                  <div class="widget widget-clean" style="margin-bottom: 1rem;">
+                     <a href="{% url 'product:product_list' %}" >Clear All</a>
                   </div>
-               </div>
-               <div class="widget widget-collapsible">
-                  <h3 class="widget-title">
-                     <a data-toggle="collapse" href="#widget-3" role="button" aria-expanded="true" aria-controls="widget-3">
-                     Colour
-                     </a>
-                  </h3>
-                  <div class="collapse show" id="widget-3">
-                     <div class="widget-body">
-                        <div class="filter-colors">
-                           <a href="#" style="background: #b87145;"><span class="sr-only">Color Name</span></a>
-                           <a href="#" style="background: #f0c04a;"><span class="sr-only">Color Name</span></a>
-                           <a href="#" style="background: #333333;"><span class="sr-only">Color Name</span></a>
-                           <a href="#" class="selected" style="background: #cc3333;"><span class="sr-only">Color Name</span></a>
-                           <a href="#" style="background: #3399cc;"><span class="sr-only">Color Name</span></a>
-                           <a href="#" style="background: #669933;"><span class="sr-only">Color Name</span></a>
-                           <a href="#" style="background: #f2719c;"><span class="sr-only">Color Name</span></a>
-                           <a href="#" style="background: #ebebeb;"><span class="sr-only">Color Name</span></a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="widget widget-collapsible">
-                  <h3 class="widget-title">
-                     <a data-toggle="collapse" href="#widget-4" role="button" aria-expanded="true" aria-controls="widget-4">
-                     Brand
-                     </a>
-                  </h3>
-                  <div class="collapse show" id="widget-4">
-                     <div class="widget-body">
-                        <div class="filter-items">
-                           <div class="filter-item">
-                              <div class="custom-control custom-checkbox">
-                                 <input type="checkbox" class="custom-control-input" id="brand-1">
-                                 <label class="custom-control-label" for="brand-1">Next</label>
+                  <div class="widget widget-collapsible" style="margin-bottom: 1rem;">
+                     <h3 class="widget-title">
+                        <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
+                        Category
+                        </a>
+                     </h3>
+                     {% for category in categories %}
+                     <div class="collapse show" id="widget-1">
+                        <div class="widget-body">
+                           <div class="filter-items filter-items-count">
+                              <div class="filter-item">
+                                 <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="cat-{{ category.id }}" name="categories" value="{{ category.id }}"
+                                    {% if category.id in selected_categories %} checked {% endif %}>
+                                    <label class="custom-control-label" for="cat-{{ category.id }}">{{ category.name }}</label>
+                                 </div>
+                                 <span class="item-count">{{ category.product_count }}</span>
                               </div>
                            </div>
                         </div>
                      </div>
+                     {% endfor %}
                   </div>
-               </div>
-               <div class="widget widget-collapsible">
-                  <h3 class="widget-title">
-                     <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
-                     Price
-                     </a>
-                  </h3>
-                  <div class="collapse show" id="widget-5">
-                     <div class="widget-body">
-                        <div class="filter-price">
-                           <div class="filter-price-text">
-                              Price Range:
-                              <span id="filter-price-range"></span>
+                  <div class="widget widget-collapsible" style="margin-bottom: 1rem;">
+                     <h3 class="widget-title">
+                        <a data-toggle="collapse" href="#widget-4" role="button" aria-expanded="true" aria-controls="widget-4">
+                        Brand
+                        </a>
+                     </h3>
+                     {% for brand in brands %}
+                     <div class="collapse show" id="widget-4">
+                        <div class="widget-body">
+                           <div class="filter-items filter-items-count">
+                              <div class="filter-item">
+                                 <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="brand-{{ brand.id }}" name="brands" value="{{ brand.id }}"
+                                    {% if brand.id in selected_brands %} checked {% endif %}>
+                                    <label class="custom-control-label" for="brand-{{ brand.id }}">{{ brand.name }}</label>
+                                 </div>
+                                 <span class="item-count">{{ brand.product_count }}</span>
+                              </div>
                            </div>
-                           <div id="price-slider"></div>
                         </div>
                      </div>
+                     {% endfor %}
                   </div>
                </div>
-            </div>
+               <span id="filterError" style="color: red; font-size: 12px; display: flex; justify-content: center;"></span>   
+               <div style="display: flex; justify-content: center;">
+                  <button style="border: none; background: white;">
+                  <a class="btn btn-primary text-white rounded-pill">APPLY FILTERS</a>
+                  </button>
+              </div>
+            </form>
          </aside>
-      </div> {% endcomment %}
+      </div>
    </div>
 </main>
 {% endblock %}
@@ -223,6 +199,20 @@
 {% endblock %}
 {% block extra_js %}
 <script>
+   function validateForm() {
+      var categoriesChecked = document.querySelectorAll('input[name="categories"]:checked');
+      var brandsChecked = document.querySelectorAll('input[name="brands"]:checked');
+      var filterError = document.getElementById('filterError')
+
+      filterError.innerHTML = "";
+
+      if (categoriesChecked.length === 0 && brandsChecked.length === 0) {
+          filterError.innerHTML = "Please select atleast one option to filter.";
+          return false;
+      }
+
+      return true;
+   }
    document.addEventListener("DOMContentLoaded", function() {
        var currentUrl = window.location.href;
        var menuLinks = document.querySelectorAll(".main-nav .menu li a");
@@ -233,6 +223,5 @@
            }
        });
    });
-   
 </script>
 {% endblock %}

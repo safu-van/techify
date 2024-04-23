@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.db.models import Count
+from django.db.models import Q
 
 from product.models import Product, ProductDetails
 from category.models import Category
@@ -30,7 +32,49 @@ def product_list(request):
         products = Product.objects.filter(
             is_available=True, category__is_available=True, brand__is_available=True
         ).order_by("id")
-    return render(request, "user/product_list.html", {"products": products})
+
+    brands = Brand.objects.filter(is_available=True).annotate(
+        product_count=Count("product")
+    )
+    categories = Category.objects.filter(is_available=True).annotate(
+        product_count=Count("product")
+    )
+
+    context = {
+        "products": products,
+        "brands": brands,
+        "categories": categories,
+    }
+    return render(request, "user/product_list.html", context)
+
+
+# List filtered products
+def filtered_products(request):
+    if request.method == "POST":
+        selected_categories = [
+            int(cat_id) for cat_id in request.POST.getlist("categories")
+        ]
+        selected_brands = [int(brand_id) for brand_id in request.POST.getlist("brands")]
+
+        products = Product.objects.filter(
+            Q(category__id__in=selected_categories) | Q(brand__id__in=selected_brands)
+        ).distinct()
+
+        brands = Brand.objects.filter(is_available=True).annotate(
+            product_count=Count("product")
+        )
+        categories = Category.objects.filter(is_available=True).annotate(
+            product_count=Count("product")
+        )
+
+        context = {
+            "products": products,
+            "brands": brands,
+            "categories": categories,
+            "selected_brands": selected_brands,
+            "selected_categories": selected_categories,
+        }
+    return render(request, "user/product_list.html", context)
 
 
 # Search Products by query
