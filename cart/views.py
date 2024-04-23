@@ -140,8 +140,8 @@ def remove_coupon(request):
     return redirect("cart:checkout")
 
 
-# To Check product quantity
-def check_product_quantity(request):
+# To Check product stock
+def check_product_stock(request):
     user_id = request.user.id
     products = CartItems.objects.filter(user=user_id)
 
@@ -166,7 +166,7 @@ def checkout(request):
     except ObjectDoesNotExist:
         return redirect("authentication:signin")
 
-    if not check_product_quantity(request):
+    if not check_product_stock(request):
         return redirect("cart:cart")
 
     if request.method == "POST":
@@ -192,7 +192,7 @@ def checkout(request):
                 request.session.pop("coupon_id", None)
 
         elif "selectedAddressId" in request.POST:
-            if not check_product_quantity(request):
+            if not check_product_stock(request):
                 return redirect("cart:cart")
 
             address_id = request.POST.get("selectedAddressId")
