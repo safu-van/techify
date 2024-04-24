@@ -37,16 +37,15 @@
                      <span id="discountError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="form-group">
-                    <label for="activeDate">Active Date</label>
-                    <input type="date" style="color: white;" class="form-control" id="activeDate" value="{{ active_date }}" name="active_date">
-                    <span id="activeDateError" style="color: red; font-size: 12px;"></span>
+                     <label for="activeDate">Active Date</label>
+                     <input type="date" style="color: white;" class="form-control" id="activeDate" value="{{ active_date }}" name="active_date">
+                     <span id="activeDateError" style="color: red; font-size: 12px;"></span>
                   </div>
                   <div class="form-group">
                      <label for="expiryDate">Expiry Date</label>
                      <input type="date" style="color: white;" class="form-control" id="expiryDate" value="{{ expiry_date }}" name="expiry_date">
                      <span id="expiryDateError" style="color: red; font-size: 12px;"></span>
                   </div>
-                  
                   <div style="display: flex; justify-content: end; margin-top: 2rem">
                      <a href="{% url 'admin_techify:offer_management' %}" class="btn btn-dark mr-2">Back</a>
                      <button type="submit" class="btn btn-success">Update</button>
@@ -66,49 +65,49 @@
 <script src="{% static 'admin/assets/js/settings.js' %}"></script>
 <script src="{% static 'admin/assets/js/todolist.js' %}"></script>
 <script>
-    function validateForm() {
-        var offerName = document.getElementById("offerName").value;
-        var discount = document.getElementById("discount").value;
-        var activeDate = document.getElementById("activeDate").value;
-        var expiryDate = document.getElementById("expiryDate").value;
-        
-        if (offerName.trim() === "") {
-            document.getElementById("offerNameError").innerText = "Offer Name cannot be empty";
-            return false;
-        } else {
-            document.getElementById("offerNameError").innerText = "";
-        }
-        
-        if (discount.trim() === "" || isNaN(discount) || discount < 1 || discount > 100) {
-            document.getElementById("discountError").innerText = "Discount must be a number between 1 and 100";
-            return false;
-        } else {
-            document.getElementById("discountError").innerText = "";
-        }
-        
-        if (activeDate.trim() === "" || activeDate < getCurrentDate()) {
-            document.getElementById("activeDateError").innerText = "Active Date must be today or greater";
-            return false;
-        } else {
-            document.getElementById("activeDateError").innerText = "";
-        }
-        
-        if (expiryDate.trim() === "" || expiryDate < getCurrentDate() || expiryDate < activeDate) {
-            document.getElementById("expiryDateError").innerText = "Expiry Date must be today or greater than Active Date";
-            return false;
-        } else {
-            document.getElementById("expiryDateError").innerText = "";
-        }
-        
-        return true;
-    }
-    
-    function getCurrentDate() {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var yyyy = today.getFullYear();
-        return yyyy + '-' + mm + '-' + dd;
-    }
+   function validateForm() {
+       var offerName = document.getElementById("offerName").value;
+       var discount = document.getElementById("discount").value;
+       var activeDate = document.getElementById("activeDate").value;
+       var expiryDate = document.getElementById("expiryDate").value;
+       
+       if (offerName.trim() === "") {
+           document.getElementById("offerNameError").innerText = "Offer Name cannot be empty";
+           return false;
+       } else {
+           document.getElementById("offerNameError").innerText = "";
+       }
+       
+       if (discount.trim() === "" || isNaN(discount) || discount < 1 || discount > 100) {
+           document.getElementById("discountError").innerText = "Discount must be a number between 1 and 100";
+           return false;
+       } else {
+           document.getElementById("discountError").innerText = "";
+       }
+       
+       if (activeDate.trim() === "" || activeDate < getCurrentDate()) {
+           document.getElementById("activeDateError").innerText = "Active Date must be today or greater";
+           return false;
+       } else {
+           document.getElementById("activeDateError").innerText = "";
+       }
+       
+       if (expiryDate.trim() === "" || expiryDate < getCurrentDate() || expiryDate < activeDate) {
+           document.getElementById("expiryDateError").innerText = "Expiry Date must be today or greater than Active Date";
+           return false;
+       } else {
+           document.getElementById("expiryDateError").innerText = "";
+       }
+       
+       return true;
+   }
+   
+   function getCurrentDate() {
+       var today = new Date();
+       var dd = String(today.getDate()).padStart(2, '0');
+       var mm = String(today.getMonth() + 1).padStart(2, '0');
+       var yyyy = today.getFullYear();
+       return yyyy + '-' + mm + '-' + dd;
+   }
 </script>
 {% endblock %}

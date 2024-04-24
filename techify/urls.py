@@ -21,9 +21,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # Django admin-panel Url
     path("django-admin/", admin.site.urls),
-    path("", include("home.urls")),
+    # Custom admin-panel Url
     path("admin/", include("admin_techify.urls")),
+    # Custom Apps Urls
+    path("", include("home.urls")),
     path("category/", include("category.urls")),
     path("brand/", include("brand.urls")),
     path("product/", include("product.urls")),

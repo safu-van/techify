@@ -50,8 +50,7 @@
                      <label for="expiryDate">Expiry Date</label>
                      <input type="date" style="color: white;" class="form-control" id="expiryDate" name="expiry_date" value="{{ expiry_date }}">
                      <span id="expiryDateError" style="color: red; font-size: 12px;"></span>
-                 </div>
-                  
+                  </div>
                   <div style="display: flex; justify-content: end; margin-top: 2rem">
                      <a href="{% url 'admin_techify:coupon_management' %}" class="btn btn-dark mr-2">Back</a>
                      <button type="submit" class="btn btn-success">Update</button>
@@ -84,7 +83,7 @@
        var userLimitError = document.getElementById("userLimitError");
        var expiryDateError = document.getElementById("expiryDateError")
        var isValid = true;
-
+   
        couponNameError.innerHTML = "";
        couponCodeError.innerHTML = "";
        discountError.innerHTML = "";
@@ -94,7 +93,7 @@
            couponNameError.innerHTML = "Enter a coupon name.";
            isValid = false;
        }
-
+   
        if (couponCode.trim().length === 0) {
          couponCodeError.innerHTML = "Enter a coupon code.";
          isValid = false;
@@ -105,7 +104,7 @@
          couponCodeError.innerHTML = "Coupon code should not contain spaces.";
          isValid = false;
        }
-
+   
        if (discount.trim().length === 0) {
            discountError.innerHTML = "Enter discount percentage (%).";
            isValid = false;

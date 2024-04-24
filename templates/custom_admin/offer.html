@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
 <style>
    .table.white-text th {
-      color: white;
+   color: white;
    }
 </style>
 {% endblock %}
@@ -51,8 +51,8 @@
                                  <a type="button" href="{% url 'offer:edit_offer' offer.id %}" class="btn btn-outline-primary  mdi mdi-pencil" style="width: auto"></a>
                               </td>
                               <td>
-                                <a type="button" href="{% url 'offer:remove_offer' offer.id %}" class="btn btn-outline-danger mdi mdi-delete" style="width: auto;"></a>
-                             </td>
+                                 <a type="button" href="{% url 'offer:remove_offer' offer.id %}" class="btn btn-outline-danger mdi mdi-delete" style="width: auto;"></a>
+                              </td>
                            </tr>
                            {% endfor %}
                         </tbody>

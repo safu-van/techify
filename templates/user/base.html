@@ -1,234 +1,234 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="keywords" content="Techify Electronics Ecommerce">
-        <meta name="description" content="Techify - Ecommerce Website">
-        <meta name="apple-mobile-web-app-title" content="Techify">
-        <meta name="application-name" content="Techify">
-        <!-- Title -->
-        <title>{% block title %}{% endblock %}</title>
-        <!-- Favicon -->
-        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
-        <link rel="icon" type="image/x-icon" href="{% static 'favicon/favicon.ico' %}" >
-        <!-- CSS -->
-        {% block css %}
-        {% endblock %}
-    </head>
-    <body>
-        <div class="page-wrapper">
-            <!-- Header -->
-            <header class="header header-10 header-intro-clearance">
-                <div class="header-middle">
-                    <div class="container">
-                        <div class="header-left">
-                            <button class="mobile-menu-toggler">
-                            <span class="sr-only">Toggle mobile menu</span>
-                            <i class="icon-bars"></i>
-                            </button>
-                            <a href="{% url 'home:home_page' %}" class="logo">
-                            <img src="{% static 'user/assets/images/techify-logo.png' %}" alt="Logo" width="105" height="25">
-                            </a>
-                        </div>
-                        <div class="header-center">
-                            <div class="header-search header-search-extended header-search-visible header-search-no-radius d-none d-lg-block">
-                                <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-                                <form method="POST" action="{% url 'product:search_product' %}">
-                                    {% csrf_token %}
-                                    <div class="header-search-wrapper search-wrapper-wide">
-                                        <label for="query" class="sr-only">Search</label>
-                                        <input type="search" class="form-control" name="query" id="query" placeholder="Search product" required>
-                                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="keywords" content="Techify Electronics Ecommerce">
+      <meta name="description" content="Techify - Ecommerce Website">
+      <meta name="apple-mobile-web-app-title" content="Techify">
+      <meta name="application-name" content="Techify">
+      <!-- Title -->
+      <title>{% block title %}{% endblock %}</title>
+      <!-- Favicon -->
+      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+      <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+      <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+      <link rel="icon" type="image/x-icon" href="{% static 'favicon/favicon.ico' %}" >
+      <!-- CSS -->
+      {% block css %}
+      {% endblock %}
+   </head>
+   <body>
+      <div class="page-wrapper">
+         <!-- Header -->
+         <header class="header header-10 header-intro-clearance">
+            <div class="header-middle">
+               <div class="container">
+                  <div class="header-left">
+                     <button class="mobile-menu-toggler">
+                     <span class="sr-only">Toggle mobile menu</span>
+                     <i class="icon-bars"></i>
+                     </button>
+                     <a href="{% url 'home:home_page' %}" class="logo">
+                     <img src="{% static 'user/assets/images/techify-logo.png' %}" alt="Logo" width="105" height="25">
+                     </a>
+                  </div>
+                  <div class="header-center">
+                     <div class="header-search header-search-extended header-search-visible header-search-no-radius d-none d-lg-block">
+                        <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                        <form method="POST" action="{% url 'product:search_product' %}">
+                           {% csrf_token %}
+                           <div class="header-search-wrapper search-wrapper-wide">
+                              <label for="query" class="sr-only">Search</label>
+                              <input type="search" class="form-control" name="query" id="query" placeholder="Search product" required>
+                              <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+                  <div class="header-right">
+                     <div class="header-dropdown-link">
+                        <div class="dropdown compare-dropdown">
+                           <li class="nav-item dropdown" style="list-style-type: none;">
+                              <a href="{% url 'account:account_settings' %}" class="wishlist-link">
+                              <i class="icon-user"></i>
+                              {% if request.user.is_authenticated %}
+                              <span class="wishlist-txt">{{ name }}</span>
+                              {% else %}
+                              <span class="wishlist-txt">Account</span>
+                              {% endif %}
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                                 aria-labelledby="profileDropdown">
+                                 <div class="dropdown-divider"></div>
+                                 {% if request.user.is_authenticated %}
+                                 <a class="dropdown-item preview-item" href="{% url 'authentication:signout' %}">
+                                    <div class="preview-item-content">
+                                       <p class="preview-subject mb-1">Logout</p>
                                     </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="header-right">
-                            <div class="header-dropdown-link">
-                                <div class="dropdown compare-dropdown">
-                                    <li class="nav-item dropdown" style="list-style-type: none;">
-                                        <a href="{% url 'account:account_settings' %}" class="wishlist-link">
-                                        <i class="icon-user"></i>
-                                        {% if request.user.is_authenticated %}
-                                        <span class="wishlist-txt">{{ name }}</span>
-                                        {% else %}
-                                        <span class="wishlist-txt">Account</span>
-                                        {% endif %}
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                                            aria-labelledby="profileDropdown">
-                                            <div class="dropdown-divider"></div>
-                                            {% if request.user.is_authenticated %}
-                                            <a class="dropdown-item preview-item" href="{% url 'authentication:signout' %}">
-                                                <div class="preview-item-content">
-                                                    <p class="preview-subject mb-1">Logout</p>
-                                                </div>
-                                            </a>
-                                            {% else %}
-                                            <a class="dropdown-item preview-item" href="{% url 'authentication:signin' %}">
-                                                <div class="preview-item-content">
-                                                    <p class="preview-subject mb-1">Login</p>
-                                                </div>
-                                            </a>
-                                            {% endif %}
-                                            {% if request.user.is_superuser %}
-                                            <a class="dropdown-item preview-item" href="{% url 'admin_techify:admin_dashboard' %}">
-                                                <div class="preview-item-content">
-                                                    <p class="preview-subject mb-1">Go To Admin Side</p>
-                                                </div>
-                                            </a>
-                                            {% endif %}
-                                        </div>
-                                    </li>
-                                </div>
-                                <a href="{% url 'wishlist:wishlist' %}" class="wishlist-link">
-                                <i class="icon-heart-o"></i>
-                                {% if wishlist_count %}
-                                <span class="wishlist-count">{{ wishlist_count}}</span>
-                                {% endif %}
-                                <span class="wishlist-txt">wishlist</span>
-                                </a>
-                                <div class="dropdown cart-dropdown">
-                                    <a href="{% url 'cart:cart' %}" class="dropdown-toggle" >
-                                    <i class="icon-shopping-cart"></i>
-                                    {% if cart_count %}
-                                    <span class="cart-count">{{ cart_count }}</span>
-                                    {% endif %}
-                                    <span class="cart-txt">Cart</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="header-bottom sticky-header">
-                    <div class="container">
-                        <div class="header-center" style="margin-left: 375px;">
-                            <nav class="main-nav">
-                                <ul class="menu ">
-                                    <li class="megamenu-container">
-                                        <a href="{% url 'home:home_page' %}">Home</a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'product:product_list' %}">Products</a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'wishlist:wishlist' %}">Wishlist</a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'account:account_settings' %}">Account</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Contact</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <!-- Main content -->
-            {% block main %}
-            {% endblock %}  
-            <!-- Footer --> 
-            <footer class="footer footer-2">
-                <div class="icon-boxes-container">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-12 col-lg-6">
-                                <div class="widget widget-about">
-                                    <img src="{% static 'user/assets/images/techify-logo.png' %}" class="footer-logo" alt="Footer Logo" width="105" height="25">
-                                    <p>Welcome to Techify, your one-stop destination for cutting-edge electronics! Explore our curated collection of gadgets, 
-                                        devices, and accessories designed to elevate your tech experience. From smartphones to smart home solutions, we're 
-                                        dedicated to bringing you the latest in innovation and quality. 
-                                    </p>
-                                    <div class="widget-about-info">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-4">
-                                                <span class="widget-about-title">Got Question? Call us 24/7</span>
-                                                <a href="tel:+91 9188552541">+91 9188552541</a>
-                                            </div>
-                                            <div class="col-sm-6 col-md-8">
-                                                <span class="widget-about-title">Payment Method</span>
-                                                <figure class="footer-payments">
-                                                    <img src="{% static 'user/assets/images/payments.png' %}" alt="Payment methods" width="272" height="20">
-                                                </figure>
-                                            </div>
-                                        </div>
+                                 </a>
+                                 {% else %}
+                                 <a class="dropdown-item preview-item" href="{% url 'authentication:signin' %}">
+                                    <div class="preview-item-content">
+                                       <p class="preview-subject mb-1">Login</p>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 col-lg-2">
-                                <div class="widget">
-                                    <h4 class="widget-title">Information</h4>
-                                    <ul class="widget-list">
-                                        <li><a href="#">About Techify</a></li>
-                                        <li><a href="#">How to shop on Techify</a></li>
-                                        <li><a href="#">FAQ</a></li>
-                                        <li><a href="#">Contact us</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 col-lg-2">
-                                <div class="widget">
-                                    <h4 class="widget-title">Customer Service</h4>
-                                    <ul class="widget-list">
-                                        <li><a href="#">Payment Methods</a></li>
-                                        <li><a href="#">Money-back guarantee!</a></li>
-                                        <li><a href="#">Returns</a></li>
-                                        <li><a href="#">Shipping</a></li>
-                                        <li><a href="#">Terms and conditions</a></li>
-                                        <li><a href="#">Privacy Policy</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 col-lg-2">
-                                <div class="widget">
-                                    <h4 class="widget-title">My Account</h4>
-                                    <ul class="widget-list">
-                                        <li><a href="#">Sign In</a></li>
-                                        <li><a href="#">View Cart</a></li>
-                                        <li><a href="#">My Wishlist</a></li>
-                                        <li><a href="#">Track My Order</a></li>
-                                        <li><a href="#">Help</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                                 </a>
+                                 {% endif %}
+                                 {% if request.user.is_superuser %}
+                                 <a class="dropdown-item preview-item" href="{% url 'admin_techify:admin_dashboard' %}">
+                                    <div class="preview-item-content">
+                                       <p class="preview-subject mb-1">Go To Admin Side</p>
+                                    </div>
+                                 </a>
+                                 {% endif %}
+                              </div>
+                           </li>
                         </div>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <div class="container">
-                        <p class="footer-copyright">Copyright © 2024 Techify. All Rights Reserved.</p>
-                        <ul class="footer-menu">
-                            <li><a href="#">Terms Of Use</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
+                        <a href="{% url 'wishlist:wishlist' %}" class="wishlist-link">
+                        <i class="icon-heart-o"></i>
+                        {% if wishlist_count %}
+                        <span class="wishlist-count">{{ wishlist_count}}</span>
+                        {% endif %}
+                        <span class="wishlist-txt">wishlist</span>
+                        </a>
+                        <div class="dropdown cart-dropdown">
+                           <a href="{% url 'cart:cart' %}" class="dropdown-toggle" >
+                           <i class="icon-shopping-cart"></i>
+                           {% if cart_count %}
+                           <span class="cart-count">{{ cart_count }}</span>
+                           {% endif %}
+                           <span class="cart-txt">Cart</span>
+                           </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="header-bottom sticky-header">
+               <div class="container">
+                  <div class="header-center" style="margin-left: 375px;">
+                     <nav class="main-nav">
+                        <ul class="menu ">
+                           <li class="megamenu-container">
+                              <a href="{% url 'home:home_page' %}">Home</a>
+                           </li>
+                           <li>
+                              <a href="{% url 'product:product_list' %}">Products</a>
+                           </li>
+                           <li>
+                              <a href="{% url 'wishlist:wishlist' %}">Wishlist</a>
+                           </li>
+                           <li>
+                              <a href="{% url 'account:account_settings' %}">Account</a>
+                           </li>
+                           <li>
+                              <a href="#">Contact</a>
+                           </li>
                         </ul>
-                        <div class="social-icons social-icons-color">
-                            <span class="social-label">Social Media</span>
-                            <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-                            <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
-                            <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-                            <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
-                            <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                     </nav>
+                  </div>
+               </div>
+            </div>
+         </header>
+         <!-- Main content -->
+         {% block main %}
+         {% endblock %}  
+         <!-- Footer --> 
+         <footer class="footer footer-2">
+            <div class="icon-boxes-container">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-sm-12 col-lg-6">
+                        <div class="widget widget-about">
+                           <img src="{% static 'user/assets/images/techify-logo.png' %}" class="footer-logo" alt="Footer Logo" width="105" height="25">
+                           <p>Welcome to Techify, your one-stop destination for cutting-edge electronics! Explore our curated collection of gadgets, 
+                              devices, and accessories designed to elevate your tech experience. From smartphones to smart home solutions, we're 
+                              dedicated to bringing you the latest in innovation and quality. 
+                           </p>
+                           <div class="widget-about-info">
+                              <div class="row">
+                                 <div class="col-sm-6 col-md-4">
+                                    <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                    <a href="tel:+91 9188552541">+91 9188552541</a>
+                                 </div>
+                                 <div class="col-sm-6 col-md-8">
+                                    <span class="widget-about-title">Payment Method</span>
+                                    <figure class="footer-payments">
+                                       <img src="{% static 'user/assets/images/payments.png' %}" alt="Payment methods" width="272" height="20">
+                                    </figure>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
-                    </div>
-                </div>
-            </footer>
-        </div>
-        <!-- Mobile Menu -->
-        {% block mobile_menu %}
-        {% endblock %}
-        <!-- JS -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        {% block js %}
-        {% endblock %}
-        {% block extra_js %}
-        {% endblock %}
-    </body>
+                     </div>
+                     <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                           <h4 class="widget-title">Information</h4>
+                           <ul class="widget-list">
+                              <li><a href="#">About Techify</a></li>
+                              <li><a href="#">How to shop on Techify</a></li>
+                              <li><a href="#">FAQ</a></li>
+                              <li><a href="#">Contact us</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                           <h4 class="widget-title">Customer Service</h4>
+                           <ul class="widget-list">
+                              <li><a href="#">Payment Methods</a></li>
+                              <li><a href="#">Money-back guarantee!</a></li>
+                              <li><a href="#">Returns</a></li>
+                              <li><a href="#">Shipping</a></li>
+                              <li><a href="#">Terms and conditions</a></li>
+                              <li><a href="#">Privacy Policy</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                     <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                           <h4 class="widget-title">My Account</h4>
+                           <ul class="widget-list">
+                              <li><a href="#">Sign In</a></li>
+                              <li><a href="#">View Cart</a></li>
+                              <li><a href="#">My Wishlist</a></li>
+                              <li><a href="#">Track My Order</a></li>
+                              <li><a href="#">Help</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="footer-bottom">
+               <div class="container">
+                  <p class="footer-copyright">Copyright © 2024 Techify. All Rights Reserved.</p>
+                  <ul class="footer-menu">
+                     <li><a href="#">Terms Of Use</a></li>
+                     <li><a href="#">Privacy Policy</a></li>
+                  </ul>
+                  <div class="social-icons social-icons-color">
+                     <span class="social-label">Social Media</span>
+                     <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                     <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                     <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                     <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                     <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                  </div>
+               </div>
+            </div>
+         </footer>
+      </div>
+      <!-- Mobile Menu -->
+      {% block mobile_menu %}
+      {% endblock %}
+      <!-- JS -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      {% block js %}
+      {% endblock %}
+      {% block extra_js %}
+      {% endblock %}
+   </body>
 </html>

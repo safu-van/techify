@@ -34,7 +34,8 @@
                            {% for brand in brands %}
                            <a class="dropdown-item" onclick="selectBrand('{{ brand.name }}')" style="color: white;">{{ brand.name }}</a>
                            {% endfor %}
-                        </div><br>
+                        </div>
+                        <br>
                         <span id="brandError" style="color: red; font-size: 12px;"></span>
                      </div>
                      <input type="hidden" id="selectedCategory" name="category" />
@@ -44,7 +45,8 @@
                            {% for category in categories %}
                            <a class="dropdown-item" onclick="selectCategory('{{ category.name }}')" style="color: white;">{{ category.name }}</a>
                            {% endfor %}
-                        </div><br>
+                        </div>
+                        <br>
                         <span id="categoryError" style="color: red; font-size: 12px;"></span>
                      </div>
                   </div>
@@ -157,7 +159,7 @@
       var thumbnail = document.getElementById("fileInput1").files[0];
       var image2 = document.getElementById("fileInput2").files[0];
       var image3 = document.getElementById("fileInput3").files[0];
-  
+   
       var productNameError = document.getElementById("productNameError");
       var categoryError = document.getElementById("categoryError");
       var brandError = document.getElementById("brandError");
@@ -168,9 +170,9 @@
       var ImageError1 = document.getElementById("ImageError1");
       var ImageError2 = document.getElementById("ImageError2");
       var ImageError3 = document.getElementById("ImageError3");
-  
+   
       var isValid = true;
-  
+   
       productNameError.innerHTML = "";
       categoryError.innerHTML = "";
       brandError.innerHTML = "";
@@ -181,7 +183,7 @@
       ImageError1.innerHTML = "";
       ImageError2.innerHTML = "";
       ImageError3.innerHTML = "";
-  
+   
       if (productName.length === 0) {
           productNameError.innerHTML = "Enter a product name.";
           isValid = false;
@@ -240,15 +242,15 @@
              isValid = false;
          }
       }
-  
+   
       return isValid;
-  }
-  
+   }
+   
    function selectCategory(option) {
        document.getElementById("dropdownMenuOutlineButton2").innerHTML = option;
        document.getElementById("selectedCategory").value = option;
    }
-
+   
    function selectBrand(option) {
        document.getElementById("dropdownMenuOutlineButton1").innerHTML = option;
        document.getElementById("selectedBrand").value = option;

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
 <style>
    .table.white-text th {
-      color: white;
+   color: white;
    }
 </style>
 {% endblock %}
@@ -54,9 +54,9 @@
                               </td>
                               <td>
                                  {% if product.is_available %}
-                                    <a type="button" href="{% url 'product:product_action' product.id %}" class="btn btn-outline-danger" style="width: 80px">Block</a>
+                                 <a type="button" href="{% url 'product:product_action' product.id %}" class="btn btn-outline-danger" style="width: 80px">Block</a>
                                  {% else %}
-                                    <a type="button" href="{% url 'product:product_action' product.id %}" class="btn btn-outline-success" style="width: 80px">Unblock</a>
+                                 <a type="button" href="{% url 'product:product_action' product.id %}" class="btn btn-outline-success" style="width: 80px">Unblock</a>
                                  {% endif %}
                               </td>
                            </tr>

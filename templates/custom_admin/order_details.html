@@ -16,109 +16,110 @@
       <div class="page-header">
          <h3 class="page-title">Order Details</h3>
       </div>
-                                <div style="border: 1px solid grey; border-radius: 10px; padding: 1.5rem; height: 25rem;">
-                                    <div style="width: 100%; height: 13rem">
-                                        <div style="width: 25%; float: left;">
-                                            <div>
-                                                <div>
-                                                    <span style="color: #3399ff; font-weight: 500; width: 100%; float: left;">Ordered Date:</span>
-                                                </div>
-                                                <div>
-                                                    <span style="width: 100%; float: left; ">{{ order.ordered_date }}</span>
-                                                </div>
-                                            </div>
-                                            {% if order.delivered_date %}
-                                            <div>
-                                                <div>
-                                                    <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; margin-top: 1rem;">Delivered Date:</span>
-                                                </div>
-                                                <div>
-                                                    <span style="width: 100%; float: left; ">{{ order.delivered_date }}</span>
-                                                </div>
-                                            </div>
-                                            {% endif %}
-                                        </div>
-                                        <div style="width: 25%; float: left;">
-                                            <div>
-                                                <div>
-                                                    <span style="color: #3399ff; font-weight: 500; width: 100%; float: left;">Payment Method:</span>
-                                                </div>
-                                                <div>
-                                                    <span>{{ order.payment_method }}</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div>
-                                                    <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; margin-top: 1rem">Order Status:</span>
-                                                </div>
-                                                <div>
-                                                    <span>{{ order.status }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div style="width: 25%; float: left;">
-                                            <div>
-                                                <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 1.5rem;">Shipped To:</span>
-                                            </div>
-                                            <div>
-                                                <span>{{ order.address.name }}</span>
-                                            </div>
-                                            <div>
-                                                <span>{{ order.address.phone }}</span>
-                                            </div>
-                                            <div>
-                                                <span>{{ order.address.city }}</span>
-                                            </div>
-                                            <div>
-                                                <span>{{ order.address.landmark }}</span>
-                                            </div>
-                                            <div style="float:left; margin-right: 1rem;">
-                                                <span>{{ order.address.state }},</span>
-                                            </div>
-                                            <div style="float: left;">
-                                                <span>{{ order.address.country }}</span>
-                                            </div>
-                                        </div>
-                                        <div style="width: 25%; float: left;">
-                                            <div>
-                                                <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 1.5rem;">Order Summary:</span>
-                                            </div>
-                                            <div style="height: 20px; float:left; width: 50%;">
-                                                <span style="font-weight: 400;">Subtotal:</span>
-                                            </div>
-                                            <div style="height: 20px; float: right;">
-                                                <span>${{ order.sub_total }}</span>
-                                            </div>
-                                            <div style="height: 20px; float:left; width: 50%;">
-                                                <span style="font-weight: 400;">Discount:</span>
-                                            </div>
-                                            <div style="height: 20px; float: right;">
-                                                {% if order.discount_amt %}
-                                                <span>-${{ order.discount_amt }}</span>
-                                                {% else %}
-                                                <span>-$0.00</span>
-                                                {% endif %}
-                                            </div>
-                                            <div style="height: 20px; float:left; width: 50%;">
-                                                <spans style="font-weight: 400;">Total:</span>
-                                            </div>
-                                            <div style="height: 20px; float: right;">
-                                                <span>${{ order.total }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr style="border: 0; height: 1px; background-color: grey;">
-                                    <div>
-                                        <div style="width: fit-content; float: left; margin-right: 2rem; ">
-                                            <img src="{{ order.product.thumbnail.url }}" height="100" width="100">
-                                        </div>
-                                        <div style="width: fit-content; float:left;">
-                                            <span style="width: 100%; float: left; height: 23px; color: #3399ff; font-weight: 500; ">{{ order.product.name }}</span>
-                                            <span style="width: 100%; float: left; height: 20px; font-size: 12px">{{ order.product.category.name }}</span>
-                                            <span style="width: 100%; float: left; font-size: 12px">${{ order.product_price }}</span>
-                                        </div>
-                                    </div>
-                                </div>
+      <div style="border: 1px solid grey; border-radius: 10px; padding: 1.5rem; height: 25rem;">
+         <div style="width: 100%; height: 13rem">
+            <div style="width: 25%; float: left;">
+               <div>
+                  <div>
+                     <span style="color: #3399ff; font-weight: 500; width: 100%; float: left;">Ordered Date:</span>
+                  </div>
+                  <div>
+                     <span style="width: 100%; float: left; ">{{ order.ordered_date }}</span>
+                  </div>
+               </div>
+               {% if order.delivered_date %}
+               <div>
+                  <div>
+                     <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; margin-top: 1rem;">Delivered Date:</span>
+                  </div>
+                  <div>
+                     <span style="width: 100%; float: left; ">{{ order.delivered_date }}</span>
+                  </div>
+               </div>
+               {% endif %}
+            </div>
+            <div style="width: 25%; float: left;">
+               <div>
+                  <div>
+                     <span style="color: #3399ff; font-weight: 500; width: 100%; float: left;">Payment Method:</span>
+                  </div>
+                  <div>
+                     <span>{{ order.payment_method }}</span>
+                  </div>
+               </div>
+               <div>
+                  <div>
+                     <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; margin-top: 1rem">Order Status:</span>
+                  </div>
+                  <div>
+                     <span>{{ order.status }}</span>
+                  </div>
+               </div>
+            </div>
+            <div style="width: 25%; float: left;">
+               <div>
+                  <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 1.5rem;">Shipped To:</span>
+               </div>
+               <div>
+                  <span>{{ order.address.name }}</span>
+               </div>
+               <div>
+                  <span>{{ order.address.phone }}</span>
+               </div>
+               <div>
+                  <span>{{ order.address.city }}</span>
+               </div>
+               <div>
+                  <span>{{ order.address.landmark }}</span>
+               </div>
+               <div style="float:left; margin-right: 1rem;">
+                  <span>{{ order.address.state }},</span>
+               </div>
+               <div style="float: left;">
+                  <span>{{ order.address.country }}</span>
+               </div>
+            </div>
+            <div style="width: 25%; float: left;">
+               <div>
+                  <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 1.5rem;">Order Summary:</span>
+               </div>
+               <div style="height: 20px; float:left; width: 50%;">
+                  <span style="font-weight: 400;">Subtotal:</span>
+               </div>
+               <div style="height: 20px; float: right;">
+                  <span>${{ order.sub_total }}</span>
+               </div>
+               <div style="height: 20px; float:left; width: 50%;">
+                  <span style="font-weight: 400;">Discount:</span>
+               </div>
+               <div style="height: 20px; float: right;">
+                  {% if order.discount_amt %}
+                  <span>-${{ order.discount_amt }}</span>
+                  {% else %}
+                  <span>-$0.00</span>
+                  {% endif %}
+               </div>
+               <div style="height: 20px; float:left; width: 50%;">
+                  <spans style="font-weight: 400;">
+                  Total:</span>
+               </div>
+               <div style="height: 20px; float: right;">
+                  <span>${{ order.total }}</span>
+               </div>
+            </div>
+         </div>
+         <hr style="border: 0; height: 1px; background-color: grey;">
+         <div>
+            <div style="width: fit-content; float: left; margin-right: 2rem; ">
+               <img src="{{ order.product.thumbnail.url }}" height="100" width="100">
+            </div>
+            <div style="width: fit-content; float:left;">
+               <span style="width: 100%; float: left; height: 23px; color: #3399ff; font-weight: 500; ">{{ order.product.name }}</span>
+               <span style="width: 100%; float: left; height: 20px; font-size: 12px">{{ order.product.category.name }}</span>
+               <span style="width: 100%; float: left; font-size: 12px">${{ order.product_price }}</span>
+            </div>
+         </div>
+      </div>
    </div>
 </div>
 {% endblock %}

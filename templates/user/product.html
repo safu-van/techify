@@ -12,251 +12,251 @@
 {% endblock %}
 {% block main %}
 <main class="main">
-    <div class="page-content">
-        <div class="container">
-            <div class="product-details-top">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="product-gallery product-gallery-vertical">
-                            <div class="row">
-                                <figure class="product-main-image">
-                                    <img id="product-zoom" src="{{ product.thumbnail.url }}" data-zoom-image="{{ product.thumbnail.url }}" alt="product image">
-                                </figure>
-                                <div id="product-zoom-gallery" class="product-image-gallery">
-                                    <a class="product-gallery-item active" href="#" data-image="{{ product.thumbnail.url }}" data-zoom-image="{{ product.thumbnail.url }}">
-                                    <img src="{{ product.thumbnail.url }}" alt="product side">
-                                    </a>
-                                    <a class="product-gallery-item" href="#" data-image="{{ product.image2.url }}" data-zoom-image="{{ product.image2.url }}">
-                                    <img src="{{ product.image2.url }}" alt="product cross">
-                                    </a>
-                                    <a class="product-gallery-item" href="#" data-image="{{ product.image3.url }}" data-zoom-image="{{ product.image3.url }}">
-                                    <img src="{{ product.image3.url }}" alt="product with model">
-                                    </a>
-                                </div>
-                            </div>
+   <div class="page-content">
+      <div class="container">
+         <div class="product-details-top">
+            <div class="row">
+               <div class="col-md-6">
+                  <div class="product-gallery product-gallery-vertical">
+                     <div class="row">
+                        <figure class="product-main-image">
+                           <img id="product-zoom" src="{{ product.thumbnail.url }}" data-zoom-image="{{ product.thumbnail.url }}" alt="product image">
+                        </figure>
+                        <div id="product-zoom-gallery" class="product-image-gallery">
+                           <a class="product-gallery-item active" href="#" data-image="{{ product.thumbnail.url }}" data-zoom-image="{{ product.thumbnail.url }}">
+                           <img src="{{ product.thumbnail.url }}" alt="product side">
+                           </a>
+                           <a class="product-gallery-item" href="#" data-image="{{ product.image2.url }}" data-zoom-image="{{ product.image2.url }}">
+                           <img src="{{ product.image2.url }}" alt="product cross">
+                           </a>
+                           <a class="product-gallery-item" href="#" data-image="{{ product.image3.url }}" data-zoom-image="{{ product.image3.url }}">
+                           <img src="{{ product.image3.url }}" alt="product with model">
+                           </a>
                         </div>
-                    </div>
-                    <div class="col-md-6" style='margin-top: 45px;'>
-                        <div class="product-details">
-                            <h1 class="product-title">{{ product.name }}</h1>
-                            <div class="ratings-container">
-                                <div class="ratings">
-                                    <div class="ratings-val" style="width: 80%;"></div>
-                                </div>
-                                <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
-                            </div>
-                            <div class="product-price">
-                                <span class="new-price" style="color: red; font-size: 30px;">${{ product.price }}</span>
-                                <span class="old-price" style="font-size: 15px; padding-top: 10px;">Was <s>$290.00</s></span>
-                            </div>
-                            <div class="product-content">
-                                <p>{{ product_details.description }}</p>
-                            </div>
-                            <div class="product-content">
-                                {% if product.stock == 0 %}
-                                <span style="top: 101px; padding: 0px; background: #fff; color: #d30000;">Out of Stock</span>
-                                {% elif product.stock <= 5 %}
-                                <span style="top: 101px; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</span>
-                                {% endif %}
-                            </div>
-                            <br>
-                            <div class="product-details-action">
-                                <input type='hidden' value='{{ product.id }}' id='product-id'>
-                                {% if product.stock != 0 and user.is_authenticated %}
-                                <a class="btn-product btn-cart " id="add-to-cart-btn"  style="margin-right: 4rem;"><span>ADD TO CART</span></a>
-                                {% elif product.stock != 0 and not user.is_authenticated %}
-                                <a class="btn-product btn-cart " href="{% url 'authentication:signin' %}" style="margin-right: 4rem;"><span>ADD TO CART</span></a>
-                                {% endif %}
-                                <div class="details-action-wrapper" style="margin-left: 0;">
-                                    {% if user.is_authenticated %}
-                                    <a class="btn-product btn-wishlist" id="add-to-wishlist" style="width: 198px; height: 38.45px;"><span>ADD TO WISHLIST</span></a>
-                                    {% else %}
-                                    <a class="btn-product btn-wishlist" href="{% url 'authentication:signin' %}" style="width: 198px; height: 38.45px;"><span>ADD TO WISHLIST</span></a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="product-details-footer">
-                                <div class="product-cat" style="width: 100%; margin-bottom: 1rem;">
-                                    <span>Brand:</span>
-                                    <a href="#">{{ product.brand.name }}</a>
-                                </div>
-                                <div class="product-cat" style="width: 100%;">
-                                    <span>Category:</span>
-                                    <a href="#">{{ product.category.name }}</a>
-                                </div>
-                            </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6" style='margin-top: 45px;'>
+                  <div class="product-details">
+                     <h1 class="product-title">{{ product.name }}</h1>
+                     <div class="ratings-container">
+                        <div class="ratings">
+                           <div class="ratings-val" style="width: 80%;"></div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="product-details-tab">
-                <ul class="nav nav-pills justify-content-center" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab" role="tab" aria-controls="product-info-tab" aria-selected="false">Additional information</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link" name="product-info-tab">
-                        <div class="product-desc-content">
-                            {{ product_details.additional_information }}
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
-                        <div class="reviews">
-                            <h3>Reviews (2)</h3>
-                            <div class="review">
-                                <div class="row no-gutters">
-                                    <div class="col-auto">
-                                        <h4><a href="#">Samanta J.</a></h4>
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 80%;"></div>
-                                            </div>
-                                        </div>
-                                        <span class="review-date">6 days ago</span>
-                                    </div>
-                                    <div class="col">
-                                        <h4>Good, perfect size</h4>
-                                        <div class="review-content">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
-                                        </div>
-                                        <div class="review-action">
-                                            <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
-                                            <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="review">
-                                <div class="row no-gutters">
-                                    <div class="col-auto">
-                                        <h4><a href="#">John Doe</a></h4>
-                                        <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 100%;"></div>
-                                            </div>
-                                        </div>
-                                        <span class="review-date">5 days ago</span>
-                                    </div>
-                                    <div class="col">
-                                        <h4>Very good</h4>
-                                        <div class="review-content">
-                                            <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
-                                        </div>
-                                        <div class="review-action">
-                                            <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
-                                            <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% if related_products %}
-            <h2 class="title text-center mb-4">Related Products</h2>
-            <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                data-owl-options='{
-                "nav": false, 
-                "dots": true,
-                "margin": 20,
-                "loop": false,
-                "responsive": {
-                "0": {
-                "items":1
-                },
-                "480": {
-                "items":2
-                },
-                "768": {
-                "items":3
-                },
-                "992": {
-                "items":4
-                },
-                "1200": {
-                "items":4,
-                "nav": true,
-                "dots": false
-                }
-                }
-                }'>
-                {% for product in related_products %}
-                <div class="product" style="width: 75%;">
-                    <figure class="product-media">
-                        {% if product.offer is not null %}
-                        <span class="product-label label-sale">{{ product.offer.offer_percentage }}% off</span>
+                        <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
+                     </div>
+                     <div class="product-price">
+                        <span class="new-price" style="color: red; font-size: 30px;">${{ product.price }}</span>
+                        <span class="old-price" style="font-size: 15px; padding-top: 10px;">Was <s>$290.00</s></span>
+                     </div>
+                     <div class="product-content">
+                        <p>{{ product_details.description }}</p>
+                     </div>
+                     <div class="product-content">
+                        {% if product.stock == 0 %}
+                        <span style="top: 101px; padding: 0px; background: #fff; color: #d30000;">Out of Stock</span>
+                        {% elif product.stock <= 5 %}
+                        <span style="top: 101px; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</span>
                         {% endif %}
-                        <a href="{% url 'product:product_view' product.id %}">
-                        <img src="{{ product.thumbnail.url }}" alt="Product image" class="product-image">
-                        </a>
-                        <div class="product-action-vertical">
-                            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                     </div>
+                     <br>
+                     <div class="product-details-action">
+                        <input type='hidden' value='{{ product.id }}' id='product-id'>
+                        {% if product.stock != 0 and user.is_authenticated %}
+                        <a class="btn-product btn-cart " id="add-to-cart-btn"  style="margin-right: 4rem;"><span>ADD TO CART</span></a>
+                        {% elif product.stock != 0 and not user.is_authenticated %}
+                        <a class="btn-product btn-cart " href="{% url 'authentication:signin' %}" style="margin-right: 4rem;"><span>ADD TO CART</span></a>
+                        {% endif %}
+                        <div class="details-action-wrapper" style="margin-left: 0;">
+                           {% if user.is_authenticated %}
+                           <a class="btn-product btn-wishlist" id="add-to-wishlist" style="width: 198px; height: 38.45px;"><span>ADD TO WISHLIST</span></a>
+                           {% else %}
+                           <a class="btn-product btn-wishlist" href="{% url 'authentication:signin' %}" style="width: 198px; height: 38.45px;"><span>ADD TO WISHLIST</span></a>
+                           {% endif %}
                         </div>
-                    </figure>
-                    <div class="product-body">
-                        <div class="product-cat">
-                            <a href="#">{{ product.category }}</a>
+                     </div>
+                     <div class="product-details-footer">
+                        <div class="product-cat" style="width: 100%; margin-bottom: 1rem;">
+                           <span>Brand:</span>
+                           <a href="#">{{ product.brand.name }}</a>
                         </div>
-                        <h3 class="product-title"><a href="{% url 'product:product_view' product.id %}">{{ product.name }}</a></h3>
-                        <div class="product-price">
-                            <span class="new-price">${{ product.price }}</span>
-                            <span class="old-price">Was <s>$290.00</s></span>
+                        <div class="product-cat" style="width: 100%;">
+                           <span>Category:</span>
+                           <a href="#">{{ product.category.name }}</a>
                         </div>
-                        <div class="ratings-container">
-                            <div class="ratings">
-                                <div class="ratings-val" style="width: 100%;"></div>
-                            </div>
-                            <span class="ratings-text">( 2 )</span>
-                            {% if product.stock == 0 %}
-                            <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">Out of Stock</span>
-                            {% elif product.stock <= 5 %}
-                            <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+                     </div>
+                  </div>
+               </div>
             </div>
-            {% endif %}
-        </div>
-    </div>
+         </div>
+         <div class="product-details-tab">
+            <ul class="nav nav-pills justify-content-center" role="tablist">
+               <li class="nav-item">
+                  <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab" role="tab" aria-controls="product-info-tab" aria-selected="false">Additional information</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews</a>
+               </li>
+            </ul>
+            <div class="tab-content">
+               <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link" name="product-info-tab">
+                  <div class="product-desc-content">
+                     {{ product_details.additional_information }}
+                  </div>
+               </div>
+               <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+                  <div class="reviews">
+                     <h3>Reviews (2)</h3>
+                     <div class="review">
+                        <div class="row no-gutters">
+                           <div class="col-auto">
+                              <h4><a href="#">Samanta J.</a></h4>
+                              <div class="ratings-container">
+                                 <div class="ratings">
+                                    <div class="ratings-val" style="width: 80%;"></div>
+                                 </div>
+                              </div>
+                              <span class="review-date">6 days ago</span>
+                           </div>
+                           <div class="col">
+                              <h4>Good, perfect size</h4>
+                              <div class="review-content">
+                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
+                              </div>
+                              <div class="review-action">
+                                 <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
+                                 <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="review">
+                        <div class="row no-gutters">
+                           <div class="col-auto">
+                              <h4><a href="#">John Doe</a></h4>
+                              <div class="ratings-container">
+                                 <div class="ratings">
+                                    <div class="ratings-val" style="width: 100%;"></div>
+                                 </div>
+                              </div>
+                              <span class="review-date">5 days ago</span>
+                           </div>
+                           <div class="col">
+                              <h4>Very good</h4>
+                              <div class="review-content">
+                                 <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
+                              </div>
+                              <div class="review-action">
+                                 <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
+                                 <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         {% if related_products %}
+         <h2 class="title text-center mb-4">Related Products</h2>
+         <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+            data-owl-options='{
+            "nav": false, 
+            "dots": true,
+            "margin": 20,
+            "loop": false,
+            "responsive": {
+            "0": {
+            "items":1
+            },
+            "480": {
+            "items":2
+            },
+            "768": {
+            "items":3
+            },
+            "992": {
+            "items":4
+            },
+            "1200": {
+            "items":4,
+            "nav": true,
+            "dots": false
+            }
+            }
+            }'>
+            {% for product in related_products %}
+            <div class="product" style="width: 75%;">
+               <figure class="product-media">
+                  {% if product.offer is not null %}
+                  <span class="product-label label-sale">{{ product.offer.offer_percentage }}% off</span>
+                  {% endif %}
+                  <a href="{% url 'product:product_view' product.id %}">
+                  <img src="{{ product.thumbnail.url }}" alt="Product image" class="product-image">
+                  </a>
+                  <div class="product-action-vertical">
+                     <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                  </div>
+               </figure>
+               <div class="product-body">
+                  <div class="product-cat">
+                     <a href="#">{{ product.category }}</a>
+                  </div>
+                  <h3 class="product-title"><a href="{% url 'product:product_view' product.id %}">{{ product.name }}</a></h3>
+                  <div class="product-price">
+                     <span class="new-price">${{ product.price }}</span>
+                     <span class="old-price">Was <s>$290.00</s></span>
+                  </div>
+                  <div class="ratings-container">
+                     <div class="ratings">
+                        <div class="ratings-val" style="width: 100%;"></div>
+                     </div>
+                     <span class="ratings-text">( 2 )</span>
+                     {% if product.stock == 0 %}
+                     <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">Out of Stock</span>
+                     {% elif product.stock <= 5 %}
+                     <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</span>
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+         {% endif %}
+      </div>
+   </div>
 </main>
 {% endblock %}
 {% block moobile_menu %}
 <div class="mobile-menu-container">
-    <div class="mobile-menu-wrapper">
-        <span class="mobile-menu-close"><i class="icon-close"></i></span>
-        <nav class="mobile-nav">
-            <ul class="mobile-menu">
-                <li class="active">
-                    <a href="#">Home</a>
-                </li>
-                <li>
-                    <a href="#">Shop</a>
-                </li>
-                <li>
-                    <a href="#" class="sf-with-ul">Product</a>
-                </li>
-                <li>
-                    <a href="#">Pages</a>
-                </li>
-                <li>
-                    <a href="#">Blog</a>    
-                </li>
-            </ul>
-        </nav>
-        <div class="social-icons">
-            <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-            <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-            <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-            <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
-        </div>
-    </div>
+   <div class="mobile-menu-wrapper">
+      <span class="mobile-menu-close"><i class="icon-close"></i></span>
+      <nav class="mobile-nav">
+         <ul class="mobile-menu">
+            <li class="active">
+               <a href="#">Home</a>
+            </li>
+            <li>
+               <a href="#">Shop</a>
+            </li>
+            <li>
+               <a href="#" class="sf-with-ul">Product</a>
+            </li>
+            <li>
+               <a href="#">Pages</a>
+            </li>
+            <li>
+               <a href="#">Blog</a>    
+            </li>
+         </ul>
+      </nav>
+      <div class="social-icons">
+         <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+         <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+         <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+         <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+      </div>
+   </div>
 </div>
 {% endblock %}
 {% block js %}
@@ -274,97 +274,97 @@
 {% endblock %}
 {% block extra_js %}
 <script>
-    $('#add-to-cart-btn').on('click', function(){
-       let product_id = document.getElementById('product-id').value;
-       let quantity = 1;
-       $.ajax({
-          url: "{% url 'cart:add_to_cart' %}",
-          data: {
-             'id': product_id,
-             'qty': quantity
-          },
-          dataType: 'json',
-          success: function(response) {
-             if (response.message === "Item added to cart") {
-                const Toast = Swal.mixin({
-                   toast: true,
-                   position: "top-end",
-                   showConfirmButton: false,
-                   timer: 3000,
-                   timerProgressBar: true,
-                   didOpen: (toast) => {
-                   toast.onmouseenter = Swal.stopTimer;
-                   toast.onmouseleave = Swal.resumeTimer;
-                   }
-                });
-                Toast.fire({
-                   icon: "success",
-                   title: "Item added to cart"
-                });
-             } else {
-                const Toast = Swal.mixin({
-                   toast: true,
-                   position: "top-end",
-                   showConfirmButton: false,
-                   timer: 3000,
-                   timerProgressBar: true,
-                   didOpen: (toast) => {
-                   toast.onmouseenter = Swal.stopTimer;
-                   toast.onmouseleave = Swal.resumeTimer;
-                   }
-                });
-                Toast.fire({
-                   icon: "success",
-                   title: "Item already in cart"
-                });
-             }
-          }
-       });
-    });
-    $('#add-to-wishlist').on('click', function(){
-       let product_id = document.getElementById('product-id').value;
-       $.ajax({
-          url: "{% url 'wishlist:add_to_wishlist' %}",
-          data: {
-             'id': product_id,
-          },
-          dataType: 'json',
-          success: function(response) {
-             if (response.message === "Item added to wishlist") {
-                const Toast = Swal.mixin({
-                   toast: true,
-                   position: "top-end",
-                   showConfirmButton: false,
-                   timer: 3000,
-                   timerProgressBar: true,
-                   didOpen: (toast) => {
-                   toast.onmouseenter = Swal.stopTimer;
-                   toast.onmouseleave = Swal.resumeTimer;
-                   }
-                });
-                Toast.fire({
-                   icon: "success",
-                   title: "Item added to wishlist"
-                });
-             } else {
-                const Toast = Swal.mixin({
-                   toast: true,
-                   position: "top-end",
-                   showConfirmButton: false,
-                   timer: 3000,
-                   timerProgressBar: true,
-                   didOpen: (toast) => {
-                   toast.onmouseenter = Swal.stopTimer;
-                   toast.onmouseleave = Swal.resumeTimer;
-                   }
-                });
-                Toast.fire({
-                   icon: "success",
-                   title: "Item already in wishlist"
-                });
-             }
-          }
-       });
-    });
+   $('#add-to-cart-btn').on('click', function(){
+      let product_id = document.getElementById('product-id').value;
+      let quantity = 1;
+      $.ajax({
+         url: "{% url 'cart:add_to_cart' %}",
+         data: {
+            'id': product_id,
+            'qty': quantity
+         },
+         dataType: 'json',
+         success: function(response) {
+            if (response.message === "Item added to cart") {
+               const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                  }
+               });
+               Toast.fire({
+                  icon: "success",
+                  title: "Item added to cart"
+               });
+            } else {
+               const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                  }
+               });
+               Toast.fire({
+                  icon: "success",
+                  title: "Item already in cart"
+               });
+            }
+         }
+      });
+   });
+   $('#add-to-wishlist').on('click', function(){
+      let product_id = document.getElementById('product-id').value;
+      $.ajax({
+         url: "{% url 'wishlist:add_to_wishlist' %}",
+         data: {
+            'id': product_id,
+         },
+         dataType: 'json',
+         success: function(response) {
+            if (response.message === "Item added to wishlist") {
+               const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                  }
+               });
+               Toast.fire({
+                  icon: "success",
+                  title: "Item added to wishlist"
+               });
+            } else {
+               const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                  }
+               });
+               Toast.fire({
+                  icon: "success",
+                  title: "Item already in wishlist"
+               });
+            }
+         }
+      });
+   });
 </script>
 {% endblock %}

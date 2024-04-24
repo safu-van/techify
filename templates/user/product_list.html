@@ -23,17 +23,17 @@
                <form method="POST" action="{% url 'product:product_list' %}">
                   {% csrf_token %}
                   <div class="toolbox-sort">
-                      <label for="sortby">Sort by:</label>
-                      <div class="select-custom">
-                          <select name="sortby" id="sortby" class="form-control" onchange="this.form.submit()">
-                              <option value="" selected disabled>Select an Option</option>
-                              <option value="Price: low to high">Price: low to high</option>
-                              <option value="Price: high to low">Price: high to low</option>
-                              <option value="New Arrivals">New Arrivals</option>
-                          </select>
-                      </div>
+                     <label for="sortby">Sort by:</label>
+                     <div class="select-custom">
+                        <select name="sortby" id="sortby" class="form-control" onchange="this.form.submit()">
+                           <option value="" selected disabled>Select an Option</option>
+                           <option value="Price: low to high">Price: low to high</option>
+                           <option value="Price: high to low">Price: high to low</option>
+                           <option value="New Arrivals">New Arrivals</option>
+                        </select>
+                     </div>
                   </div>
-              </form>
+               </form>
             </div>
          </div>
          <div class="products" >
@@ -144,7 +144,7 @@
                   <button style="border: none; background: white;">
                   <a class="btn btn-primary text-white rounded-pill">APPLY FILTERS</a>
                   </button>
-              </div>
+               </div>
             </form>
          </aside>
       </div>
@@ -203,14 +203,14 @@
       var categoriesChecked = document.querySelectorAll('input[name="categories"]:checked');
       var brandsChecked = document.querySelectorAll('input[name="brands"]:checked');
       var filterError = document.getElementById('filterError')
-
+   
       filterError.innerHTML = "";
-
+   
       if (categoriesChecked.length === 0 && brandsChecked.length === 0) {
           filterError.innerHTML = "Please select atleast one option to filter.";
           return false;
       }
-
+   
       return true;
    }
    document.addEventListener("DOMContentLoaded", function() {
