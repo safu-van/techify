@@ -34,6 +34,7 @@ class Orders(models.Model):
     discount_amt = models.DecimalField(max_digits=30, decimal_places=1, default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     product_price = models.DecimalField(max_digits=30, decimal_places=1)
+    product_qty = models.PositiveIntegerField()
 
     @property
     def total(self):

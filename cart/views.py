@@ -257,6 +257,7 @@ def checkout(request):
                     * (Decimal(discount_percentage) / Decimal("100")),
                     product=product,
                     product_price=product.price,
+                    product_qty=item.quantity,
                 )
                 ordered_items.save()
 
@@ -317,17 +318,25 @@ def order_status(request, order_id, status):
         item.status = status
         if status == "Delivered":
             item.delivered_date = date.today()
-        item.save()
-        if status == "Returned":
+        elif status == "Returned":
             user = User.objects.get(id=request.user.id)
             amount = item.total
             if Wallet.objects.filter(user=user).exists():
                 wallet = Wallet.objects.get(user=user)
                 wallet.amount += amount
-                wallet.save()
             else:
                 wallet = Wallet.objects.create(user=user, amount=amount)
-                wallet.save()
+            wallet.save()
+            purchased_qty = item.product_qty
+            product = Product.objects.get(id=item.product.id)
+            product.stock += purchased_qty
+            product.save()
+        elif status == "Cancelled":
+            purchased_qty = item.product_qty
+            product = Product.objects.get(id=item.product.id)
+            product.stock += purchased_qty
+            product.save()
+        item.save()
     except ObjectDoesNotExist:
         return redirect(previous_url)
     return redirect(previous_url)
