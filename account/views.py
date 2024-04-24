@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 
 from authentication.models import User
-from account.models import UserAddress, Wallet
+from account.models import UserAddress, Wallet, WalletTransaction
 from cart.models import Orders
 
 from django.utils import timezone
@@ -177,11 +177,17 @@ def wallet(request):
         if Wallet.objects.filter(user=user).exists():
             wallet = Wallet.objects.get(user=user)
             amount = wallet.amount
+            transactions = WalletTransaction.objects.filter(wallet=wallet).order_by("-id")
         else:
             amount = 0.0
+            transactions = False
     except ObjectDoesNotExist:
         return redirect("authentication:signin")
-    return render(request, "user/wallet.html", {"amount": amount})
+    context = {
+        "amount": amount,
+        "transactions": transactions,
+    }
+    return render(request, "user/wallet.html", context)
 
 
 # Change Password

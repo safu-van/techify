@@ -6,15 +6,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
 
 from cart.models import CartItems, Orders, DeliveyAddress
 from product.models import Product
 from authentication.models import User
-from account.models import UserAddress, Wallet
+from account.models import UserAddress
 from coupon.models import Coupon, CouponUsage
+from utils.utils import update_wallet, update_product_stock
 
 from datetime import date
-from django.utils import timezone
 from decimal import Decimal
 
 
@@ -312,30 +313,29 @@ def order_success(request):
 # Order Status updation
 def order_status(request, order_id, status):
     previous_url = request.META.get("HTTP_REFERER")
-
     try:
+        user = User.objects.get(id=request.user.id)
         item = Orders.objects.get(id=order_id)
-        item.status = status
+        amount = item.total
+        purchased_qty = item.product_qty
+        product_id = item.product.id
+        is_credit = True
         if status == "Delivered":
             item.delivered_date = date.today()
         elif status == "Returned":
-            user = User.objects.get(id=request.user.id)
-            amount = item.total
-            if Wallet.objects.filter(user=user).exists():
-                wallet = Wallet.objects.get(user=user)
-                wallet.amount += amount
-            else:
-                wallet = Wallet.objects.create(user=user, amount=amount)
-            wallet.save()
-            purchased_qty = item.product_qty
-            product = Product.objects.get(id=item.product.id)
-            product.stock += purchased_qty
-            product.save()
+            # Add amount of Returned product to wallet
+            description = "Returned Product Amount Credited"
+            update_wallet(user, amount, description, is_credit)
+            # Increase the product stock
+            update_product_stock(purchased_qty, product_id)
         elif status == "Cancelled":
-            purchased_qty = item.product_qty
-            product = Product.objects.get(id=item.product.id)
-            product.stock += purchased_qty
-            product.save()
+            # Add amount of Cancelled product to wallet if payment method is ("Online Payment" or "Wallet Payment")
+            if item.payment_method in ["Online Payment", "Wallet Payment"]:
+                description = "Cancelled Product Amount Credited"
+                update_wallet(user, amount, description, is_credit)
+            # Increase the product stock
+            update_product_stock(purchased_qty, product_id)
+        item.status = status
         item.save()
     except ObjectDoesNotExist:
         return redirect(previous_url)

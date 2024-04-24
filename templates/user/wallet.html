@@ -50,6 +50,18 @@
    background-color: #f8d7da;
    border-color: #f5c6cb;
    }
+   table {
+      width: 100%;
+      border-collapse: collapse;
+   }
+   th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+   }
+   th {
+      background-color: #f2f2f2;
+   }
 </style>
 {% endblock %}
 {% block main %}
@@ -87,6 +99,35 @@
                         </div>
                      </div>
                   </div>
+                  {% if transactions %}
+                  <div style="margin-top: 6rem;">
+                     <h4>Transaction History</h4>
+                     <table>
+                        <thead>
+                           <tr>
+                              <th>Date</th>
+                              <th>Time</th>
+                              <th>Description</th>
+                              <th>Amount</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for transaction in transactions %}
+                           <tr>
+                              <td>{{ transaction.date_time|date:"Y-m-d" }}</td>
+                              <td>{{ transaction.date_time|time:"g:i A" }}</td>
+                              <td>{{ transaction.description }}</td>
+                              {% if transaction.is_credit %}
+                              <td style="color: #02cd02;">${{ transaction.amount }}</td>
+                              {% else %}
+                              <td style="color: #ff0000;">-${{ transaction.amount }}</td>
+                              {% endif %}
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                     </table>
+                  </div>
+                  {% endif %}
                </div>
             </div>
          </div>
