@@ -5,15 +5,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('account', '0006_alter_wallettransaction_date_time'),
+        ("account", "0006_alter_wallettransaction_date_time"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='wallettransaction',
-            name='date_time',
+            model_name="wallettransaction",
+            name="date_time",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
     ]

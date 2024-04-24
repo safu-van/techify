@@ -33,7 +33,7 @@ def update_wallet(user, amount, description, is_credit):
     transaction.save()
 
 
-# Update product stock 
+# Update product stock
 def update_product_stock(purchased_qty, product_id):
     product = Product.objects.get(id=product_id)
     product.stock += purchased_qty

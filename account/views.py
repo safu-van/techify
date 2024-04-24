@@ -177,7 +177,9 @@ def wallet(request):
         if Wallet.objects.filter(user=user).exists():
             wallet = Wallet.objects.get(user=user)
             amount = wallet.amount
-            transactions = WalletTransaction.objects.filter(wallet=wallet).order_by("-id")
+            transactions = WalletTransaction.objects.filter(wallet=wallet).order_by(
+                "-id"
+            )
         else:
             amount = 0.0
             transactions = False
