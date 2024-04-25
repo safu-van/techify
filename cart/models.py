@@ -27,7 +27,7 @@ class Orders(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ordered_date = models.DateField()
     delivered_date = models.DateField(null=True)
-    payment_method = models.CharField(max_length=100, null=True)
+    payment_method = models.CharField(max_length=100)
     status = models.CharField(max_length=100, default="Pending")
     address = models.ForeignKey(DeliveyAddress, on_delete=models.CASCADE)
     sub_total = models.DecimalField(max_digits=30, decimal_places=1)

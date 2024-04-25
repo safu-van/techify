@@ -93,7 +93,7 @@
                         {% endif %}
                      </div>
                      <h3 class="summary-title">Your Order</h3>
-                     <form  method="POST" name="place_order" action="{% url 'cart:checkout' %}" onsubmit="return validateForm()">
+                     <form  method="POST" name="place_order" action="{% url 'cart:place_order' %}" onsubmit="return validateForm()">
                         {% csrf_token %}
                         <table class="table table-summary">
                            <thead>
@@ -334,11 +334,17 @@
        timer: 2500,
        showConfirmButton: false
    });
-   {% endif %}
-   {% if message == "coupon_already_used" %}
+   {% elif message == "coupon_already_used" %}
    Swal.fire({
        icon: 'warning',
        title: 'Coupon already used.',
+       timer: 2500,
+       showConfirmButton: false
+   });
+   {% elif message == "Insufficient_balance" %}
+   Swal.fire({
+       icon: 'warning',
+       title: 'Insufficient balance in Wallet.',
        timer: 2500,
        showConfirmButton: false
    });

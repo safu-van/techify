@@ -13,7 +13,12 @@ from product.models import Product
 from authentication.models import User
 from account.models import UserAddress
 from coupon.models import Coupon, CouponUsage
-from utils.utils import update_wallet, update_product_stock
+from cart.utils import (
+    update_wallet,
+    update_product_stock,
+    check_product_stock,
+    withdraw_from_wallet,
+)
 
 from datetime import date
 from decimal import Decimal
@@ -141,28 +146,11 @@ def remove_coupon(request):
     return redirect("cart:checkout")
 
 
-# To Check product stock
-def check_product_stock(request):
-    user_id = request.user.id
-    products = CartItems.objects.filter(user=user_id)
-
-    for product in products:
-        qty = product.quantity
-        stock = product.product.stock
-        product_name = product.product.name
-        if stock < qty:
-            request.session["message"] = (
-                f"Sorry, We only have { stock } quantity of { product_name }."
-            )
-            return False
-    return True
-
-
 # Checkout
 @login_required(login_url="authentication:signin")
 def checkout(request):
-    user_id = request.user.id
     try:
+        user_id = request.user.id
         user = User.objects.get(id=user_id)
     except ObjectDoesNotExist:
         return redirect("authentication:signin")
@@ -171,105 +159,26 @@ def checkout(request):
         return redirect("cart:cart")
 
     if request.method == "POST":
-        if "coupon_code" in request.POST:
-            coupon_code = request.POST.get("coupon_code")
-            try:
-                coupon = Coupon.objects.get(code=coupon_code)
-                if coupon.limit == 0 or coupon.expiry_date < timezone.now().date():
-                    request.session["message"] = "Invalid_coupon"
-                else:
-                    if CouponUsage.objects.filter(coupon=coupon, user=user).exists():
-                        request.session["message"] = "coupon_already_used"
-                    else:
-                        discount_percentage = coupon.discount_percentage
-                        request.session["discount_percentage"] = discount_percentage
-                        request.session["coupon_code"] = coupon_code
-                        request.session["coupon_id"] = coupon.id
-                return redirect("cart:checkout")
-            except ObjectDoesNotExist:
+        coupon_code = request.POST.get("coupon_code")
+        try:
+            coupon = Coupon.objects.get(code=coupon_code)
+            if coupon.limit == 0 or coupon.expiry_date < timezone.now().date():
                 request.session["message"] = "Invalid_coupon"
-                request.session.pop("discount_percentage", None)
-                request.session.pop("coupon_code", None)
-                request.session.pop("coupon_id", None)
-
-        elif "selectedAddressId" in request.POST:
-            if not check_product_stock(request):
-                return redirect("cart:cart")
-
-            address_id = request.POST.get("selectedAddressId")
-            payment_method = request.POST.get("payment_method")
-            ordered_date = date.today()
-            ordered_products = CartItems.objects.filter(user=user_id)
-
-            try:
-                delivery_address = UserAddress.objects.get(id=address_id)
-                address = DeliveyAddress.objects.create(
-                    name=delivery_address.name,
-                    phone=delivery_address.phone,
-                    country=delivery_address.country,
-                    state=delivery_address.state,
-                    city=delivery_address.city,
-                    landmark=delivery_address.landmark,
-                )
-                address.save()
-            except ObjectDoesNotExist:
-                return redirect("cart:checkout")
-
-            if "discount_percentage" in request.session:
-                discount_percentage = request.session.get("discount_percentage")
             else:
-                discount_percentage = 0
-
-            if "coupon_id" in request.session:
-                coupon_id = request.session.get("coupon_id")
-                try:
-                    coupon = Coupon.objects.get(id=coupon_id)
-                    if coupon.limit == 0:
-                        request.session["message"] = "Invalid_coupon"
-                        request.session.pop("discount_percentage", None)
-                        request.session.pop("coupon_code", None)
-                        request.session.pop("coupon_id", None)
-                        return redirect("cart:checkout")
-                    else:
-                        coupon.limit -= 1
-                        coupon.save()
-                        coupon_usage = CouponUsage.objects.create(
-                            coupon=coupon, user=user
-                        )
-                        coupon_usage.save()
-                except ObjectDoesNotExist:
-                    request.session["message"] = "Invalid_coupon"
-                    request.session.pop("discount_percentage", None)
-                    request.session.pop("coupon_code", None)
-                    request.session.pop("coupon_id", None)
-
-            for item in ordered_products:
-                product = Product.objects.get(id=item.product.id)
-                product.stock = product.stock - item.quantity
-                product.save()
-
-                ordered_items = Orders.objects.create(
-                    user=user,
-                    ordered_date=ordered_date,
-                    payment_method=payment_method,
-                    address=address,
-                    sub_total=item.total,
-                    discount_amt=item.total
-                    * (Decimal(discount_percentage) / Decimal("100")),
-                    product=product,
-                    product_price=product.price,
-                    product_qty=item.quantity,
-                )
-                ordered_items.save()
-
+                if CouponUsage.objects.filter(coupon=coupon, user=user).exists():
+                    request.session["message"] = "coupon_already_used"
+                else:
+                    request.session["discount_percentage"] = coupon.discount_percentage
+                    request.session["coupon_code"] = coupon_code
+                    request.session["coupon_id"] = coupon.id
+            return redirect("cart:checkout")
+        except ObjectDoesNotExist:
+            request.session["message"] = "Invalid_coupon"
             request.session.pop("discount_percentage", None)
             request.session.pop("coupon_code", None)
             request.session.pop("coupon_id", None)
-            CartItems.objects.filter(user=user_id).delete()
 
-            return redirect("cart:order_success")
-
-    # Message of Address (Added/Edited) or coupon message
+    # Message of Address (Added/Edited) or coupon or wallet
     if "message" in request.session:
         message = request.session.pop("message")
     else:
@@ -287,6 +196,9 @@ def checkout(request):
     else:
         discount_amt = False
 
+    # To access in place_order()
+    request.session["total_amount"] = str(total)
+
     if "coupon_code" in request.session:
         coupon_code = request.session.get("coupon_code")
     else:
@@ -302,6 +214,99 @@ def checkout(request):
         "coupon_code": coupon_code,
     }
     return render(request, "user/checkout.html", context)
+
+
+# Place Order
+@login_required(login_url="authentication:signin")
+def place_order(request):
+    if request.method == "POST":
+        try:
+            user_id = request.user.id
+            user = User.objects.get(id=user_id)
+        except ObjectDoesNotExist:
+            return redirect("authentication:signin")
+
+        if not check_product_stock(request):
+            return redirect("cart:cart")
+
+        address_id = request.POST.get("selectedAddressId")
+        payment_method = request.POST.get("payment_method")
+        ordered_date = date.today()
+        ordered_products = CartItems.objects.filter(user=user)
+
+        if payment_method == "Wallet Payment":
+            total_amount = request.session.pop("total_amount")
+            if not withdraw_from_wallet(user, Decimal(total_amount)):
+                request.session["message"] = "Insufficient_balance"
+                return redirect("cart:checkout")
+
+        try:
+            delivery_address = UserAddress.objects.get(id=address_id)
+            address = DeliveyAddress.objects.create(
+                name=delivery_address.name,
+                phone=delivery_address.phone,
+                country=delivery_address.country,
+                state=delivery_address.state,
+                city=delivery_address.city,
+                landmark=delivery_address.landmark,
+            )
+            address.save()
+        except ObjectDoesNotExist:
+            return redirect("cart:checkout")
+
+        if "discount_percentage" in request.session:
+            discount_percentage = request.session.get("discount_percentage")
+        else:
+            discount_percentage = 0
+
+        if "coupon_id" in request.session:
+            coupon_id = request.session.get("coupon_id")
+            try:
+                coupon = Coupon.objects.get(id=coupon_id)
+                if coupon.limit == 0 or coupon.expiry_date < timezone.now().date():
+                    request.session["message"] = "Invalid_coupon"
+                    request.session.pop("discount_percentage", None)
+                    request.session.pop("coupon_code", None)
+                    request.session.pop("coupon_id", None)
+                    return redirect("cart:checkout")
+                else:
+                    coupon.limit -= 1
+                    coupon.save()
+                    coupon_usage = CouponUsage.objects.create(coupon=coupon, user=user)
+                    coupon_usage.save()
+            except ObjectDoesNotExist:
+                request.session["message"] = "Invalid_coupon"
+                request.session.pop("discount_percentage", None)
+                request.session.pop("coupon_code", None)
+                request.session.pop("coupon_id", None)
+                return redirect("cart:checkout")
+
+        for item in ordered_products:
+            product = Product.objects.get(id=item.product.id)
+            product.stock = product.stock - item.quantity
+            product.save()
+
+            ordered_items = Orders.objects.create(
+                user=user,
+                ordered_date=ordered_date,
+                payment_method=payment_method,
+                address=address,
+                sub_total=item.total,
+                discount_amt=item.total
+                * (Decimal(discount_percentage) / Decimal("100")),
+                product=product,
+                product_price=product.price,
+                product_qty=item.quantity,
+            )
+            ordered_items.save()
+
+        request.session.pop("discount_percentage", None)
+        request.session.pop("coupon_code", None)
+        request.session.pop("coupon_id", None)
+        CartItems.objects.filter(user=user_id).delete()
+
+        return redirect("cart:order_success")
+    return redirect("cart:checkout")
 
 
 # Order Success Page

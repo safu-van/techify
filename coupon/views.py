@@ -91,7 +91,7 @@ def edit_coupon(request, coupon_id):
             update_coupon.code = coupon_code
             update_coupon.discount_percentage = discount_percentage
             update_coupon.limit = user_limit
-            expiry_date = expiry_date
+            update_coupon.expiry_date = expiry_date
             update_coupon.save()
 
             return redirect("admin_techify:coupon_management")

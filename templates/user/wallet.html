@@ -118,7 +118,7 @@
                               <td>{{ transaction.date_time|time:"g:i A" }}</td>
                               <td>{{ transaction.description }}</td>
                               {% if transaction.is_credit %}
-                              <td style="color: #02cd02;">${{ transaction.amount }}</td>
+                              <td style="color: #02cd02; padding-left: 15px;">${{ transaction.amount }}</td>
                               {% else %}
                               <td style="color: #ff0000;">-${{ transaction.amount }}</td>
                               {% endif %}
