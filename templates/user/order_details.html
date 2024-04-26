@@ -2,223 +2,223 @@
 {% load static %}
 {% block title %}Order Details{% endblock %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'user/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/bootstrap.min.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/plugins/owl-carousel/owl.carousel.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/plugins/magnific-popup/magnific-popup.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/plugins/jquery.countdown.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/style.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/skins/skin-demo-13.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/demos/demo-13.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/plugins/jquery.countdown.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/skins/skin-demo-13.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/demos/demo-13.css' %}">
 {% endblock %}
 {% block main %}
-<main class="main" style="margin-top: 50px;">
-   <div class="page-content">
-      <div class="dashboard">
-         <div class="container">
-            <div class="row">
-               <aside class="col-md-4 col-lg-3">
-                  <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
-                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account:account_settings'  %}">Account Settings</a>
-                     </li>
-                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'account:orders'  %}">Orders</a>
-                     </li>
-                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account:address'  %}">Adresses</a>
-                     </li>
-                     <li class="nav-item">
-                        <a class="nav-link " href="{% url 'account:wallet'  %}">Wallet</a>
-                     </li>
-                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account:change_password'  %}">Change Password</a>
-                     </li>
-                  </ul>
-               </aside>
-               <div class="col-md-8 col-lg-9">
-                  <div class="tab-content">
-                     <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
-                        <h3>Order Details</h3>
-                        <div style="border: 1px solid grey; border-radius: 10px; padding: 1.5rem; height: 33rem;">
-                           <div style="width: 100%; height: 13rem">
-                              <div style="width: 25%; float: left;">
-                                 <div>
-                                    <div>
-                                       <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Ordered Date:</span>
+    <main class="main" style="margin-top: 50px;">
+        <div class="page-content">
+            <div class="dashboard">
+                <div class="container">
+                    <div class="row">
+                        <aside class="col-md-4 col-lg-3">
+                            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'account:account_settings'  %}">Account Settings</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{% url 'account:orders'  %}">Orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'account:address'  %}">Adresses</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="{% url 'account:wallet'  %}">Wallet</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'account:change_password'  %}">Change Password</a>
+                                </li>
+                            </ul>
+                        </aside>
+                        <div class="col-md-8 col-lg-9">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+                                    <h3>Order Details</h3>
+                                    <div style="border: 1px solid grey; border-radius: 10px; padding: 1.5rem; height: 33rem;">
+                                        <div style="width: 100%; height: 13rem">
+                                            <div style="width: 25%; float: left;">
+                                                <div>
+                                                    <div>
+                                                        <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Ordered Date:</span>
+                                                    </div>
+                                                    <div>
+                                                        <span style="width: 100%; float: left; font-size: small;">{{ order.ordered_date }}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div>
+                                                        <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Delivered Date:</span>
+                                                    </div>
+                                                    <div>
+                                                        {% if order.delivered_date %}
+                                                            <span style="width: 100%; float: left; font-size: small;">{{ order.delivered_date }}</span>
+                                                        {% else %}
+                                                            <span style="width: 100%; float: left; font-size: small;">Not Delivered</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="width: 25%; float: left;">
+                                                <div>
+                                                    <div>
+                                                        <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Payment Method:</span>
+                                                    </div>
+                                                    <div>
+                                                        <span>{{ order.payment_method }}</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div>
+                                                        <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Order Status:</span>
+                                                    </div>
+                                                    <div>
+                                                        <span>{{ order.status }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="width: 25%; float: left;">
+                                                <div>
+                                                    <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Shipped To:</span>
+                                                </div>
+                                                <div style="height: 40px;">
+                                                    <span>{{ order.address.name }}</span>
+                                                </div>
+                                                <div style="height: 20px;">
+                                                    <span>{{ order.address.phone }}</span>
+                                                </div>
+                                                <div style="height: 20px;">
+                                                    <span>{{ order.address.city }}</span>
+                                                </div>
+                                                {% if order.address.landmark%}
+                                                    <div style="height: 20px;">
+                                                        <span>{{ order.address.landmark }}</span>
+                                                    </div>
+                                                {% endif %}
+                                                <div style="float:left; margin-right: 1rem;">
+                                                    <span>{{ order.address.state }},</span>
+                                                </div>
+                                                <div style="float: left;">
+                                                    <span>{{ order.address.country }}</span>
+                                                </div>
+                                            </div>
+                                            <div style="width: 25%; float: left;">
+                                                <div>
+                                                    <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Order Summary:</span>
+                                                </div>
+                                                <div style="height: 20px; float:left; width: 50%;">
+                                                    <span style="font-weight: 400;">Subtotal:</span>
+                                                </div>
+                                                <div style="height: 20px; float: right;">
+                                                    <span>${{ order.sub_total }}</span>
+                                                </div>
+                                                <div style="height: 20px; float:left; width: 50%;">
+                                                    <span style="font-weight: 400;">Discount:</span>
+                                                </div>
+                                                <div style="height: 20px; float: right;">
+                                                    {% if order.discount_amt %}
+                                                        <span>-${{ order.discount_amt }}</span>
+                                                    {% else %}
+                                                        <span>-$0.00</span>
+                                                    {% endif %}
+                                                </div>
+                                                <div style="height: 20px; float:left; width: 50%;">
+                                                    <spans style="font-weight: 400;">
+                                                        Total:</span>
+                                                </div>
+                                                <div style="height: 20px; float: right;">
+                                                    <span>${{ order.total }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr style="border: 0; height: 1px; background-color: grey;">
+                                        <div>
+                                            <div style="width: fit-content; float: left; margin-right: 2rem; ">
+                                                <img src="{{ order.product.thumbnail.url }}" height="100" width="100">
+                                            </div>
+                                            <div style="width: fit-content; float:left;">
+                                                <span style="width: 100%; float: left; height: 23px; color: #3399ff; font-weight: 500; ">{{ order.product.name }}</span>
+                                                <span style="width: 100%; float: left; height: 20px; font-size: 12px">{{ order.product.category.name }}</span>
+                                                <span style="width: 100%; float: left; font-size: 12px">${{ order.product_price }}</span>
+                                            </div>
+                                            {% if order.status != "Delivered" and order.status != "Cancelled" and order.status != "Returned" %}
+                                                <div style="float: right; width: fit-content; margin-top: 6rem;">
+                                                    <button class="btn btn-danger text-white" onclick="confirmCancel({{ order.id }})" style="border-radius: 30px;">
+                                                        Cancel Order
+                                                    </button>
+                                                </div>
+                                            {% elif order.status == "Delivered" and return_order == True %}
+                                                <div style="float: right; width: fit-content; margin-top: 6rem;">
+                                                    <button class="btn btn-warning" onclick="confirmReturn({{ order.id }})" style="border-radius: 30px; color: #666666;">
+                                                        Return Order
+                                                    </button>
+                                                </div>
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                    <div>
-                                       <span style="width: 100%; float: left; font-size: small;">{{ order.ordered_date }}</span>
-                                    </div>
-                                 </div>
-                                 <div>
-                                    <div>
-                                       <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Delivered Date:</span>
-                                    </div>
-                                    <div>
-                                       {% if order.delivered_date %}
-                                       <span style="width: 100%; float: left; font-size: small;">{{ order.delivered_date }}</span>
-                                       {% else %}
-                                       <span style="width: 100%; float: left; font-size: small;">Not Delivered</span>
-                                       {% endif %}
-                                    </div>
-                                 </div>
-                              </div>
-                              <div style="width: 25%; float: left;">
-                                 <div>
-                                    <div>
-                                       <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Payment Method:</span>
-                                    </div>
-                                    <div>
-                                       <span>{{ order.payment_method }}</span>
-                                    </div>
-                                 </div>
-                                 <div>
-                                    <div>
-                                       <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Order Status:</span>
-                                    </div>
-                                    <div>
-                                       <span>{{ order.status }}</span>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div style="width: 25%; float: left;">
-                                 <div>
-                                    <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Shipped To:</span>
-                                 </div>
-                                 <div style="height: 40px;">
-                                    <span>{{ order.address.name }}</span>
-                                 </div>
-                                 <div style="height: 20px;">
-                                    <span>{{ order.address.phone }}</span>
-                                 </div>
-                                 <div style="height: 20px;">
-                                    <span>{{ order.address.city }}</span>
-                                 </div>
-                                 {% if order.address.landmark%}
-                                 <div style="height: 20px;">
-                                    <span>{{ order.address.landmark }}</span>
-                                 </div>
-                                 {% endif %}
-                                 <div style="float:left; margin-right: 1rem;">
-                                    <span>{{ order.address.state }},</span>
-                                 </div>
-                                 <div style="float: left;">
-                                    <span>{{ order.address.country }}</span>
-                                 </div>
-                              </div>
-                              <div style="width: 25%; float: left;">
-                                 <div>
-                                    <span style="color: #3399ff; font-weight: 500; width: 100%; float: left; height: 2rem;">Order Summary:</span>
-                                 </div>
-                                 <div style="height: 20px; float:left; width: 50%;">
-                                    <span style="font-weight: 400;">Subtotal:</span>
-                                 </div>
-                                 <div style="height: 20px; float: right;">
-                                    <span>${{ order.sub_total }}</span>
-                                 </div>
-                                 <div style="height: 20px; float:left; width: 50%;">
-                                    <span style="font-weight: 400;">Discount:</span>
-                                 </div>
-                                 <div style="height: 20px; float: right;">
-                                    {% if order.discount_amt %}
-                                    <span>-${{ order.discount_amt }}</span>
-                                    {% else %}
-                                    <span>-$0.00</span>
-                                    {% endif %}
-                                 </div>
-                                 <div style="height: 20px; float:left; width: 50%;">
-                                    <spans style="font-weight: 400;">
-                                    Total:</span>
-                                 </div>
-                                 <div style="height: 20px; float: right;">
-                                    <span>${{ order.total }}</span>
-                                 </div>
-                              </div>
-                           </div>
-                           <hr style="border: 0; height: 1px; background-color: grey;">
-                           <div>
-                              <div style="width: fit-content; float: left; margin-right: 2rem; ">
-                                 <img src="{{ order.product.thumbnail.url }}" height="100" width="100">
-                              </div>
-                              <div style="width: fit-content; float:left;">
-                                 <span style="width: 100%; float: left; height: 23px; color: #3399ff; font-weight: 500; ">{{ order.product.name }}</span>
-                                 <span style="width: 100%; float: left; height: 20px; font-size: 12px">{{ order.product.category.name }}</span>
-                                 <span style="width: 100%; float: left; font-size: 12px">${{ order.product_price }}</span>
-                              </div>
-                              {% if order.status != "Delivered" and order.status != "Cancelled" and order.status != "Returned" %}
-                              <div style="float: right; width: fit-content; margin-top: 6rem;">
-                                 <button class="btn btn-danger text-white" onclick="confirmCancel({{ order.id }})" style="border-radius: 30px;">
-                                 Cancel Order
-                                 </button>
-                              </div>
-                              {% elif order.status == "Delivered" and return_order == True %}
-                              <div style="float: right; width: fit-content; margin-top: 6rem;">
-                                 <button class="btn btn-warning" onclick="confirmReturn({{ order.id }})" style="border-radius: 30px; color: #666666;">
-                                 Return Order
-                                 </button>
-                              </div>
-                              {% endif %}
-                           </div>
+                                </div>
+                            </div>
                         </div>
-                     </div>
-                  </div>
-               </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
-</main>
+        </div>
+    </main>
 {% endblock %}
 {% block js %}
-<script src="{% static 'user/assets/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'user/assets/js/jquery.hoverIntent.min.js' %}"></script>
-<script src="{% static 'user/assets/js/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'user/assets/js/superfish.min.js' %}"></script>
-<script src="{% static 'user/assets/js/owl.carousel.min.js' %}"></script>
-<script src="{% static 'user/assets/js/main.js' %}"></script>      
+    <script src="{% static 'user/assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/superfish.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/main.js' %}"></script>
 {% endblock %}
 {% block extra_js %}
-<script>
-   function confirmCancel(orderId) {
-       Swal.fire({
-           title: 'Are you sure?',
-           text: "You want to Cancel the Order",
-           icon: 'warning',
-           showCancelButton: true,
-           confirmButtonColor: '#3085d6',
-           cancelButtonColor: '#d33',
-           cancelButtonText: 'No',
-           confirmButtonText: 'Yes',
-           reverseButtons: true
-       }).then((result) => {
-           if (result.isConfirmed) {
-            var cancelOrder = "{% url 'cart:order_status' 123 'Cancelled' %}";
-            cancelOrder = cancelOrder.replace('123', orderId);
-   
-            window.location.href = cancelOrder;
-           }
-       });
-   }
-   function confirmReturn(orderId) {
-       Swal.fire({
-           title: 'Are you sure?',
-           text: "You want to Return the Order",
-           icon: 'warning',
-           showCancelButton: true,
-           confirmButtonColor: '#3085d6',
-           cancelButtonColor: '#d33',
-           cancelButtonText: 'No',
-           confirmButtonText: 'Yes',
-           reverseButtons: true
-       }).then((result) => {
-           if (result.isConfirmed) {
-            var returnOrder = "{% url 'cart:order_status' 123 'Returned' %}";
-            returnOrder = returnOrder.replace('123', orderId);
-   
-            window.location.href = returnOrder;
-           }
-       });
-   }
-</script>
+    <script>
+        function confirmCancel(orderId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Cancel the Order",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var cancelOrder = "{% url 'cart:order_status' 123 'Cancelled' %}";
+                    cancelOrder = cancelOrder.replace('123', orderId);
+
+                    window.location.href = cancelOrder;
+                }
+            });
+        }
+        function confirmReturn(orderId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Return the Order",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var returnOrder = "{% url 'cart:order_status' 123 'Returned' %}";
+                    returnOrder = returnOrder.replace('123', orderId);
+
+                    window.location.href = returnOrder;
+                }
+            });
+        }
+    </script>
 {% endblock %}

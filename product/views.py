@@ -1,9 +1,8 @@
-from django.shortcuts import render, redirect
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Count, Q
+from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.db.models import Count
-from django.db.models import Q
 
 from product.models import Product, ProductDetails
 from category.models import Category

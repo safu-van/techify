@@ -1,14 +1,15 @@
-from io import BytesIO
-import pandas as pd
 import calendar
+from datetime import datetime, timedelta
+from io import BytesIO
+
+import pandas as pd
+from xhtml2pdf import pisa
 
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-from datetime import datetime, timedelta
 from django.http import HttpResponse
-from xhtml2pdf import pisa
 
 from category.models import Category
 from brand.models import Brand

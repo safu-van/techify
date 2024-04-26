@@ -2,240 +2,240 @@
 {% load static %}
 {% block title %}Techify{% endblock %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'user/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/bootstrap.min.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/plugins/owl-carousel/owl.carousel.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/plugins/magnific-popup/magnific-popup.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/plugins/jquery.countdown.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/style.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/skins/skin-demo-13.css' %}">
-<link rel="stylesheet" href="{% static 'user/assets/css/demos/demo-13.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/plugins/jquery.countdown.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/skins/skin-demo-13.css' %}">
+    <link rel="stylesheet" href="{% static 'user/assets/css/demos/demo-13.css' %}">
 {% endblock %}
 {% block main %}
-<main class="main">
-   <div class="intro-slider-container">
-      <div class="intro-slider owl-carousel owl-simple owl-nav-inside" data-toggle="owl" >
-         <div class="intro-slide" style="background-image: url({% static 'user/assets/images/demos/demo-13/slider/slide-1.png' %});">
-            <div class="container intro-content">
-               <div class="row">
-                  <div class="col-auto offset-lg-3 intro-col">
-                     <h3 class="intro-subtitle"></h3>
-                     <h1 class="intro-title">MacBook Air <br>Latest Model
-                        <span>
-                        <sup class="font-weight-light">from</sup>
-                        <span class="text-primary">$999<sup>,99</sup></span>
-                        </span>
-                     </h1>
-                     <a href="#" class="btn btn-outline-primary-2">
-                     <span>Shop Now</span>
-                     <i class="icon-long-arrow-right"></i>
-                     </a>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <span class="slider-loader"></span>
-   </div>
-   <div class="mb-4"></div>
-   <div class="container">
-      <h2 class="title text-center mb-2">Explore Categories</h2>
-      <div class="cat-blocks-container">
-         <div class="row">
-            {% for category in categories %}
-            <div class="col-6 col-sm-4 col-lg-2">
-               <a href="{% url 'product:category_product' category.id %}" class="cat-block">
-                  <figure>
-                     <span>
-                     <img src="{{ category.image.url }}" alt="Category image" style="width: 130px;">
-                     </span>
-                  </figure>
-                  <h3 class="cat-block-title" style="margin-top: 2rem;">{{ category.name }}</h3>
-               </a>
-            </div>
-            {% endfor %}
-         </div>
-      </div>
-   </div>
-   <div class="mb-3"></div>
-   <div class="bg-light pt-3 pb-5">
-      <div class="container">
-         <div class="tab-content tab-content-carousel">
-            <div class="heading heading-flex heading-border mb-3">
-               <div class="heading-left">
-                  <h2 class="title">Hot Deals Products</h2>
-               </div>
-            </div>
-            <div class="tab-pane p-0 fade show active" id="hot-all-tab" role="tabpanel" aria-labelledby="hot-all-link">
-               <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
-                  data-owl-options='{
-                  "nav": false, 
-                  "dots": true,
-                  "margin": 20,
-                  "loop": false,
-                  "responsive": {
-                  "0": {
-                  "items":2
-                  },
-                  "480": {
-                  "items":2
-                  },
-                  "768": {
-                  "items":3
-                  },
-                  "992": {
-                  "items":4
-                  },
-                  "1280": {
-                  "items":5,
-                  "nav": true
-                  }
-                  }
-                  }'>
-                  {% for product in products %}
-                  <div class="product">
-                     <figure class="product-media">
-                        {% if product.offer is not null %}
-                        <span class="product-label label-sale">{{ product.offer.offer_percentage }}% off</span>
-                        {% endif %}
-                        <a href="{% url 'product:product_view' product.id %}">
-                        <img src="{{ product.thumbnail.url }}" alt="Product image" class="product-image" >
-                        </a>
-                        <div class="product-action-vertical">
-                           <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+    <main class="main">
+        <div class="intro-slider-container">
+            <div class="intro-slider owl-carousel owl-simple owl-nav-inside" data-toggle="owl" >
+                <div class="intro-slide" style="background-image: url({% static 'user/assets/images/demos/demo-13/slider/slide-1.png' %});">
+                    <div class="container intro-content">
+                        <div class="row">
+                            <div class="col-auto offset-lg-3 intro-col">
+                                <h3 class="intro-subtitle"></h3>
+                                <h1 class="intro-title">MacBook Air <br>Latest Model
+                                    <span>
+                                        <sup class="font-weight-light">from</sup>
+                                        <span class="text-primary">$999<sup>,99</sup></span>
+                                    </span>
+                                </h1>
+                                <a href="#" class="btn btn-outline-primary-2">
+                                    <span>Shop Now</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </a>
+                            </div>
                         </div>
-                     </figure>
-                     <div class="product-body">
-                        <div class="product-cat">
-                           <a href="{% url 'product:category_product' product.category.id%}">{{ product.category.name }}</a>
-                        </div>
-                        <h3 class="product-title"><a href="{% url 'product:product_view' product.id %}">{{ product.name }}</a></h3>
-                        <div class="product-price">
-                           <span class="new-price">${{ product.price }}</span>
-                           <span class="old-price">Was <s>$290.00</s></span>
-                        </div>
-                        <div class="ratings-container">
-                           <div class="ratings">
-                              <div class="ratings-val" style="width: 100%;"></div>
-                           </div>
-                           <span class="ratings-text">( 2 )</span>
-                           {% if product.stock == 0 %}
-                           <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">Out of Stock</span>
-                           {% elif product.stock <= 5 %}
-                           <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</span>
-                           {% endif %}
-                        </div>
-                     </div>
-                  </div>
-                  {% endfor %}
-               </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
-   <div class="mb-3"></div>
-</main>
+            <span class="slider-loader"></span>
+        </div>
+        <div class="mb-4"></div>
+        <div class="container">
+            <h2 class="title text-center mb-2">Explore Categories</h2>
+            <div class="cat-blocks-container">
+                <div class="row">
+                    {% for category in categories %}
+                        <div class="col-6 col-sm-4 col-lg-2">
+                            <a href="{% url 'product:category_product' category.id %}" class="cat-block">
+                                <figure>
+                                    <span>
+                                        <img src="{{ category.image.url }}" alt="Category image" style="width: 130px;">
+                                    </span>
+                                </figure>
+                                <h3 class="cat-block-title" style="margin-top: 2rem;">{{ category.name }}</h3>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="mb-3"></div>
+        <div class="bg-light pt-3 pb-5">
+            <div class="container">
+                <div class="tab-content tab-content-carousel">
+                    <div class="heading heading-flex heading-border mb-3">
+                        <div class="heading-left">
+                            <h2 class="title">Hot Deals Products</h2>
+                        </div>
+                    </div>
+                    <div class="tab-pane p-0 fade show active" id="hot-all-tab" role="tabpanel" aria-labelledby="hot-all-link">
+                        <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
+                             data-owl-options='{
+                                               "nav": false,
+                                               "dots": true,
+                                               "margin": 20,
+                                               "loop": false,
+                                               "responsive": {
+                                               "0": {
+                                               "items":2
+                                               },
+                                               "480": {
+                                               "items":2
+                                               },
+                                               "768": {
+                                               "items":3
+                                               },
+                                               "992": {
+                                               "items":4
+                                               },
+                                               "1280": {
+                                               "items":5,
+                                               "nav": true
+                                               }
+                                               }
+                                               }'>
+                            {% for product in products %}
+                                <div class="product">
+                                    <figure class="product-media">
+                                        {% if product.offer is not null %}
+                                            <span class="product-label label-sale">{{ product.offer.offer_percentage }}% off</span>
+                                        {% endif %}
+                                        <a href="{% url 'product:product_view' product.id %}">
+                                            <img src="{{ product.thumbnail.url }}" alt="Product image" class="product-image" >
+                                        </a>
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                        </div>
+                                    </figure>
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="{% url 'product:category_product' product.category.id%}">{{ product.category.name }}</a>
+                                        </div>
+                                        <h3 class="product-title"><a href="{% url 'product:product_view' product.id %}">{{ product.name }}</a></h3>
+                                        <div class="product-price">
+                                            <span class="new-price">${{ product.price }}</span>
+                                            <span class="old-price">Was <s>$290.00</s></span>
+                                        </div>
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 100%;"></div>
+                                            </div>
+                                            <span class="ratings-text">( 2 )</span>
+                                            {% if product.stock == 0 %}
+                                                <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">Out of Stock</span>
+                                            {% elif product.stock <= 5 %}
+                                                <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3"></div>
+    </main>
 {% endblock %}
 {% block mobile_menu %}
-<div class="mobile-menu-overlay"></div>
-<div class="mobile-menu-container mobile-menu-light">
-   <div class="mobile-menu-wrapper">
-      <span class="mobile-menu-close"><i class="icon-close"></i></span>
-      <form action="#" method="GET" class="mobile-search">
-         <label for="mobile-search" class="sr-only">Search</label>
-         <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
-         <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-      </form>
-      <ul class="nav nav-pills-mobile nav-border-anim" role="tablist">
-         <li class="nav-item">
-            <a class="nav-link active" id="mobile-menu-link" data-toggle="tab" href="#mobile-menu-tab" role="tab" aria-controls="mobile-menu-tab" aria-selected="true">Menu</a>
-         </li>
-         <li class="nav-item">
-            <a class="nav-link" id="mobile-cats-link" data-toggle="tab" href="#mobile-cats-tab" role="tab" aria-controls="mobile-cats-tab" aria-selected="false">Categories</a>
-         </li>
-      </ul>
-      <div class="tab-content">
-         <div class="tab-pane fade show active" id="mobile-menu-tab" role="tabpanel" aria-labelledby="mobile-menu-link">
-            <nav class="mobile-nav">
-               <ul class="mobile-menu">
-                  <li >
-                     <a href="#">Home</a>
-                  </li>
-                  <li>
-                     <a href="#">Shop</a>
-                  </li>
-                  <li>
-                     <a href="#" class="sf-with-ul">Product</a>
-                  </li>
-                  <li>
-                     <a href="#">Pages</a>
-                  </li>
-                  <li>
-                     <a href="#">Blog</a>
-                  </li>
-               </ul>
-            </nav>
-         </div>
-         <div class="tab-pane fade" id="mobile-cats-tab" role="tabpanel" aria-labelledby="mobile-cats-link">
-            <nav class="mobile-cats-nav">
-               <ul class="mobile-cats-menu">
-                  <li><a class="mobile-cats-lead" href="#">Daily offers</a></li>
-                  <li><a class="mobile-cats-lead" href="#">Gift Ideas</a></li>
-               </ul>
-            </nav>
-         </div>
-      </div>
-      <div class="social-icons">
-         <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-         <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-         <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-         <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
-      </div>
-   </div>
-</div>
+    <div class="mobile-menu-overlay"></div>
+    <div class="mobile-menu-container mobile-menu-light">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+            <form action="#" method="GET" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+            <ul class="nav nav-pills-mobile nav-border-anim" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="mobile-menu-link" data-toggle="tab" href="#mobile-menu-tab" role="tab" aria-controls="mobile-menu-tab" aria-selected="true">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="mobile-cats-link" data-toggle="tab" href="#mobile-cats-tab" role="tab" aria-controls="mobile-cats-tab" aria-selected="false">Categories</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="mobile-menu-tab" role="tabpanel" aria-labelledby="mobile-menu-link">
+                    <nav class="mobile-nav">
+                        <ul class="mobile-menu">
+                            <li >
+                                <a href="#">Home</a>
+                            </li>
+                            <li>
+                                <a href="#">Shop</a>
+                            </li>
+                            <li>
+                                <a href="#" class="sf-with-ul">Product</a>
+                            </li>
+                            <li>
+                                <a href="#">Pages</a>
+                            </li>
+                            <li>
+                                <a href="#">Blog</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="tab-pane fade" id="mobile-cats-tab" role="tabpanel" aria-labelledby="mobile-cats-link">
+                    <nav class="mobile-cats-nav">
+                        <ul class="mobile-cats-menu">
+                            <li><a class="mobile-cats-lead" href="#">Daily offers</a></li>
+                            <li><a class="mobile-cats-lead" href="#">Gift Ideas</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block js %}
-<script src="{% static 'user/assets/js/jquery.min.js' %}"></script>
-<script src="{% static 'user/assets/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'user/assets/js/jquery.hoverIntent.min.js' %}"></script>
-<script src="{% static 'user/assets/js/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'user/assets/js/superfish.min.js' %}"></script>
-<script src="{% static 'user/assets/js/owl.carousel.min.js' %}"></script>
-<script src="{% static 'user/assets/js/bootstrap-input-spinner.js' %}"></script>
-<script src="{% static 'user/assets/js/jquery.magnific-popup.min.js' %}"></script>
-<script src="{% static 'user/assets/js/jquery.plugin.min.js' %}"></script>
-<script src="{% static 'user/assets/js/jquery.countdown.min.js' %}"></script>
-<script src="{% static 'user/assets/js/main.js' %}"></script>
-<script src="{% static 'user/assets/js/demos/demo-13.js' %}"></script>
+    <script src="{% static 'user/assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/superfish.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'user/assets/js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/jquery.plugin.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'user/assets/js/main.js' %}"></script>
+    <script src="{% static 'user/assets/js/demos/demo-13.js' %}"></script>
 {% endblock %}
 {% block extra_js %}
-<script>
-   document.addEventListener("DOMContentLoaded", function() {
-       var currentUrl = window.location.href;
-       var menuLinks = document.querySelectorAll(".main-nav .menu li a");
-   
-       menuLinks.forEach(function(link) {
-           if (link.href === currentUrl) {
-               link.parentElement.classList.add("active");
-           }
-       });
-   });
-   {% if message %}
-   const Toast = Swal.mixin({
-      toast: true,
-      position: "top",
-      showConfirmButton: false,
-      timer: 2500,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.onmouseenter = Swal.stopTimer;
-        toast.onmouseleave = Swal.resumeTimer;
-      }
-   });
-   Toast.fire({
-      icon: "success",
-      title: "Signed In Successfully"
-   });
-   {% endif %}
-</script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var currentUrl = window.location.href;
+            var menuLinks = document.querySelectorAll(".main-nav .menu li a");
+
+            menuLinks.forEach(function(link) {
+                if (link.href === currentUrl) {
+                    link.parentElement.classList.add("active");
+                }
+            });
+        });
+        {% if message %}
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "success",
+                title: "Signed In Successfully"
+            });
+        {% endif %}
+    </script>
 {% endblock %}

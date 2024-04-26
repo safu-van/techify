@@ -1,7 +1,7 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 
 from authentication.models import User
-from django.core.exceptions import ObjectDoesNotExist
 
 
 # Fetch the authenticated user name

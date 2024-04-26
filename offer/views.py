@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
+
+from datetime import datetime
 
 from offer.models import Offer
 

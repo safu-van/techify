@@ -2,283 +2,283 @@
 {% load static %}
 {% block title %}Edit Product{% endblock %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'admin/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
-<link rel="stylesheet" href="{% static 'admin/assets/vendors/css/vendor.bundle.base.css' %}">
-<link rel="stylesheet" href="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.css' %}">
-<link rel="stylesheet" href="{% static 'admin/assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
-<link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
-<link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
-<link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/assets/vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
 {% endblock %}
 {% block content %}
-<div class="main-panel">
-   <div class="content-wrapper">
-      <div class="page-header">
-         <h3 class="page-title">Edit Product</h3>
-      </div>
-      <div class="col-md-12 grid-margin stretch-card">
-         <div class="card">
-            <div class="card-body">
-               <form class="forms-sample" method="POST" enctype="multipart/form-data" action="{% url 'product:edit_product' product.id %}"  onsubmit="return validateForm()" >
-                  {% csrf_token %}
-                  <div class="form-group">
-                     <label for="productName">Product Name</label>
-                     <input type="text" style="color: white;" class="form-control" id="productName" placeholder="Enter Product Name" value="{{ product.name }}" name="product_name" />
-                     <span id="productNameError" style="color: red; font-size: 12px;"></span>
-                  </div>
-                  <div style="display: flex;">
-                     <input type="hidden" id="selectedBrand" value="{{ product.brand.name }}" name="brand" />
-                     <div class="dropdown" style="margin-top: 20px;">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ product.brand.name }}</button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
-                           {% for brand in brands %}
-                           <a class="dropdown-item" onclick="selectBrand('{{ brand.name }}')" style="color: white;">{{ brand.name }}</a>
-                           {% endfor %}
-                        </div>
-                        <br>
-                        <span id="brandError" style="color: red; font-size: 12px;"></span>
-                     </div>
-                     <input type="hidden" id="selectedCategory" value="{{ product.category.name }}" name="category" />
-                     <div class="dropdown" style="margin-top: 20px; margin-left: 3rem;">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ product.category.name }}</button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
-                           {% for category in categories %}
-                           <a class="dropdown-item" onclick="selectCategory('{{ category.name }}')" style="color: white;">{{ category.name }}</a>
-                           {% endfor %}
-                        </div>
-                        <br>
-                        <span id="categoryError" style="color: red; font-size: 12px;"></span>
-                     </div>
-                  </div>
-                  <div class="row" style="padding: 12px;">
-                     <div class="form-group" style="margin-top: 1rem; width: 45%; ">
-                        <label for="price">Price</label>
-                        <input type="text" style="color: white;" class="form-control" id="price" placeholder="Enter Price" value="{{ product.price }}" name="price" />
-                        <span id="priceError" style="color: red; font-size: 12px;"></span>
-                     </div>
-                     <div class="form-group" style="margin-top: 1rem; width: 45%; margin-left:48px;">
-                        <label for="stock">Stock</label>
-                        <input type="text" style="color: white;" class="form-control" id="stock" placeholder="Enter Stock" value="{{ product.stock }}" name="stock" />
-                        <span id="stockError" style="color: red; font-size: 12px;"></span>
-                     </div>
-                  </div>
-                  <div class="form-group">
-                     <label for="description">Description</label>
-                     <textarea style="color: white;" class="form-control" id="description" placeholder="Enter Description" name="description" rows="5">{{ product_details.description }}</textarea>
-                     <span id="descriptionError" style="color: red; font-size: 12px;"></span>
-                  </div>
-                  <div class="form-group">
-                     <label for="additionalInformation">Additional Information</label>
-                     <textarea style="color: white;" class="form-control" id="additionalInformation" placeholder="Enter Additional Information" name="additional_information" rows="7">{{ product_details.additional_information }}</textarea>
-                     <span id="additionalInfoError" style="color: red; font-size: 12px;"></span>
-                  </div>
-                  <div class="row" style="padding: 12px;">
-                     <div class="form-group">
-                        <label>Thumbnail Image</label>
-                        <input type="file" name="thumbnail" class="file-upload-default" id="fileInput1" accept="image/*" onchange="updateFilePath(this, 'previewImage1')" />
-                        {% if product.thumbnail %}
-                        <img src="{{ product.thumbnail.url }}" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: inherit; margin-bottom: 15px;" id="previewImage1" />
-                        {% else %}
-                        <img src="#" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: none;  margin-bottom: 15px;" id="previewImage1" />
-                        {% endif %}
-                        <div class="input-group col-xs-12">
-                           <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Product Image" id="filePath1" />
-                           <span class="input-group-append">
-                           <button class="file-upload-browse btn btn-primary" type="button" onclick="document.getElementById('fileInput1').click()">Upload</button>
-                           </span>
-                        </div>
-                        <span id="ImageError1" style="color: red; font-size: 12px;"></span>
-                     </div>
-                     <div class="form-group" style="margin-left: 5rem;">
-                        <label></label>
-                        <input type="file" name="image2" class="file-upload-default" id="fileInput2" accept="image/*" onchange="updateFilePath(this, 'previewImage2')" />
-                        {% if product.image2 %}
-                        <img src="{{ product.image2.url }}" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: inherit;  margin-bottom: 15px;" id="previewImage2" />
-                        {% else %}
-                        <img src="#" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: none;  margin-bottom: 15px;" id="previewImage2" />
-                        {% endif %}
-                        <div class="input-group col-xs-12">
-                           <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Product Image" id="filePath2" />
-                           <span class="input-group-append">
-                           <button class="file-upload-browse btn btn-primary" type="button" onclick="document.getElementById('fileInput2').click()">Upload</button>
-                           </span>
-                        </div>
-                        <span id="ImageError2" style="color: red; font-size: 12px;"></span>
-                     </div>
-                     <div class="form-group" style="margin-left: 5rem;">
-                        <label></label>
-                        <input type="file" name="image3" class="file-upload-default" id="fileInput3" accept="image/*" onchange="updateFilePath(this, 'previewImage3')" />
-                        {% if product.image3 %}
-                        <img src="{{ product.image3.url }}" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: inherit;  margin-bottom: 15px;" id="previewImage3" />
-                        {% else %}
-                        <img src="#" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: none;  margin-bottom: 15px;" id="previewImage3" />
-                        {% endif %}
-                        <div class="input-group col-xs-12">
-                           <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Product Image" id="filePath3" />
-                           <span class="input-group-append">
-                           <button class="file-upload-browse btn btn-primary" type="button" onclick="document.getElementById('fileInput3').click()">Upload</button>
-                           </span>
-                        </div>
-                        <span id="ImageError3" style="color: red; font-size: 12px;"></span>
-                     </div>
-                  </div>
-                  <div style="display: flex; justify-content: end; margin-top: 2rem">
-                     <a href="{% url 'admin_techify:product_management' %}" class="btn btn-dark mr-2">Back</a>
-                     <button type="submit" class="btn btn-success">Update</button>
-                  </div>
-               </form>
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title">Edit Product</h3>
             </div>
-         </div>
-      </div>
-   </div>
-</div>
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <form class="forms-sample" method="POST" enctype="multipart/form-data" action="{% url 'product:edit_product' product.id %}"  onsubmit="return validateForm()" >
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" style="color: white;" class="form-control" id="productName" placeholder="Enter Product Name" value="{{ product.name }}" name="product_name" />
+                                <span id="productNameError" style="color: red; font-size: 12px;"></span>
+                            </div>
+                            <div style="display: flex;">
+                                <input type="hidden" id="selectedBrand" value="{{ product.brand.name }}" name="brand" />
+                                <div class="dropdown" style="margin-top: 20px;">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ product.brand.name }}</button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
+                                        {% for brand in brands %}
+                                            <a class="dropdown-item" onclick="selectBrand('{{ brand.name }}')" style="color: white;">{{ brand.name }}</a>
+                                        {% endfor %}
+                                    </div>
+                                    <br>
+                                    <span id="brandError" style="color: red; font-size: 12px;"></span>
+                                </div>
+                                <input type="hidden" id="selectedCategory" value="{{ product.category.name }}" name="category" />
+                                <div class="dropdown" style="margin-top: 20px; margin-left: 3rem;">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ product.category.name }}</button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
+                                        {% for category in categories %}
+                                            <a class="dropdown-item" onclick="selectCategory('{{ category.name }}')" style="color: white;">{{ category.name }}</a>
+                                        {% endfor %}
+                                    </div>
+                                    <br>
+                                    <span id="categoryError" style="color: red; font-size: 12px;"></span>
+                                </div>
+                            </div>
+                            <div class="row" style="padding: 12px;">
+                                <div class="form-group" style="margin-top: 1rem; width: 45%; ">
+                                    <label for="price">Price</label>
+                                    <input type="text" style="color: white;" class="form-control" id="price" placeholder="Enter Price" value="{{ product.price }}" name="price" />
+                                    <span id="priceError" style="color: red; font-size: 12px;"></span>
+                                </div>
+                                <div class="form-group" style="margin-top: 1rem; width: 45%; margin-left:48px;">
+                                    <label for="stock">Stock</label>
+                                    <input type="text" style="color: white;" class="form-control" id="stock" placeholder="Enter Stock" value="{{ product.stock }}" name="stock" />
+                                    <span id="stockError" style="color: red; font-size: 12px;"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea style="color: white;" class="form-control" id="description" placeholder="Enter Description" name="description" rows="5">{{ product_details.description }}</textarea>
+                                <span id="descriptionError" style="color: red; font-size: 12px;"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="additionalInformation">Additional Information</label>
+                                <textarea style="color: white;" class="form-control" id="additionalInformation" placeholder="Enter Additional Information" name="additional_information" rows="7">{{ product_details.additional_information }}</textarea>
+                                <span id="additionalInfoError" style="color: red; font-size: 12px;"></span>
+                            </div>
+                            <div class="row" style="padding: 12px;">
+                                <div class="form-group">
+                                    <label>Thumbnail Image</label>
+                                    <input type="file" name="thumbnail" class="file-upload-default" id="fileInput1" accept="image/*" onchange="updateFilePath(this, 'previewImage1')" />
+                                    {% if product.thumbnail %}
+                                        <img src="{{ product.thumbnail.url }}" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: inherit; margin-bottom: 15px;" id="previewImage1" />
+                                    {% else %}
+                                        <img src="#" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: none;  margin-bottom: 15px;" id="previewImage1" />
+                                    {% endif %}
+                                    <div class="input-group col-xs-12">
+                                        <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Product Image" id="filePath1" />
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button" onclick="document.getElementById('fileInput1').click()">Upload</button>
+                                        </span>
+                                    </div>
+                                    <span id="ImageError1" style="color: red; font-size: 12px;"></span>
+                                </div>
+                                <div class="form-group" style="margin-left: 5rem;">
+                                    <label></label>
+                                    <input type="file" name="image2" class="file-upload-default" id="fileInput2" accept="image/*" onchange="updateFilePath(this, 'previewImage2')" />
+                                    {% if product.image2 %}
+                                        <img src="{{ product.image2.url }}" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: inherit;  margin-bottom: 15px;" id="previewImage2" />
+                                    {% else %}
+                                        <img src="#" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: none;  margin-bottom: 15px;" id="previewImage2" />
+                                    {% endif %}
+                                    <div class="input-group col-xs-12">
+                                        <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Product Image" id="filePath2" />
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button" onclick="document.getElementById('fileInput2').click()">Upload</button>
+                                        </span>
+                                    </div>
+                                    <span id="ImageError2" style="color: red; font-size: 12px;"></span>
+                                </div>
+                                <div class="form-group" style="margin-left: 5rem;">
+                                    <label></label>
+                                    <input type="file" name="image3" class="file-upload-default" id="fileInput3" accept="image/*" onchange="updateFilePath(this, 'previewImage3')" />
+                                    {% if product.image3 %}
+                                        <img src="{{ product.image3.url }}" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: inherit;  margin-bottom: 15px;" id="previewImage3" />
+                                    {% else %}
+                                        <img src="#" alt="Category Image" style="max-width: 200px; margin-top: 10px; display: none;  margin-bottom: 15px;" id="previewImage3" />
+                                    {% endif %}
+                                    <div class="input-group col-xs-12">
+                                        <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Product Image" id="filePath3" />
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button" onclick="document.getElementById('fileInput3').click()">Upload</button>
+                                        </span>
+                                    </div>
+                                    <span id="ImageError3" style="color: red; font-size: 12px;"></span>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: end; margin-top: 2rem">
+                                <a href="{% url 'admin_techify:product_management' %}" class="btn btn-dark mr-2">Back</a>
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block js %}
-<script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>
-<script src="{% static 'admin/assets/js/off-canvas.js' %}"></script>
-<script src="{% static 'admin/assets/js/hoverable-collapse.js' %}"></script>
-<script src="{% static 'admin/assets/js/misc.js' %}"></script>
-<script src="{% static 'admin/assets/js/settings.js' %}"></script>
-<script src="{% static 'admin/assets/js/todolist.js' %}"></script>
-<script>
-   const message = "{{ message }}";
-   if (message.trim() !== "None") {
-      const Toast = Swal.mixin({
-         toast: true,
-         position: "top-end",
-         showConfirmButton: false,
-         timer: 3500,
-         timerProgressBar: true,
-         didOpen: (toast) => {
-         toast.onmouseenter = Swal.stopTimer;
-         toast.onmouseleave = Swal.resumeTimer;
-         }
-      });
-      Toast.fire({
-         icon: "warning",
-         title: "Please Upload an image file"
-      });
-   }
-   function validateForm() {
-      
-      var productName = document.getElementById("productName").value.trim();
-      var category = document.getElementById("selectedCategory").value.trim();
-      var brand = document.getElementById("selectedBrand").value.trim();
-      var price = document.getElementById("price").value.trim();
-      var stock = document.getElementById("stock").value.trim();
-      var description = document.getElementById("description").value.trim();
-      var additionalInformation = document.getElementById("additionalInformation").value.trim();
-      var thumbnail = document.getElementById("fileInput1").files[0];
-      var image2 = document.getElementById("fileInput2").files[0];
-      var image3 = document.getElementById("fileInput3").files[0];
-   
-      var productNameError = document.getElementById("productNameError");
-      var categoryError = document.getElementById("categoryError");
-      var brandError = document.getElementById("brandError");
-      var priceError = document.getElementById("priceError");
-      var stockError = document.getElementById("stockError");
-      var descriptionError = document.getElementById("descriptionError");
-      var additionalInfoError = document.getElementById("additionalInfoError");
-      var ImageError1 = document.getElementById("ImageError1");
-      var ImageError2 = document.getElementById("ImageError2");
-      var ImageError3 = document.getElementById("ImageError3");
-   
-      var isValid = true;
-   
-      productNameError.innerHTML = "";
-      categoryError.innerHTML = "";
-      brandError.innerHTML = "";
-      priceError.innerHTML = "";
-      stockError.innerHTML = "";
-      descriptionError.innerHTML = "";
-      additionalInfoError.innerHTML = "";
-      ImageError1.innerHTML = "";
-      ImageError2.innerHTML = "";
-      ImageError3.innerHTML = "";
-   
-      if (productName.length === 0) {
-          productNameError.innerHTML = "Enter a product name.";
-          isValid = false;
-      }
-      if (category.length === 0) {
-          categoryError.innerHTML = "Choose a category";
-          isValid = false;
-      }
-      if (brand.length === 0) {
-          brandError.innerHTML = "Choose a brand";
-          isValid = false;
-      }
-      if (price.length === 0 || isNaN(Number(price)) || Number(price) <= 0) {
-          priceError.innerHTML = "Enter a valid price greater than 0.";
-          isValid = false;
-      }
-      if (stock.length === 0 || isNaN(Number(stock)) || Number(stock) <= 0) {
-          stockError.innerHTML = "Enter stock greater than 0.";
-          isValid = false;
-      }
-      if (description.length === 0) {
-          descriptionError.innerHTML = "Enter description.";
-          isValid = false;
-      }
-      if (additionalInformation.length === 0) {
-          additionalInfoError.innerHTML = "Enter additional information.";
-          isValid = false;
-      }
-      if (thumbnail && !validateImage(thumbnail)) {
-          ImageError1.innerHTML = "Upload an image file.";
-          isValid = false;
-      }
-      if (image2 && !validateImage(image2)) {
-          ImageError2.innerHTML = "Upload an image file.";
-          isValid = false;
-      }
-      if (image3 && !validatImage(image3)) {
-          ImageError3.innerHTML = "Upload an image file.";
-          isValid = false;
-      }
-   
-      return isValid;
-   }
-   function validateImage(file) {
-      if (!file) {
-         return false;
-      }
-      const fileType = file.type.toLowerCase();
-      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-   
-      return validImageTypes.includes(fileType);
-   }
-   function selectCategory(option) {
-      document.getElementById("dropdownMenuOutlineButton2").innerHTML = option;
-      document.getElementById("selectedCategory").value = option;
-   }
-   
-   function selectBrand(option) {
-      document.getElementById("dropdownMenuOutlineButton1").innerHTML = option;
-      document.getElementById("selectedBrand").value = option;
-   }
-   
-   function updateFilePath(input) {
-       if (input.files && input.files.length > 0) {
-           var fileName = input.files[0].name;
-           document.getElementById('filePath').value = fileName;
-       }
-   }
-   function updateFilePath(input, previewImageId) {
-       var file = input.files[0];
-       var previewImage = document.getElementById(previewImageId);
-       
-       if (file && previewImage) {
-           var reader = new FileReader();
-           reader.onload = function(e) {
-               previewImage.src = e.target.result;
-               previewImage.style.display = 'inherit';
-           };
-           reader.readAsDataURL(file);
-       } else if (previewImage) {
-           previewImage.src = '#';
-           previewImage.style.display = 'none';
-       }
-   }
-</script>
+    <script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>
+    <script src="{% static 'admin/assets/js/off-canvas.js' %}"></script>
+    <script src="{% static 'admin/assets/js/hoverable-collapse.js' %}"></script>
+    <script src="{% static 'admin/assets/js/misc.js' %}"></script>
+    <script src="{% static 'admin/assets/js/settings.js' %}"></script>
+    <script src="{% static 'admin/assets/js/todolist.js' %}"></script>
+    <script>
+        const message = "{{ message }}";
+        if (message.trim() !== "None") {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "warning",
+                title: "Please Upload an image file"
+            });
+        }
+        function validateForm() {
+
+            var productName = document.getElementById("productName").value.trim();
+            var category = document.getElementById("selectedCategory").value.trim();
+            var brand = document.getElementById("selectedBrand").value.trim();
+            var price = document.getElementById("price").value.trim();
+            var stock = document.getElementById("stock").value.trim();
+            var description = document.getElementById("description").value.trim();
+            var additionalInformation = document.getElementById("additionalInformation").value.trim();
+            var thumbnail = document.getElementById("fileInput1").files[0];
+            var image2 = document.getElementById("fileInput2").files[0];
+            var image3 = document.getElementById("fileInput3").files[0];
+
+            var productNameError = document.getElementById("productNameError");
+            var categoryError = document.getElementById("categoryError");
+            var brandError = document.getElementById("brandError");
+            var priceError = document.getElementById("priceError");
+            var stockError = document.getElementById("stockError");
+            var descriptionError = document.getElementById("descriptionError");
+            var additionalInfoError = document.getElementById("additionalInfoError");
+            var ImageError1 = document.getElementById("ImageError1");
+            var ImageError2 = document.getElementById("ImageError2");
+            var ImageError3 = document.getElementById("ImageError3");
+
+            var isValid = true;
+
+            productNameError.innerHTML = "";
+            categoryError.innerHTML = "";
+            brandError.innerHTML = "";
+            priceError.innerHTML = "";
+            stockError.innerHTML = "";
+            descriptionError.innerHTML = "";
+            additionalInfoError.innerHTML = "";
+            ImageError1.innerHTML = "";
+            ImageError2.innerHTML = "";
+            ImageError3.innerHTML = "";
+
+            if (productName.length === 0) {
+                productNameError.innerHTML = "Enter a product name.";
+                isValid = false;
+            }
+            if (category.length === 0) {
+                categoryError.innerHTML = "Choose a category";
+                isValid = false;
+            }
+            if (brand.length === 0) {
+                brandError.innerHTML = "Choose a brand";
+                isValid = false;
+            }
+            if (price.length === 0 || isNaN(Number(price)) || Number(price) <= 0) {
+                priceError.innerHTML = "Enter a valid price greater than 0.";
+                isValid = false;
+            }
+            if (stock.length === 0 || isNaN(Number(stock)) || Number(stock) <= 0) {
+                stockError.innerHTML = "Enter stock greater than 0.";
+                isValid = false;
+            }
+            if (description.length === 0) {
+                descriptionError.innerHTML = "Enter description.";
+                isValid = false;
+            }
+            if (additionalInformation.length === 0) {
+                additionalInfoError.innerHTML = "Enter additional information.";
+                isValid = false;
+            }
+            if (thumbnail && !validateImage(thumbnail)) {
+                ImageError1.innerHTML = "Upload an image file.";
+                isValid = false;
+            }
+            if (image2 && !validateImage(image2)) {
+                ImageError2.innerHTML = "Upload an image file.";
+                isValid = false;
+            }
+            if (image3 && !validatImage(image3)) {
+                ImageError3.innerHTML = "Upload an image file.";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+        function validateImage(file) {
+            if (!file) {
+                return false;
+            }
+            const fileType = file.type.toLowerCase();
+            const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+            return validImageTypes.includes(fileType);
+        }
+        function selectCategory(option) {
+            document.getElementById("dropdownMenuOutlineButton2").innerHTML = option;
+            document.getElementById("selectedCategory").value = option;
+        }
+
+        function selectBrand(option) {
+            document.getElementById("dropdownMenuOutlineButton1").innerHTML = option;
+            document.getElementById("selectedBrand").value = option;
+        }
+
+        function updateFilePath(input) {
+            if (input.files && input.files.length > 0) {
+                var fileName = input.files[0].name;
+                document.getElementById('filePath').value = fileName;
+            }
+        }
+        function updateFilePath(input, previewImageId) {
+            var file = input.files[0];
+            var previewImage = document.getElementById(previewImageId);
+
+            if (file && previewImage) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'inherit';
+                };
+                reader.readAsDataURL(file);
+            } else if (previewImage) {
+                previewImage.src = '#';
+                previewImage.style.display = 'none';
+            }
+        }
+    </script>
 {% endblock %}

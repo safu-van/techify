@@ -1,13 +1,13 @@
 import random
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.conf import settings
-from django.core.mail import send_mail
-from django.core.exceptions import ObjectDoesNotExist
-from django.utils import timezone
 from datetime import timedelta
+
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
+from django.shortcuts import render, redirect
+from django.utils import timezone
 
 from authentication.models import User
 

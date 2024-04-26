@@ -1,27 +1,26 @@
 import json
+from datetime import date
+from decimal import Decimal
 
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum
 
-from cart.models import CartItems, Orders, DeliveyAddress
-from product.models import Product
 from authentication.models import User
 from account.models import UserAddress
-from coupon.models import Coupon, CouponUsage
+from cart.models import CartItems, Orders, DeliveyAddress
 from cart.utils import (
     update_wallet,
     update_product_stock,
     check_product_stock,
     withdraw_from_wallet,
 )
-
-from datetime import date
-from decimal import Decimal
+from coupon.models import Coupon, CouponUsage
+from product.models import Product
 
 
 # Cart
