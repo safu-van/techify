@@ -162,17 +162,17 @@ def checkout(request):
         try:
             coupon = Coupon.objects.get(code=coupon_code)
             if coupon.limit == 0 or coupon.expiry_date < timezone.now().date():
-                request.session["message"] = "Invalid_coupon"
+                request.session["message"] = "Invalid Coupon"
             else:
                 if CouponUsage.objects.filter(coupon=coupon, user=user).exists():
-                    request.session["message"] = "coupon_already_used"
+                    request.session["message"] = "Coupon Already Used"
                 else:
                     request.session["discount_percentage"] = coupon.discount_percentage
                     request.session["coupon_code"] = coupon_code
                     request.session["coupon_id"] = coupon.id
             return redirect("cart:checkout")
         except ObjectDoesNotExist:
-            request.session["message"] = "Invalid_coupon"
+            request.session["message"] = "Invalid Coupon"
             request.session.pop("discount_percentage", None)
             request.session.pop("coupon_code", None)
             request.session.pop("coupon_id", None)
@@ -232,11 +232,17 @@ def place_order(request):
         payment_method = request.POST.get("payment_method")
         ordered_date = date.today()
         ordered_products = CartItems.objects.filter(user=user)
+        total_amount = request.session.pop("total_amount")
 
-        if payment_method == "Wallet Payment":
-            total_amount = request.session.pop("total_amount")
+        if payment_method == "Cash on Delivery":
+            if Decimal(total_amount) > 1000:
+                request.session["message"] = (
+                    "Cash on Delivery is not available for orders exceeding $1000"
+                )
+                return redirect("cart:checkout")
+        elif payment_method == "Wallet Payment":
             if not withdraw_from_wallet(user, Decimal(total_amount)):
-                request.session["message"] = "Insufficient_balance"
+                request.session["message"] = "Insufficient Balance in Wallet"
                 return redirect("cart:checkout")
 
         try:
@@ -263,7 +269,7 @@ def place_order(request):
             try:
                 coupon = Coupon.objects.get(id=coupon_id)
                 if coupon.limit == 0 or coupon.expiry_date < timezone.now().date():
-                    request.session["message"] = "Invalid_coupon"
+                    request.session["message"] = "Invalid Coupon"
                     request.session.pop("discount_percentage", None)
                     request.session.pop("coupon_code", None)
                     request.session.pop("coupon_id", None)
@@ -274,7 +280,7 @@ def place_order(request):
                     coupon_usage = CouponUsage.objects.create(coupon=coupon, user=user)
                     coupon_usage.save()
             except ObjectDoesNotExist:
-                request.session["message"] = "Invalid_coupon"
+                request.session["message"] = "Invalid Coupon"
                 request.session.pop("discount_percentage", None)
                 request.session.pop("coupon_code", None)
                 request.session.pop("coupon_id", None)

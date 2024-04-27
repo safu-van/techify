@@ -327,24 +327,10 @@
 {% endblock %}
 {% block extra_js %}
     <script>
-        {% if message == "Invalid_coupon" %}
+        {% if message %}
             Swal.fire({
                 icon: 'warning',
-                title: 'Invalid Coupon.',
-                timer: 2500,
-                showConfirmButton: false
-            });
-        {% elif message == "coupon_already_used" %}
-            Swal.fire({
-                icon: 'warning',
-                title: 'Coupon already used.',
-                timer: 2500,
-                showConfirmButton: false
-            });
-        {% elif message == "Insufficient_balance" %}
-            Swal.fire({
-                icon: 'warning',
-                title: 'Insufficient balance in Wallet.',
+                title: '{{ message }}',
                 timer: 2500,
                 showConfirmButton: false
             });
