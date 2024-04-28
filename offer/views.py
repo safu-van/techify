@@ -6,6 +6,7 @@ from datetime import datetime
 
 from offer.models import Offer
 from product.models import Product
+from category.models import Category
 
 
 # Add Offer
@@ -122,6 +123,9 @@ def category_offer(request, category_id, offer_id):
             Product.objects.filter(category=category_id, offer__isnull=True).update(
                 offer=offer
             )
+            category = Category.objects.get(id=category_id)
+            category.offer = offer
+            category.save()
         except ObjectDoesNotExist:
             return redirect("admin_techify:category_management")
         return redirect("admin_techify:category_management")
@@ -139,4 +143,18 @@ def remove_product_offer(request, product_id):
         except ObjectDoesNotExist:
             return redirect("admin_techify:product_management")
         return redirect("admin_techify:product_management")
+    return redirect("home:home_page")
+
+
+# Remove Category Offer
+def remove_category_offer(request, category_id):
+    if request.user.is_superuser:
+        try:
+            Product.objects.filter(category=category_id).update(offer=None)
+            category = Category.objects.get(id=category_id)
+            category.offer = None
+            category.save()
+        except ObjectDoesNotExist:
+            return redirect("admin_techify:category_management")
+        return redirect("admin_techify:category_management")
     return redirect("home:home_page")

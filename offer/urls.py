@@ -23,4 +23,9 @@ urlpatterns = [
         views.remove_product_offer,
         name="remove_product_offer",
     ),
+    path(
+        "remove-category-offer/<int:category_id>/",
+        views.remove_category_offer,
+        name="remove_category_offer",
+    ),
 ]

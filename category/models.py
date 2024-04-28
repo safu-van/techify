@@ -4,11 +4,14 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
+from offer.models import Offer
+
 
 # Category Model
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     image = models.ImageField(upload_to="images/category")
+    offer = models.ForeignKey(Offer, on_delete=models.SET_NULL, null=True)
     is_available = models.BooleanField(default=True)
 
 

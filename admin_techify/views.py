@@ -54,7 +54,12 @@ def category_management(request):
         categories = Category.objects.annotate(
             products_count=Count("product")
         ).order_by("-id")
-        return render(request, "custom_admin/category.html", {"categories": categories})
+        offers = Offer.objects.filter(
+            active_date__lte=timezone.now().date(),
+            expiry_date__gte=timezone.now().date(),
+        )
+        context = {"categories": categories, "offers": offers}
+        return render(request, "custom_admin/category.html", context)
     return redirect("home:home_page")
 
 

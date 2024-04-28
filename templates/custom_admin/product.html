@@ -52,7 +52,7 @@
                                                 <td>{{ product.stock }}</td>
                                                 <td>${{ product.p_price }}</td>
                                                 {% if product.offer %}
-                                                    <td>${{ product.price }}%</td>
+                                                    <td>${{ product.price }}</td>
                                                 {% else %}
                                                     <td>No Offer</td>
                                                 {% endif %}
@@ -69,7 +69,6 @@
                                                             </div>
                                                         </div>
                                                     {% endif %}
-
                                                 </td>
                                                 <td>
                                                     <a type="button" href="{% url 'product:edit_product' product.id %}" class="btn btn-outline-primary edit-category-btn mdi mdi-pencil" style="width: auto"></a>
