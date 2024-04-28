@@ -95,8 +95,8 @@
                             {% for product in products %}
                                 <div class="product">
                                     <figure class="product-media">
-                                        {% if product.offer is not null %}
-                                            <span class="product-label label-sale">{{ product.offer.offer_percentage }}% off</span>
+                                        {% if product.offer %}
+                                            <span class="product-label label-sale">{{ product.offer.discount }}% off</span>
                                         {% endif %}
                                         <a href="{% url 'product:product_view' product.id %}">
                                             <img src="{{ product.thumbnail.url }}" alt="Product image" class="product-image" >
@@ -112,7 +112,9 @@
                                         <h3 class="product-title"><a href="{% url 'product:product_view' product.id %}">{{ product.name }}</a></h3>
                                         <div class="product-price">
                                             <span class="new-price">${{ product.price }}</span>
-                                            <span class="old-price">Was <s>$290.00</s></span>
+                                            {% if product.offer %}
+                                                <span class="old-price">Was <s>${{ product.p_price }}</s></span>
+                                            {% endif %}
                                         </div>
                                         <div class="ratings-container">
                                             <div class="ratings">

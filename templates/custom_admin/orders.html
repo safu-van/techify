@@ -55,7 +55,7 @@
                                                     {% elif order.status == "Returned" %}
                                                         <button class="btn btn-outline-warning">Returned</button>
                                                     {% else %}
-                                                        <div class="dropdown" style="margin-top: 20px;">
+                                                        <div class="dropdown">
                                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ order.status }}</button>
                                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
                                                                 <a href="{% url 'cart:order_status' order.order_id 'Dispatched' %}" class="dropdown-item" style="color: white;">Dispatched</a>

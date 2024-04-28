@@ -1,4 +1,5 @@
 import os
+from decimal import Decimal, ROUND_HALF_UP
 
 from django.db import models
 from django.db.models.signals import pre_save
@@ -12,7 +13,7 @@ from offer.models import Offer
 # Product
 class Product(models.Model):
     name = models.CharField(max_length=200)
-    price = models.FloatField()
+    p_price = models.DecimalField(max_digits=30, decimal_places=1)
     stock = models.IntegerField()
     offer = models.ForeignKey(Offer, on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -21,6 +22,19 @@ class Product(models.Model):
     thumbnail = models.ImageField(upload_to="images/product")
     image2 = models.ImageField(upload_to="images/product")
     image3 = models.ImageField(upload_to="images/product")
+
+    @property
+    def price(self):
+        if self.offer:
+            discounted_amount = self.p_price * (
+                Decimal(self.offer.discount) / Decimal(100)
+            )
+            offer_price = (self.p_price - discounted_amount).quantize(
+                Decimal("0.0"), rounding=ROUND_HALF_UP
+            )
+            return offer_price
+        else:
+            return self.p_price
 
 
 # Signal receiver function to delete old product images before saving new ones

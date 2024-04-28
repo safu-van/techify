@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 
 from offer.models import Offer
+from product.models import Product
 
 
 # Add Offer
@@ -94,4 +95,48 @@ def remove_offer(request, offer_id):
         except ObjectDoesNotExist:
             return redirect("admin_techify:offer_management")
         return redirect("admin_techify:offer_management")
+    return redirect("home:home_page")
+
+
+# Individual Product Offer
+@login_required(login_url="authentication:signin")
+def product_offer(request, product_id, offer_id):
+    if request.user.is_superuser:
+        try:
+            product = Product.objects.get(id=product_id)
+            offer = Offer.objects.get(id=offer_id)
+            product.offer = offer
+            product.save()
+        except ObjectDoesNotExist:
+            return redirect("admin_techify:product_management")
+        return redirect("admin_techify:product_management")
+    return redirect("home:home_page")
+
+
+# Category Offer
+@login_required(login_url="authentication:signin")
+def category_offer(request, category_id, offer_id):
+    if request.user.is_superuser:
+        try:
+            offer = Offer.objects.get(id=offer_id)
+            Product.objects.filter(category=category_id, offer__isnull=True).update(
+                offer=offer
+            )
+        except ObjectDoesNotExist:
+            return redirect("admin_techify:category_management")
+        return redirect("admin_techify:category_management")
+    return redirect("home:home_page")
+
+
+# Remove Product Offer
+@login_required(login_url="authentication:signin")
+def remove_product_offer(request, product_id):
+    if request.user.is_superuser:
+        try:
+            product = Product.objects.get(id=product_id)
+            product.offer = None
+            product.save()
+        except ObjectDoesNotExist:
+            return redirect("admin_techify:product_management")
+        return redirect("admin_techify:product_management")
     return redirect("home:home_page")

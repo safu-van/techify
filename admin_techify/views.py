@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from django.utils import timezone
 from django.http import HttpResponse
 
 from category.models import Category
@@ -62,7 +63,12 @@ def category_management(request):
 def product_management(request):
     if request.user.is_superuser:
         products = Product.objects.all().order_by("-id")
-        return render(request, "custom_admin/product.html", {"products": products})
+        offers = Offer.objects.filter(
+            active_date__lte=timezone.now().date(),
+            expiry_date__gte=timezone.now().date(),
+        )
+        context = {"products": products, "offers": offers}
+        return render(request, "custom_admin/product.html", context)
     return redirect("home:home_page")
 
 

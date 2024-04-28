@@ -40,7 +40,7 @@ def cart(request):
         product_image = item.product.thumbnail.url
         product_price = item.product.price
         product_quantity = item.quantity
-        total_price = product_price * product_quantity
+        total_price = item.total
         item_id = item.id
         stock_of_product = item.product.stock
         cart_details.append(
@@ -80,7 +80,6 @@ def add_to_cart(request):
         response_data["message"] = "Product not found"
 
     stock_of_product = product.stock
-    total = float(product.price) * int(quantity)
 
     if CartItems.objects.filter(product=product_id, user=user_id).exists():
         response_data["message"] = "Item already in cart"
@@ -89,7 +88,7 @@ def add_to_cart(request):
             try:
                 user = User.objects.get(id=user_id)
                 new_item = CartItems.objects.create(
-                    product=product, quantity=quantity, user=user, total=total
+                    product=product, quantity=quantity, user=user
                 )
                 new_item.save()
                 response_data["message"] = "Item added to cart"
@@ -125,7 +124,6 @@ def update_quantity(request):
             user = request.user.id
 
             item = CartItems.objects.get(id=product_id, user=user)
-            item.total = item.product.price * value
             item.quantity = value
             item.save()
             return JsonResponse(

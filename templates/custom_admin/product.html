@@ -36,6 +36,8 @@
                                             <th>Category</th>
                                             <th>Stock</th>
                                             <th>Price</th>
+                                            <th>Discounted Price</th>
+                                            <th>Offer</th>
                                             <th>Edit</th>
                                             <th>Action</th>
                                         </tr>
@@ -48,7 +50,27 @@
                                                 <td>{{ product.brand.name }}</td>
                                                 <td>{{ product.category.name }}</td>
                                                 <td>{{ product.stock }}</td>
-                                                <td>${{ product.price }}</td>
+                                                <td>${{ product.p_price }}</td>
+                                                {% if product.offer %}
+                                                    <td>${{ product.price }}%</td>
+                                                {% else %}
+                                                    <td>No Offer</td>
+                                                {% endif %}
+                                                <td>
+                                                    {% if product.offer %}
+                                                        <a type="button" href="{% url 'offer:remove_product_offer' product.id %}" class="btn btn-outline-danger">Remove Offer</a>
+                                                    {% else %}
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Apply Offer</button>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
+                                                                {% for offer in offers %}
+                                                                    <a href="{% url 'offer:product_offer' product.id offer.id %}" class="dropdown-item" style="color: white;">{{ offer.name }} - {{ offer.discount }}%</a>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+
+                                                </td>
                                                 <td>
                                                     <a type="button" href="{% url 'product:edit_product' product.id %}" class="btn btn-outline-primary edit-category-btn mdi mdi-pencil" style="width: auto"></a>
                                                 </td>
