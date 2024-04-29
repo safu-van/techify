@@ -17,4 +17,9 @@ urlpatterns = [
     path("edit-address/<int:address_id>/", views.edit_address, name="edit_address"),
     path("wallet/", views.wallet, name="wallet"),
     path("change-password/", views.change_password, name="change_password"),
+    path(
+        "download-invoice/<int:order_id>/",
+        views.download_product_invoice,
+        name="download_invoice",
+    ),
 ]

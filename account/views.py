@@ -238,3 +238,10 @@ def change_password(request):
             message = "invalid_password"
 
     return render(request, "user/change_password.html", {"message": message})
+
+
+# Download Product Invoice (PDF)
+@login_required(login_url="authentication:signin")
+def download_product_invoice(request, order_id):
+    order = Orders.objects.get(id=order_id)
+    return render(request, "user/invoice.html", {"order": order})

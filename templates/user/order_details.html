@@ -146,6 +146,13 @@
                                                 <span style="width: 100%; float: left; height: 20px; font-size: 12px">{{ order.product.category.name }}</span>
                                                 <span style="width: 100%; float: left; font-size: 12px">${{ order.product_price }}</span>
                                             </div>
+                                            {% if order.status == "Delivered" %}
+                                                <div style="float: right; width: fit-content; margin-top: 6rem;">
+                                                    <a href="{% url 'account:download_invoice' order.id %}" class="btn btn-primary text-white" style="border-radius: 30px; color: #666666; margin-left: 1rem; cursor: pointer;">
+                                                        Download Invoice
+                                                    </a>
+                                                </div>
+                                            {% endif %}
                                             {% if order.status != "Delivered" and order.status != "Cancelled" and order.status != "Returned" %}
                                                 <div style="float: right; width: fit-content; margin-top: 6rem;">
                                                     <button class="btn btn-danger text-white" onclick="confirmCancel({{ order.id }})" style="border-radius: 30px;">
