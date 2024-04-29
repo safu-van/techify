@@ -92,6 +92,14 @@
                                                 <label style="margin-right: 13px"><strong>Email :</strong></label>
                                                 <input type="text" style="border: none; width: 100%; background: white;" value="{{ user.email }}" disabled><br>
                                             </div>
+                                            <div style="margin-bottom: 1.2rem;">
+                                                <label style="margin-right: 13px"><strong>Referral Code :</strong></label><br>
+                                                {% if user.referral_code %}
+                                                    <input type="text" style="border: none; width: 100%; background: white;" value="{{ user.referral_code }}" disabled><br>
+                                                {% else %}
+                                                    <a href="{% url 'account:get_referral_code' %}" style="cursor: pointer;" class="btn btn-info text-white rounded-pill">Get Referral Code</a>
+                                                {% endif %}
+                                            </div>
                                             <div style="flex-direction: row-reverse; display: flex; margin-top: 2rem;">
                                                 <button style="border: none; background: white;">
                                                     <a class="btn btn-primary text-white rounded-pill">Save</a>

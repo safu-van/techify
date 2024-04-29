@@ -6,6 +6,7 @@ app_name = "account"
 
 urlpatterns = [
     path("", views.account_settings, name="account_settings"),
+    path("referral-code", views.generate_referral_code, name="get_referral_code"),
     path("orders/", views.orders, name="orders"),
     path("order-details/<int:order_id>/", views.order_details, name="order_details"),
     path("address/", views.address, name="address"),

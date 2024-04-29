@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 
 from authentication.models import User
+from authentication.utils import add_referral_money
 
 
 # Send otp to mail
@@ -74,6 +75,9 @@ def verify_email(request):
                 User.objects.create_user(email=email, password=password, name=name)
                 user = authenticate(request, email=email, password=password)
                 login(request, user)
+                if "referral_code" in request.session:
+                    referral_code = request.session.pop("referral_code")
+                    add_referral_money(user, referral_code)
                 request.session.pop("password", None)
                 request.session.pop("email", None)
                 request.session.pop("name", None)
@@ -94,12 +98,20 @@ def signup(request):
         name = request.POST.get("fullname")
         email = request.POST.get("email")
         password = request.POST.get("password")
+        referral_code = request.POST.get("referral_code")
 
         if User.objects.filter(email=email).exists():
-            email_taken = True
-            return render(
-                request, "authentication/signup.html", {"email_taken": email_taken}
-            )
+            message = "Email you had entered is already taken"
+            return render(request, "authentication/signup.html", {"message": message})
+
+        if len(referral_code) > 0:
+            if not User.objects.filter(referral_code=referral_code).exists():
+                message = "Invalid Referral Code"
+                return render(
+                    request, "authentication/signup.html", {"message": message}
+                )
+            else:
+                request.session["referral_code"] = referral_code
 
         request.session["name"] = name
         request.session["email"] = email

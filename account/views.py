@@ -1,3 +1,6 @@
+import random
+import string
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -15,16 +18,38 @@ def account_settings(request):
     message = False
     try:
         user = User.objects.get(id=user_id)
-        if request.method == "POST":
-            name = request.POST.get("name")
-            user.name = name
-            user.save()
-            message = "name_updated"
     except ObjectDoesNotExist:
         return redirect("authentication:signin")
 
+    if request.method == "POST":
+        name = request.POST.get("name")
+        user.name = name
+        user.save()
+        message = "name_updated"
+
     context = {"user": user, "message": message}
     return render(request, "user/account.html", context)
+
+
+# Generate Referral code
+@login_required(login_url="authentication:signin")
+def generate_referral_code(request):
+    user_id = request.user.id
+    try:
+        user = User.objects.get(id=user_id)
+    except ObjectDoesNotExist:
+        return redirect("authentication:signin")
+
+    while True:
+        characters = string.ascii_letters + string.digits
+        referral_code = "".join(random.choice(characters) for _ in range(8))
+
+        if not User.objects.filter(referral_code=referral_code).exists():
+            break
+
+    user.referral_code = referral_code
+    user.save()
+    return redirect("account:account_settings")
 
 
 # Orders
