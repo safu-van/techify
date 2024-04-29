@@ -33,11 +33,14 @@ class Orders(models.Model):
     payment_method = models.CharField(max_length=100)
     status = models.CharField(max_length=100, default="Pending")
     address = models.ForeignKey(DeliveyAddress, on_delete=models.CASCADE)
-    sub_total = models.DecimalField(max_digits=30, decimal_places=1)
     discount_amt = models.DecimalField(max_digits=30, decimal_places=1, default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     product_price = models.DecimalField(max_digits=30, decimal_places=1)
     product_qty = models.PositiveIntegerField()
+
+    @property
+    def sub_total(self):
+        return self.product_price * self.product_qty
 
     @property
     def total(self):

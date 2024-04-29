@@ -1,220 +1,85 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice</title>
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
-    <link rel="icon" type="image/x-icon" href="{% static 'favicon/favicon.ico' %}" >
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
-    <style>
-        /* Add some additional styles for responsiveness */
-      @media (max-width: 767px) {
-        .invoice {
-          width: 100% !important;
-        }
-
-        .col-xs-4 {
-          width: 100%;
-        }
-
-        .panel-body {
-          padding: 10px;
-        }
-
-        .panel-title {
-          font-size: 16px;
-        }
-      }
-
-      @media (max-width: 991px) {
-        .invoice-body {
-          padding: 15px;
-        }
-      }
-
-      .col-xs-4 {
-        margin-bottom: 20px;
-      }
-
-      body {
-        background: #EEE;
-      }
-
-      .invoice {
-        background: #fff;
-        width: 970px !important;
-        margin: 50px auto;
-      }
-
-      .invoice .invoice-header {
-        padding: 25px 25px 15px;
-      }
-
-      .invoice .invoice-header h1 {
-        margin: 0;
-      }
-
-      .invoice .invoice-header .media .media-body {
-        font-size: 0.9em;
-        margin: 0;
-      }
-
-      .invoice .invoice-body {
-        border-radius: 10px;
-        padding: 25px;
-        background: #FFF;
-      }
-
-      .invoice .invoice-footer {
-        padding: 15px;
-        font-size: 0.9em;
-        text-align: center;
-        color: #999;
-      }
-
-      .logo {
-        max-height: 70px;
-        border-radius: 10px;
-      }
-
-      .dl-horizontal {
-        margin: 0;
-      }
-
-      .dl-horizontal dt {
-        float: left;
-        width: 80px;
-        overflow: hidden;
-        clear: left;
-        text-align: right;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .dl-horizontal dd {
-        margin-left: 90px;
-      }
-
-      .rowamount {
-        padding-top: 15px !important;
-      }
-
-      .rowtotal {
-        font-size: 1.3em;
-      }
-
-      .colfix {
-        width: 12%;
-      }
-
-      .mono {
-        font-family: monospace;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container invoice">
-      <div class="invoice-header">
-        <div class="row">
-          <div class="col-xs-8">
-            <h1>Invoice </h1>
-            <h4 class="text-muted">Date: {{ order.delivered_date }}</h4>
-          </div>
-          <div class="col-xs-4">
-            <div class="media" style="display: flex; justify-content: end;">
-              <div class="media-left">
-                <img src="{% static 'user/assets/images/techify-logo.png' %}" alt="Logo" width="160" height="60">
-              </div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Invoice</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+            }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                background: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .invoice-details {
+                margin-bottom: 40px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background: #f5f5f5;
+                text-align: left;
+            }
+            .total {
+                margin-top: 20px;
+                text-align: right;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Invoice</h1>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="invoice-body">
-        <div class="row">
-          <div class="col-xs-6">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Shipped Address</h3>
-              </div>
-              <div class="panel-body">
-                <dl class="dl-horizontal">
-                  <dt>Name :</dt>
-                  <dd>{{ order.address.name }}</dd>
-                  <dt>Phone :</dt>
-                  <dd>{{ order.address.phone }}</dd>
-                  <dt>City :</dt>
-                  <dd>{{ order.address.city }}</dd>
-                  <dt>State :</dt>
-                  <dd>{{ order.address.state }}</dd>
-                  <dt>Country :</dt>
-                  <dd>{{ order.address.country}}</dd>
-                  {% if order.address.landmark %}
-                    <dt>Landmark :</dt>
-                    <dd>{{ order.address.landmark }}</dd>
-                  {% endif %}
-                </div>
-              </div>
+            <div class="invoice-details">
+                <p><strong>Date:</strong>{{ order.delivered_date }}</p>
+                <span><strong>Shipped Address:</strong></span><br>
+                <span>{{ order.address.name }}</span><br>
+                <span>{{ order.address.phone }}</span><br>
+                <span>{{ order.address.city }}</span><br>
+                <span>{{ order.address.state }}</span><br>
+                <span>{{ order.address.country }}</span><br>
+                <span>{{ order.address.landmark }}</span>
             </div>
-          </div>
-          <div class="panel panel-default">
-            <table class="table table-bordered table-condensed">
-              <thead style="color: #333;background-color: #f5f5f5;border-color: #ddd;">
-                <tr>
-                  <th class="text-center colfix">Sl. No</th>
-                  <th class="text-center" >product</th>
-                  <th class="text-center colfix">Quantity</th>
-                  <th class="text-center colfix">Price</th>
-                  <th class="text-center colfix">Discount</th>
-                  <th class="text-center colfix">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="text-center">1</td>
-                  <td>
-                    {{ order.product.name }}
-                  </td>
-                  <td class="text-center">
-                    <span class="mono">{{ order.product_qty }}</span>
-                  </td>
-                  <td class="text-center">
-                    <span class="mono">${{ order.product_price }}</span>
-                  </td>
-                  <td class="text-center">
-                    <span class="mono">-${{ order.discount_amt }}</span>
-                  </td>
-                  <td class="text-center">
-                    <strong>${{ order.total }}</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="5" class="text-right">
-                    <strong>Grand Total: </strong>
-                  </td>
-                  <td class="text-center">
-                    <strong>${{ order.total }}</strong>
-                  </td>
-                </tr>
-              </tbody>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Sub Total</th>
+                        <th>Discount</th>
+                        <th>Grand Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ order.product.name }}</td>
+                        <td>{{ order.product_qty }}</td>
+                        <td>${{ order.product_price }}</td>
+                        <td>${{ order.sub_total }}</td>
+                        <td>-${{ order.discount_amt }}</td>
+                        <td>${{ order.total }}</td>
+                    </tr>
+                </tbody>
             </table>
-          </div>
         </div>
-        <div class="invoice-footer">
-          Thank you for choosing our services.We hope to see you again soon
-        </div>
-      </div>
-      <script>
-        function download(){
-          window.print()
-        }
-        download()
-      </script>
     </body>
-  </html>
+</html>

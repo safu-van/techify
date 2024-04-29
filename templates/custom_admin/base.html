@@ -19,9 +19,8 @@
         <div class="container-scroller">
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-                    <a class="sidebar-brand brand-logo" href="index.html"><img src="{% static 'admin/assets/images/logo.svg' %}" alt="logo" /></a>
-                    <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="{% static 'admin/assets/images/logo-mini.svg' %}"
-                                                                                    alt="logo" /></a>
+                    <a class="sidebar-brand brand-logo" href="{% url 'admin_techify:admin_dashboard' %}"><img src="{% static 'user/assets/images/techify-logo.png' %}" alt="logo" style="height: 40px;" /></a>
+                    <a class="sidebar-brand brand-logo-mini" href="{% url 'admin_techify:admin_dashboard' %}"><img src="{% static 'user/assets/images/techify-icon-nobg.png' %}" alt="logo" style="width: 29px;"/></a>
                 </div>
                 <ul class="nav">
                     <li class="nav-item nav-category">
@@ -112,31 +111,6 @@
                             <span class="mdi mdi-menu"></span>
                         </button>
                         <ul class="navbar-nav navbar-nav-right">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
-                                   data-toggle="dropdown">
-                                    <i class="mdi mdi-bell"></i>
-                                    <span class="count bg-danger"></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                                     aria-labelledby="notificationDropdown">
-                                    <h6 class="p-3 mb-0">Notifications</h6>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item preview-item">
-                                        <div class="preview-thumbnail">
-                                            <div class="preview-icon bg-dark rounded-circle">
-                                                <i class="mdi mdi-link-variant text-warning"></i>
-                                            </div>
-                                        </div>
-                                        <div class="preview-item-content">
-                                            <p class="preview-subject mb-1">Launch Admin</p>
-                                            <p class="text-muted ellipsis mb-0"> New admin wow! </p>
-                                        </div>
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <p class="p-3 mb-0 text-center">See all notifications</p>
-                                </div>
-                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown" style="margin-left:0px;">
                                     <div class="navbar-profile">

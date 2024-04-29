@@ -1,10 +1,15 @@
 import random
 import string
+from io import BytesIO
+
+from xhtml2pdf import pisa
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.http import HttpResponse
+from django.template.loader import get_template
 
 from authentication.models import User
 from account.models import UserAddress, Wallet, WalletTransaction
@@ -243,5 +248,23 @@ def change_password(request):
 # Download Product Invoice (PDF)
 @login_required(login_url="authentication:signin")
 def download_product_invoice(request, order_id):
-    order = Orders.objects.get(id=order_id)
-    return render(request, "user/invoice.html", {"order": order})
+    try:
+        order = Orders.objects.get(id=order_id)
+    except Orders.DoesNotExist:
+        return HttpResponse("Order not found", status=404)
+
+    context = {"order": order}
+    template = get_template("user/invoice.html")
+    html = template.render(context)
+
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+
+    if pdf:
+        response = HttpResponse(result.getvalue(), content_type="application/pdf")
+        response["Content-Disposition"] = (
+            f'attachment; filename="invoice_{order_id}.pdf"'
+        )
+        return response
+    else:
+        return HttpResponse("Error generating PDF", status=500)
