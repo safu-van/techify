@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 from authentication.models import User
 from account.models import UserAddress
@@ -214,6 +215,7 @@ def checkout(request):
 
 # Place Order
 @login_required(login_url="authentication:signin")
+@csrf_exempt
 def place_order(request):
     if request.method == "POST":
         try:
@@ -305,6 +307,9 @@ def place_order(request):
         request.session.pop("coupon_code", None)
         request.session.pop("coupon_id", None)
         CartItems.objects.filter(user=user_id).delete()
+
+        if payment_method == "Online Payment":
+            return HttpResponse(status=200)
 
         return redirect("cart:order_success")
     return redirect("cart:checkout")

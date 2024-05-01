@@ -136,13 +136,13 @@
                                     <div style="margin-top: 1rem;">
                                         <span style="color: black; font-weight: 400; font-size: 1.6rem; margin-bottom: 0.5rem;">Select Payment Method:</span>
                                         <label><input type="radio" style="accent-color: blue;" name="payment_method" value="Cash on Delivery"> Cash on Delivery</label><br>
-                                        <label><input type="radio" style="accent-color: blue;" name="payment_method" value="Online Payment"> Online Payment</label><br>
                                         <label><input type="radio" style="accent-color: blue;" name="payment_method" value="Wallet Payment"> Wallet Payment</label><br>
                                     </div>
                                     <input type="hidden" id="selectedAddressId" name="selectedAddressId" style="display: none;">
-                                    <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block mt-2">
+                                    <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block mt-2 mb-3">
                                         Place Order
                                     </button>
+                                    <div id="paypal-button-container"></div>
                                 </form>
                             </div>
                         </aside>
@@ -324,9 +324,71 @@
     <script src="{% static 'user/assets/js/superfish.min.js' %}"></script>
     <script src="{% static 'user/assets/js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'user/assets/js/main.js' %}"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AetxnT3oGnQo4T0zD1gvktvvGyYC7C_us8EMHNdaYlP7AKw82ieJK1TWw2SYMUwxPAZBsqXdWXKKwPjL&currency=USD"></script>
 {% endblock %}
 {% block extra_js %}
     <script>
+        paypal.Buttons({
+
+            onClick : function(data, actions){
+                var addressRadios = document.querySelectorAll('.addressRadio');
+
+                addressRadios.forEach(function(radio) {
+                    if (radio.checked) {
+                        atLeastOneAddressSelected = true;
+                        document.getElementById('selectedAddressId').value = radio.getAttribute('data-address-id');
+                    }
+                });
+
+                if (!atLeastOneAddressSelected) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Please select an address.',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    return false;
+                }
+
+                return true;
+            },
+
+            // Call your server to set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{ total }}',
+                        }
+                    }]
+                })
+            },
+
+            // Call your server to finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(orderData) {
+                    var address = document.getElementById("selectedAddressId").value;
+                    var paymentMethod = "Online Payment"
+
+                    console.log(address)
+
+                    data = {
+                        "selectedAddressId": address,
+                        "payment_method": paymentMethod,
+                    }
+                    $.ajax({
+                        method: "POST",
+                        url: "/cart/place-order/",
+                        data: data,
+                        success: function(){
+                            window.location.href = "/cart/order-success/"
+                        }
+                    });
+                });
+            }
+
+        }).render('#paypal-button-container');
+
         {% if message %}
             Swal.fire({
                 icon: 'warning',
