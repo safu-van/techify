@@ -2,119 +2,240 @@
 {% load static %}
 {% block title %}Techify Admin{% endblock %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'admin/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/vendors/css/vendor.bundle.base.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/assets/vendors/css/vendor.bundle.base.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
 {% endblock %}
 {% block content %}
-    <div class="main-panel">
-        <div class="content-wrapper">
-            <div class="row">
-                <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-9">
-                                    <div class="d-flex align-items-center align-self-start">
-                                        <h3 class="mb-0">$12.34</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <h6 class="text-muted font-weight-normal" style="margin-top: 8px;">Total Revenue</h6>
-                        </div>
-                    </div>
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-9">
+                  <div class="d-flex align-items-center align-self-start">
+                    <h3 class="mb-0">${{ total_revenue }}</h3>
+                  </div>
                 </div>
-                <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-9">
-                                    <div class="d-flex align-items-center align-self-start">
-                                        <h3 class="mb-0">$17.34</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <h6 class="text-muted font-weight-normal">Monthly Revenue</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-9">
-                                    <div class="d-flex align-items-center align-self-start">
-                                        <h3 class="mb-0">$12.34</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <h6 class="text-muted font-weight-normal">Daily Revenue</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-9">
-                                    <div class="d-flex align-items-center align-self-start">
-                                        <h3 class="mb-0">31</h3>
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                </div>
-                            </div>
-                            <h6 class="text-muted font-weight-normal" style="margin-top: 8px;">Total Sales</h6>
-                        </div>
-                    </div>
-                </div>
+              </div>
+              <h6 class="text-muted font-weight-normal" style="margin-top: 8px;">Total Revenue</h6>
             </div>
-            <div class="row">
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Transaction History</h4>
-                            <canvas id="transaction-history" class="transaction-chart"></canvas>
-                            <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
-                                <div class="text-md-center text-xl-left">
-                                    <h6 class="mb-1">Transfer to Paypal</h6>
-                                    <p class="text-muted mb-0">07 Jan 2019, 09:12AM</p>
-                                </div>
-                                <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                                    <h6 class="font-weight-bold mb-0">$236</h6>
-                                </div>
-                            </div>
-                            <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
-                                <div class="text-md-center text-xl-left">
-                                    <h6 class="mb-1">Tranfer to Stripe</h6>
-                                    <p class="text-muted mb-0">07 Jan 2019, 09:12AM</p>
-                                </div>
-                                <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                                    <h6 class="font-weight-bold mb-0">$593</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+        <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-9">
+                  <div class="d-flex align-items-center align-self-start">
+                    <h3 class="mb-0">${{ monthly_revenue }}</h3>
+                  </div>
+                </div>
+              </div>
+              <h6 class="text-muted font-weight-normal">Monthly Revenue</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-9">
+                  <div class="d-flex align-items-center align-self-start">
+                    <h3 class="mb-0">${{ daily_revenue }}</h3>
+                  </div>
+                </div>
+              </div>
+              <h6 class="text-muted font-weight-normal">Daily Revenue</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-9">
+                  <div class="d-flex align-items-center align-self-start">
+                    <h3 class="mb-0">{{ total_sales }}</h3>
+                  </div>
+                </div>
+                <div class="col-3">
+                </div>
+              </div>
+              <h6 class="text-muted font-weight-normal" style="margin-top: 8px;">Total Sales</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Transaction Details</h4>
+              <canvas id="transaction-history" class="transaction-chart"></canvas>
+              <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                <div class="text-md-center text-xl-left">
+                  <h6 class="mb-1">Cash</h6>
+                </div>
+                <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                  <h6 class="font-weight-bold mb-0">$236</h6>
+                </div>
+              </div>
+              <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                <div class="text-md-center text-xl-left">
+                  <h6 class="mb-1">Online</h6>
+                </div>
+                <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                  <h6 class="font-weight-bold mb-0">$593</h6>
+                </div>
+              </div>
+              <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                <div class="text-md-center text-xl-left">
+                  <h6 class="mb-1">Wallet</h6>
+                </div>
+                <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                  <h6 class="font-weight-bold mb-0">$593</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-row justify-content-between">
+                <h4 class="card-title">Best Selling Product (Top 7)</h4>
+              </div>
+              <div class="preview-list">
+                {% for product in top_products %}
+                <div class="preview-item border-bottom">
+                  <div class="preview-thumbnail">
+                    <img src="{{ product.thumbnail.url }}" alt="image" class="rounded-circle" />
+                  </div>
+                  <div class="preview-item-content d-flex flex-grow">
+                    <div class="flex-grow">
+                      <div class="d-flex d-md-block d-xl-flex justify-content-between">
+                        <h6 class="preview-subject" style="margin-top: 0.5rem;">{{ product.name }}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-row justify-content-between">
+                <h4 class="card-title">Best Selling Brand (Top 7)</h4>
+              </div>
+              <div class="preview-list">
+                <div class="preview-item border-bottom">
+                    <div class="preview-thumbnail">
+                      <img src="#" alt="image" class="rounded-circle" />
+                    </div>
+                    <div class="preview-item-content d-flex flex-grow">
+                      <div class="flex-grow">
+                        <div class="d-flex d-md-block d-xl-flex justify-content-between">
+                          <h6 class="preview-subject" style="margin-top: 0.5rem;">Leonard</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="background: #191c24; padding: 1rem;">
+        <div>
+          <canvas id="myChart"></canvas>
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 2rem; padding-bottom: 2rem;">
+          <button class="btn btn-inverse-primary" style="margin-right: 1rem;">Last Week</button>
+          <button class="btn btn-inverse-primary" style="margin-right: 1rem;">Last Month</button>
+          <button class="btn btn-inverse-primary" style="margin-right: 1rem;">Last Year</button>
+        </div>
+      </div>
     </div>
+  </div>
 {% endblock %}
 {% block js %}
-    <script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>
-    <script src="{% static 'admin/assets/vendors/chart.js/Chart.min.js' %}"></script>
-    <script src="{% static 'admin/assets/vendors/progressbar.js/progressbar.min.js' %}"></script>
-    <script src="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.min.js' %}"></script>
-    <script src="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
-    <script src="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'admin/assets/js/off-canvas.js' %}"></script>
-    <script src="{% static 'admin/assets/js/hoverable-collapse.js' %}"></script>
-    <script src="{% static 'admin/assets/js/misc.js' %}"></script>
-    <script src="{% static 'admin/assets/js/settings.js' %}"></script>
-    <script src="{% static 'admin/assets/js/todolist.js' %}"></script>
-    <script src="{% static 'admin/assets/js/dashboard.js' %}"></script>
+  <script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>
+  <script src="{% static 'admin/assets/vendors/chart.js/Chart.min.js' %}"></script>
+  <script src="{% static 'admin/assets/vendors/progressbar.js/progressbar.min.js' %}"></script>
+  <script src="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.min.js' %}"></script>
+  <script src="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
+  <script src="{% static 'admin/assets/vendors/owl-carousel-2/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'admin/assets/js/off-canvas.js' %}"></script>
+  <script src="{% static 'admin/assets/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'admin/assets/js/misc.js' %}"></script>
+  <script src="{% static 'admin/assets/js/settings.js' %}"></script>
+  <script src="{% static 'admin/assets/js/todolist.js' %}"></script>
+  <script src="{% static 'admin/assets/js/dashboard.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: 'No. of Sales',
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: 'white' // Change label color to white
+            }
+          }
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+          backgroundColor: 'rgba(0,0,0,0.7)', // Change tooltip background color
+          titleFont: {
+            color: 'white' // Change tooltip title color to white
+          },
+          bodyFont: {
+            color: 'white' // Change tooltip body color to white
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: 'white' // Change x-axis label color to white
+            }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: 'white' // Change y-axis label color to white
+            }
+          }
+        }
+      }
+    });
+  </script>
+
 {% endblock %}

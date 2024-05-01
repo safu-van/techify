@@ -152,7 +152,7 @@ def add_product(request):
 
             product = Product.objects.create(
                 name=name,
-                price=price,
+                p_price=price,
                 stock=stock,
                 category=category,
                 brand=brand,
@@ -228,7 +228,7 @@ def edit_product(request, product_id):
 
             product.name = name
             product.stock = stock
-            product.price = price
+            product.p_price = price
             category = Category.objects.get(name=category_name)
             product.category = category
             brand = Brand.objects.get(name=brand_name)

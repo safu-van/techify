@@ -8,7 +8,6 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Sum
 
 from authentication.models import User
 from account.models import UserAddress
@@ -182,8 +181,8 @@ def checkout(request):
         message = False
 
     addresses = UserAddress.objects.filter(user=user_id)
-    products = CartItems.objects.filter(user=user_id).annotate(sub_total=Sum("total"))
-    sub_total = products.aggregate(sub_total=Sum("total"))["sub_total"]
+    products = CartItems.objects.filter(user=user_id)
+    sub_total = sum(item.total for item in products)
     total = sub_total
 
     if "discount_percentage" in request.session:
@@ -294,7 +293,6 @@ def place_order(request):
                 ordered_date=ordered_date,
                 payment_method=payment_method,
                 address=address,
-                sub_total=item.total,
                 discount_amt=item.total
                 * (Decimal(discount_percentage) / Decimal("100")),
                 product=product,

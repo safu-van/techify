@@ -25,7 +25,38 @@ from offer.models import Offer
 @login_required(login_url="authentication:signin")
 def admin_dashboard(request):
     if request.user.is_superuser:
-        return render(request, "custom_admin/index.html")
+        # Total Revenue
+        total_orders = Orders.objects.filter(status="Delivered")
+        total_revenue = sum(order.total for order in total_orders)
+        # Monthly Revenue
+        current_month = timezone.now().month
+        current_year = timezone.now().year
+        monthly_orders = Orders.objects.filter(
+            status="Delivered",
+            ordered_date__month=current_month,
+            ordered_date__year=current_year,
+        )
+        monthly_revenue = sum(order.total for order in monthly_orders)
+        # Daily Revenue
+        current_date = timezone.now().date()
+        daily_orders = Orders.objects.filter(
+            status="Delivered", ordered_date=current_date
+        )
+        daily_revenue = sum(order.total for order in daily_orders)
+        # Total Sales
+        total_sales = Orders.objects.filter(status="Delivered").count()
+        # Top Selling Products
+        top_selling_products = Product.objects.annotate(
+            total_orders=Count("orders")
+        ).order_by("-total_orders")[:7]
+        context = {
+            "total_revenue": total_revenue,
+            "monthly_revenue": monthly_revenue,
+            "daily_revenue": daily_revenue,
+            "total_sales": total_sales,
+            "top_products": top_selling_products,
+        }
+        return render(request, "custom_admin/index.html", context)
     return redirect("home:home_page")
 
 
