@@ -114,18 +114,18 @@
               </div>
               <div class="preview-list">
                 {% for product in top_products %}
-                <div class="preview-item border-bottom">
-                  <div class="preview-thumbnail">
-                    <img src="{{ product.thumbnail.url }}" alt="image" class="rounded-circle" />
-                  </div>
-                  <div class="preview-item-content d-flex flex-grow">
-                    <div class="flex-grow">
-                      <div class="d-flex d-md-block d-xl-flex justify-content-between">
-                        <h6 class="preview-subject" style="margin-top: 0.5rem;">{{ product.name }}</h6>
+                  <div class="preview-item border-bottom">
+                    <div class="preview-thumbnail">
+                      <img src="{{ product.thumbnail.url }}" alt="image" class="rounded-circle" />
+                    </div>
+                    <div class="preview-item-content d-flex flex-grow">
+                      <div class="flex-grow">
+                        <div class="d-flex d-md-block d-xl-flex justify-content-between">
+                          <h6 class="preview-subject" style="margin-top: 0.5rem;">{{ product.name }}</h6>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
                 {% endfor %}
               </div>
             </div>
@@ -138,18 +138,17 @@
                 <h4 class="card-title">Best Selling Brand (Top 7)</h4>
               </div>
               <div class="preview-list">
-                <div class="preview-item border-bottom">
-                    <div class="preview-thumbnail">
-                      <img src="#" alt="image" class="rounded-circle" />
-                    </div>
+                {% for brand in top_brands %}
+                  <div class="preview-item border-bottom">
                     <div class="preview-item-content d-flex flex-grow">
                       <div class="flex-grow">
                         <div class="d-flex d-md-block d-xl-flex justify-content-between">
-                          <h6 class="preview-subject" style="margin-top: 0.5rem;">Leonard</h6>
+                          <h6 class="preview-subject" style="margin-top: 0.5rem;">{{ brand }}</h6>
                         </div>
                       </div>
                     </div>
                   </div>
+                {% endfor %}
               </div>
             </div>
           </div>

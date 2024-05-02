@@ -18,11 +18,11 @@ def product_list(request):
         if sort_by == "Price: low to high":
             products = Product.objects.filter(
                 is_available=True, category__is_available=True, brand__is_available=True
-            ).order_by("price")
+            ).order_by("p_price")
         elif sort_by == "Price: high to low":
             products = Product.objects.filter(
                 is_available=True, category__is_available=True, brand__is_available=True
-            ).order_by("-price")
+            ).order_by("-p_price")
         elif sort_by == "New Arrivals":
             products = Product.objects.filter(
                 is_available=True, category__is_available=True, brand__is_available=True

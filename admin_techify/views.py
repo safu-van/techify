@@ -8,7 +8,7 @@ from xhtml2pdf import pisa
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.utils import timezone
 from django.http import HttpResponse
 
@@ -49,12 +49,20 @@ def admin_dashboard(request):
         top_selling_products = Product.objects.annotate(
             total_orders=Count("orders")
         ).order_by("-total_orders")[:7]
+        # Top Selling Brands
+        top_selling_brands = (
+            Product.objects.values("brand__name")
+            .annotate(total_quantity=Sum("orders__product_qty"))
+            .order_by("-total_quantity")[:7]
+        )
+        top_brand_names = [brand["brand__name"] for brand in top_selling_brands]
         context = {
             "total_revenue": total_revenue,
             "monthly_revenue": monthly_revenue,
             "daily_revenue": daily_revenue,
             "total_sales": total_sales,
             "top_products": top_selling_products,
+            "top_brands": top_brand_names,
         }
         return render(request, "custom_admin/index.html", context)
     return redirect("home:home_page")
