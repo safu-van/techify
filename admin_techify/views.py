@@ -8,7 +8,7 @@ from xhtml2pdf import pisa
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, F
 from django.utils import timezone
 from django.http import HttpResponse
 
@@ -40,7 +40,7 @@ def admin_dashboard(request):
         # Daily Revenue
         current_date = timezone.now().date()
         daily_orders = Orders.objects.filter(
-            status="Delivered", ordered_date=current_date
+            status="Delivered", delivered_date=current_date
         )
         daily_revenue = sum(order.total for order in daily_orders)
         # Total Sales
@@ -56,6 +56,29 @@ def admin_dashboard(request):
             .order_by("-total_quantity")[:7]
         )
         top_brand_names = [brand["brand__name"] for brand in top_selling_brands]
+        # Payment Methods Counts (for graph)
+        payment_method_counts = (
+            Orders.objects.filter(status="Delivered")
+            .values("payment_method")
+            .annotate(count=Count("payment_method"))
+        )
+        counts = [method_count["count"] for method_count in payment_method_counts]
+        # Total Amt of each payment method
+        payment_methods = ["Online Payment", "Cash on Delivery", "Wallet Payment"]
+        methods_and_totals = {}
+        for method in payment_methods:
+            total_amount = (
+                Orders.objects.filter(payment_method=method, status="Delivered")
+                .annotate(
+                    order_total=Sum(
+                        F("product_price") * F("product_qty") - F("discount_amt")
+                    )
+                )
+                .aggregate(total_amount=Sum("order_total"))["total_amount"]
+                or 0
+            )
+            methods_and_totals[method] = total_amount
+
         context = {
             "total_revenue": total_revenue,
             "monthly_revenue": monthly_revenue,
@@ -63,6 +86,8 @@ def admin_dashboard(request):
             "total_sales": total_sales,
             "top_products": top_selling_products,
             "top_brands": top_brand_names,
+            "counts": counts,
+            "methods_and_totals": methods_and_totals,
         }
         return render(request, "custom_admin/index.html", context)
     return redirect("home:home_page")
@@ -126,20 +151,16 @@ def order_management(request):
             order_id = item.id
             ordered_date = item.ordered_date
             total = item.total
-            address_name = item.address.name
             status = item.status
-            delivered_date = item.delivered_date
-            product_image = item.product.thumbnail.url
+            payment_method = item.payment_method
             product_name = item.product.name
             orders.append(
                 {
                     "order_id": order_id,
                     "ordered_date": ordered_date,
                     "total": total,
-                    "address_name": address_name,
                     "status": status,
-                    "delivered_date": delivered_date,
-                    "product_image": product_image,
+                    "payment_method": payment_method,
                     "product_name": product_name,
                 }
             )

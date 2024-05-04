@@ -33,6 +33,7 @@
                                             <th>Product</th>
                                             <th>Ordered Date</th>
                                             <th>Amount</th>
+                                            <th>Payment Method</th>
                                             <th>Details</th>
                                             <th>Status</th>
                                         </tr>
@@ -44,6 +45,7 @@
                                                 <td>{{ order.product_name }}</td>
                                                 <td>{{ order.ordered_date }}</td>
                                                 <td>${{ order.total }}</td>
+                                                <td>{{ order.payment_method }}</td>
                                                 <td>
                                                     <a type="button" href="{% url 'admin_techify:order_details' order.order_id %}" class="btn btn-outline-primary mdi mdi-eye" style="width: auto"></a>
                                                 </td>

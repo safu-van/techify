@@ -79,30 +79,16 @@
             <div class="card-body">
               <h4 class="card-title">Transaction Details</h4>
               <canvas id="transaction-history" class="transaction-chart"></canvas>
-              <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
-                <div class="text-md-center text-xl-left">
-                  <h6 class="mb-1">Cash</h6>
+              {% for method, total in methods_and_totals.items %}
+                <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                  <div class="text-md-center text-xl-left">
+                    <h6 class="mb-1">{{ method }}</h6>
+                  </div>
+                  <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                    <h6 class="font-weight-bold mb-0">${{ total }}</h6>
+                  </div>
                 </div>
-                <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                  <h6 class="font-weight-bold mb-0">$236</h6>
-                </div>
-              </div>
-              <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
-                <div class="text-md-center text-xl-left">
-                  <h6 class="mb-1">Online</h6>
-                </div>
-                <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                  <h6 class="font-weight-bold mb-0">$593</h6>
-                </div>
-              </div>
-              <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
-                <div class="text-md-center text-xl-left">
-                  <h6 class="mb-1">Wallet</h6>
-                </div>
-                <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
-                  <h6 class="font-weight-bold mb-0">$593</h6>
-                </div>
-              </div>
+              {% endfor %}
             </div>
           </div>
         </div>
@@ -153,9 +139,7 @@
             </div>
           </div>
         </div>
-
       </div>
-
       <div style="background: #191c24; padding: 1rem;">
         <div>
           <canvas id="myChart"></canvas>
@@ -171,7 +155,6 @@
 {% endblock %}
 {% block js %}
   <script src="{% static 'admin/assets/vendors/js/vendor.bundle.base.js' %}"></script>
-  <script src="{% static 'admin/assets/vendors/chart.js/Chart.min.js' %}"></script>
   <script src="{% static 'admin/assets/vendors/progressbar.js/progressbar.min.js' %}"></script>
   <script src="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap.min.js' %}"></script>
   <script src="{% static 'admin/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
@@ -184,9 +167,12 @@
   <script src="{% static 'admin/assets/js/dashboard.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const ctx = document.getElementById('myChart');
+    // Declare transactionHistoryChart variable
+    let transactionHistoryChart;
 
-    new Chart(ctx, {
+    // sales Chart
+    const ctx = document.getElementById('myChart');
+    const myChart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
@@ -214,27 +200,56 @@
           intersect: false,
           backgroundColor: 'rgba(0,0,0,0.7)', // Change tooltip background color
           titleFont: {
-            color: 'white' // Change tooltip title color to white
+            color: 'white'
           },
           bodyFont: {
-            color: 'white' // Change tooltip body color to white
+            color: 'white'
           }
         },
         scales: {
           x: {
             ticks: {
-              color: 'white' // Change x-axis label color to white
+              color: 'white'
             }
           },
           y: {
             beginAtZero: true,
             ticks: {
-              color: 'white' // Change y-axis label color to white
+              color: 'white'
             }
           }
         }
       }
     });
-  </script>
 
+    // Check if transactionHistoryChart exists before destroying
+    if (typeof transactionHistoryChart !== 'undefined' && transactionHistoryChart !== null) {
+      transactionHistoryChart.destroy();
+    }
+
+    // Transaction-details Chart
+    var counts = {{ counts }}
+    const ctx2 = document.getElementById('transaction-history');
+    transactionHistoryChart = new Chart(ctx2, {
+      type: 'pie',
+      data: {
+        labels: ['Online', 'Cash', 'Wallet'], // Labels representing transaction types
+        datasets: [{
+          data: counts, // Adjusted data for Cash, Online, Wallet
+          backgroundColor: [
+            'rgba(0, 255, 38, 1)',
+            'rgba(255, 254, 0, 1)',
+            'rgba(0, 235, 255, 1)'
+          ],
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+  </script>
 {% endblock %}
