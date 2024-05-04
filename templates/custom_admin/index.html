@@ -24,7 +24,7 @@
                   </div>
                 </div>
               </div>
-              <h6 class="text-muted font-weight-normal" style="margin-top: 8px;">Total Revenue</h6>
+              <h6 class="text-muted font-weight-normal">Total Revenue</h6>
             </div>
           </div>
         </div>
@@ -65,10 +65,8 @@
                     <h3 class="mb-0">{{ total_sales }}</h3>
                   </div>
                 </div>
-                <div class="col-3">
-                </div>
               </div>
-              <h6 class="text-muted font-weight-normal" style="margin-top: 8px;">Total Sales</h6>
+              <h6 class="text-muted font-weight-normal">Total Sales</h6>
             </div>
           </div>
         </div>
@@ -140,14 +138,18 @@
           </div>
         </div>
       </div>
-      <div style="background: #191c24; padding: 1rem;">
+      <div id="chart-div" style="background: #191c24; padding: 1rem;">
         <div>
           <canvas id="myChart"></canvas>
         </div>
         <div style="display: flex; justify-content: center; margin-top: 2rem; padding-bottom: 2rem;">
-          <button class="btn btn-inverse-primary" style="margin-right: 1rem;">Last Week</button>
-          <button class="btn btn-inverse-primary" style="margin-right: 1rem;">Last Month</button>
-          <button class="btn btn-inverse-primary" style="margin-right: 1rem;">Last Year</button>
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="scrollTo" value="chart-div">
+            <button class="btn btn-inverse-primary" style="margin-right: 1rem;" name="time_frame" value="weekly">Weekly</button>
+            <button class="btn btn-inverse-primary" style="margin-right: 1rem;" name="time_frame" value="monthly">Monthly</button>
+            <button class="btn btn-inverse-primary" style="margin-right: 1rem;" name="time_frame" value="yearly">Yearly</button>
+          </form>
         </div>
       </div>
     </div>
@@ -167,6 +169,20 @@
   <script src="{% static 'admin/assets/js/dashboard.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+    // Function to scroll to the desired element
+    function scrollToTargetDiv() {
+      const scrollTo = '{{ scrollTo|safe }}';
+      if (scrollTo) {
+          // Scroll to the target div with the corresponding ID
+        const targetDiv = document.getElementById(scrollTo);
+        if (targetDiv) {
+          targetDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+    // Call the scrollToTargetDiv function when the page is loaded
+    window.onload = scrollToTargetDiv;
+
     // Declare transactionHistoryChart variable
     let transactionHistoryChart;
 
@@ -175,10 +191,10 @@
     const myChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: {{ label|safe }},
         datasets: [{
           label: 'No. of Sales',
-          data: [12, 19, 3, 5, 2, 3],
+          data: {{ sales_count|safe }},
           borderWidth: 2
         }]
       },
@@ -191,14 +207,14 @@
         plugins: {
           legend: {
             labels: {
-              color: 'white' // Change label color to white
+              color: 'white'
             }
           }
         },
         tooltips: {
           mode: 'index',
           intersect: false,
-          backgroundColor: 'rgba(0,0,0,0.7)', // Change tooltip background color
+          backgroundColor: 'rgba(0,0,0,0.7)',
           titleFont: {
             color: 'white'
           },
@@ -228,18 +244,17 @@
     }
 
     // Transaction-details Chart
-    var counts = {{ counts }}
     const ctx2 = document.getElementById('transaction-history');
     transactionHistoryChart = new Chart(ctx2, {
       type: 'pie',
       data: {
-        labels: ['Online', 'Cash', 'Wallet'], // Labels representing transaction types
+        labels: ['Online Payment', 'Cash on Delivery', 'Wallet Payment'],
         datasets: [{
-          data: counts, // Adjusted data for Cash, Online, Wallet
+          data: {{ counts|safe }},
           backgroundColor: [
-            'rgba(0, 255, 38, 1)',
-            'rgba(255, 254, 0, 1)',
-            'rgba(0, 235, 255, 1)'
+            'rgba(0, 255, 38, 1)', // Green
+            'rgba(255, 254, 0, 1)',  // Yellow
+            'rgba(0, 235, 255, 1)'   // blue
           ],
         }]
       },

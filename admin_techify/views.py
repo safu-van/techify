@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum, F
+from django.db.models.functions import ExtractYear, ExtractMonth, ExtractWeek
 from django.utils import timezone
 from django.http import HttpResponse
 
@@ -78,6 +79,54 @@ def admin_dashboard(request):
                 or 0
             )
             methods_and_totals[method] = total_amount
+        # Sales graph data
+        scrollTo = None
+        label = []
+        sales_count = []
+        if request.method == "POST":
+            time_frame = request.POST.get("time_frame")
+            scrollTo = request.POST.get("scrollTo", None)
+
+            if time_frame == "weekly":
+                weekly_sales = (
+                    Orders.objects.filter(status="Delivered")
+                    .annotate(week=ExtractWeek("ordered_date"))
+                    .values("week")
+                    .annotate(total_sales=Count("id"))
+                )
+                for item in reversed(weekly_sales):
+                    label.append("Week " + str(item["week"]))
+                    sales_count.append(item["total_sales"])
+            elif time_frame == "monthly":
+                monthly_sales = (
+                    Orders.objects.filter(status="Delivered")
+                    .annotate(month=ExtractMonth("ordered_date"))
+                    .values("month")
+                    .annotate(total_sales=Count("id"))
+                )
+                for item in reversed(monthly_sales):
+                    label.append(calendar.month_name[item["month"]])
+                    sales_count.append(item["total_sales"])
+            elif time_frame == "yearly":
+                yearly_sales = (
+                    Orders.objects.filter(status="Delivered")
+                    .annotate(year=ExtractYear("ordered_date"))
+                    .values("year")
+                    .annotate(total_sales=Count("id"))
+                )
+                for item in reversed(yearly_sales):
+                    label.append(item["year"])
+                    sales_count.append(item["total_sales"])
+        else:
+            monthly_sales = (
+                Orders.objects.filter(status="Delivered")
+                .annotate(month=ExtractMonth("ordered_date"))
+                .values("month")
+                .annotate(total_sales=Count("id"))
+            )
+            for item in reversed(monthly_sales):
+                label.append(calendar.month_name[item["month"]])
+                sales_count.append(item["total_sales"])
 
         context = {
             "total_revenue": total_revenue,
@@ -88,6 +137,9 @@ def admin_dashboard(request):
             "top_brands": top_brand_names,
             "counts": counts,
             "methods_and_totals": methods_and_totals,
+            "scrollTo": scrollTo,
+            "label": label,
+            "sales_count": sales_count,
         }
         return render(request, "custom_admin/index.html", context)
     return redirect("home:home_page")
