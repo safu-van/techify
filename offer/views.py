@@ -120,12 +120,31 @@ def category_offer(request, category_id, offer_id):
     if request.user.is_superuser:
         try:
             offer = Offer.objects.get(id=offer_id)
-            Product.objects.filter(category=category_id, offer__isnull=True).update(
-                offer=offer
-            )
             category = Category.objects.get(id=category_id)
-            category.offer = offer
-            category.save()
+            flag = 0
+            if Product.objects.filter(
+                category=category_id, offer__isnull=True
+            ).exists():
+                Product.objects.filter(category=category_id, offer__isnull=True).update(
+                    offer=offer
+                )
+                flag = 1
+            product_with_offer = Product.objects.filter(
+                category=category_id, offer__isnull=False
+            )
+            if product_with_offer:
+                for product in product_with_offer:
+                    if product.offer.discount < offer.discount:
+                        product.offer = offer
+                        product.save()
+                        flag = 1
+            if flag == 1:
+                category.offer = offer
+                category.save()
+            else:
+                request.session["message"] = (
+                    f"{category.name} category products already have offer which is greater than {offer.name}"
+                )
         except ObjectDoesNotExist:
             return redirect("admin_techify:category_management")
         return redirect("admin_techify:category_management")

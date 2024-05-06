@@ -97,4 +97,23 @@
     <script src="{% static 'admin/assets/js/misc.js' %}"></script>
     <script src="{% static 'admin/assets/js/settings.js' %}"></script>
     <script src="{% static 'admin/assets/js/todolist.js' %}"></script>
+    {% if message %}
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "warning",
+                title: "{{ message }}"
+            });
+        </script>
+    {% endif %}
 {% endblock %}

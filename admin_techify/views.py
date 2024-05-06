@@ -174,7 +174,11 @@ def category_management(request):
             active_date__lte=timezone.now().date(),
             expiry_date__gte=timezone.now().date(),
         )
-        context = {"categories": categories, "offers": offers}
+        if "message" in request.session:
+            message = request.session.pop("message")
+        else:
+            message = None
+        context = {"categories": categories, "offers": offers, "message": message}
         return render(request, "custom_admin/category.html", context)
     return redirect("home:home_page")
 
