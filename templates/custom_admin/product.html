@@ -65,6 +65,8 @@
                                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
                                                                 {% for offer in offers %}
                                                                     <a href="{% url 'offer:product_offer' product.id offer.id %}" class="dropdown-item" style="color: white;">{{ offer.name }} - {{ offer.discount }}%</a>
+                                                                {% empty %}
+                                                                    <a href="{% url 'offer:add_offer' %}" class="dropdown-item" style="color: white;">+ Add Offer</a>
                                                                 {% endfor %}
                                                             </div>
                                                         </div>

@@ -35,14 +35,15 @@ def add_category(request):
             message = None
 
         if request.method == "POST":
-            category_name = request.POST.get("category_name")
+            name = request.POST.get("category_name")
             category_img = request.FILES.get("category_image")
+            category_name = name.lstrip()
 
             if Category.objects.filter(name__iexact=category_name).exists():
                 category_exists = True
                 return render(
                     request,
-                    "admin/add_category.html",
+                    "custom_admin/add_category.html",
                     {"category_exists": category_exists},
                 )
             if not validate_image(category_img):
@@ -75,8 +76,9 @@ def edit_category(request, category_id):
             message = None
 
         if request.method == "POST":
-            category_name = request.POST.get("category_name")
+            name = request.POST.get("category_name")
             category_img = request.FILES.get("category_image")
+            category_name = name.lstrip()
 
             url = reverse("category:edit_category", kwargs={"category_id": category_id})
 

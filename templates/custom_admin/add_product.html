@@ -33,6 +33,8 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
                                         {% for brand in brands %}
                                             <a class="dropdown-item" onclick="selectBrand('{{ brand.name }}')" style="color: white;">{{ brand.name }}</a>
+                                        {% empty %}
+                                            <a href="{% url 'brand:add_brand' %}" class="dropdown-item" style="color: white;">+ Add Brand</a>
                                         {% endfor %}
                                     </div>
                                     <br>
@@ -44,6 +46,8 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
                                         {% for category in categories %}
                                             <a class="dropdown-item" onclick="selectCategory('{{ category.name }}')" style="color: white;">{{ category.name }}</a>
+                                        {% empty %}
+                                            <a href="{% url 'category:add_category' %}" class="dropdown-item" style="color: white;">+ Add Category</a>
                                         {% endfor %}
                                     </div>
                                     <br>
@@ -130,7 +134,7 @@
     <script src="{% static 'admin/assets/js/todolist.js' %}"></script>
     <script>
         const message = "{{ message }}";
-        if (message.trim() !== "None") {
+        if (message.trim() === "image_not_valid") {
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",

@@ -294,11 +294,17 @@
             var name = document.getElementById("name").value;
             var nameErrorDiv = document.getElementById("name-error");
 
+            // Regular expression to allow only letters and spaces
+            var nameRegex = /^[A-Za-z\s]+$/;
+
             if (name.trim() === "") {
                 nameErrorDiv.textContent = "Please enter your name.";
                 return false;
+            } else if (!nameRegex.test(name)) {
+                nameErrorDiv.textContent = "Enter a valid name.";
+                return false;
             } else {
-                nameErrorDiv.textContent = ""; // Clear error message if validation passes
+                nameErrorDiv.textContent = "";
             }
 
             return true;

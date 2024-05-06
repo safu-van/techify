@@ -73,9 +73,15 @@
             var password = document.getElementById("password").value.trim();
             var isValid = true;
 
+            // Regular expression to allow only letters and spaces
+            var nameRegex = /^[A-Za-z\s]+$/;
+
             if (fullname === "") {
                 isValid = false;
                 document.getElementById("fullname-error").textContent = "Please enter your full name.";
+            } else if (!nameRegex.test(fullname)) {
+                isValid = false;
+                document.getElementById("fullname-error").textContent = "Enter a valid name.";
             } else {
                 document.getElementById("fullname-error").textContent = "";
             }

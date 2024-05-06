@@ -67,7 +67,7 @@
     <script src="{% static 'admin/assets/js/todolist.js' %}"></script>
     <script>
         const message = "{{ message }}";
-        if (message.trim() !== "None") {
+        if (message.trim() === "image_not_valid") {
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",

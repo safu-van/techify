@@ -10,7 +10,8 @@ from brand.models import Brand
 def add_brand(request):
     if request.user.is_superuser:
         if request.method == "POST":
-            name = request.POST.get("brand_name")
+            brand_name = request.POST.get("brand_name")
+            name = brand_name.lstrip()
 
             if Brand.objects.filter(name__iexact=name).exists():
                 brand_exists = True
@@ -37,7 +38,8 @@ def edit_brand(request, brand_id):
             return redirect("admin_techify:brand_management")
 
         if request.method == "POST":
-            name = request.POST.get("brand_name")
+            brand_name = request.POST.get("brand_name")
+            name = brand_name.lstrip()
 
             if (
                 Brand.objects.filter(name__iexact=name)
