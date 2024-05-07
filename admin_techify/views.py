@@ -12,6 +12,7 @@ from django.db.models import Count, Sum, F
 from django.db.models.functions import ExtractYear, ExtractMonth, ExtractWeek
 from django.utils import timezone
 from django.http import HttpResponse
+from django.core.paginator import Paginator
 
 from category.models import Category
 from brand.models import Brand
@@ -150,7 +151,10 @@ def admin_dashboard(request):
 def user_management(request):
     if request.user.is_superuser:
         users = User.objects.exclude(is_superuser=True).order_by("-id")
-        return render(request, "custom_admin/user.html", {"users": users})
+        paginator = Paginator(users, 10)
+        page_number = request.GET.get("page")
+        user_obj = paginator.get_page(page_number)
+        return render(request, "custom_admin/user.html", {"user_obj": user_obj})
     return redirect("home:home_page")
 
 
@@ -159,7 +163,10 @@ def user_management(request):
 def brand_management(request):
     if request.user.is_superuser:
         brands = Brand.objects.annotate(products_count=Count("product")).order_by("-id")
-        return render(request, "custom_admin/brand.html", {"brands": brands})
+        paginator = Paginator(brands, 10)
+        page_number = request.GET.get("page")
+        brand_obj = paginator.get_page(page_number)
+        return render(request, "custom_admin/brand.html", {"brand_obj": brand_obj})
     return redirect("home:home_page")
 
 
@@ -174,11 +181,15 @@ def category_management(request):
             active_date__lte=timezone.now().date(),
             expiry_date__gte=timezone.now().date(),
         )
+        paginator = Paginator(categories, 10)
+        page_number = request.GET.get("page")
+        category_obj = paginator.get_page(page_number)
+        # offer alert message
         if "message" in request.session:
             message = request.session.pop("message")
         else:
             message = None
-        context = {"categories": categories, "offers": offers, "message": message}
+        context = {"category_obj": category_obj, "offers": offers, "message": message}
         return render(request, "custom_admin/category.html", context)
     return redirect("home:home_page")
 
@@ -192,7 +203,10 @@ def product_management(request):
             active_date__lte=timezone.now().date(),
             expiry_date__gte=timezone.now().date(),
         )
-        context = {"products": products, "offers": offers}
+        paginator = Paginator(products, 10)
+        page_number = request.GET.get("page")
+        product_obj = paginator.get_page(page_number)
+        context = {"product_obj": product_obj, "offers": offers}
         return render(request, "custom_admin/product.html", context)
     return redirect("home:home_page")
 
@@ -201,26 +215,11 @@ def product_management(request):
 @login_required(login_url="authentication:signin")
 def order_management(request):
     if request.user.is_superuser:
-        ordered_products = Orders.objects.all().order_by("-id")
-        orders = []
-        for item in ordered_products:
-            order_id = item.id
-            ordered_date = item.ordered_date
-            total = item.total
-            status = item.status
-            payment_method = item.payment_method
-            product_name = item.product.name
-            orders.append(
-                {
-                    "order_id": order_id,
-                    "ordered_date": ordered_date,
-                    "total": total,
-                    "status": status,
-                    "payment_method": payment_method,
-                    "product_name": product_name,
-                }
-            )
-        return render(request, "custom_admin/orders.html", {"orders": orders})
+        orders = Orders.objects.all().order_by("-id")
+        paginator = Paginator(orders, 10)
+        page_number = request.GET.get("page")
+        order_obj = paginator.get_page(page_number)
+        return render(request, "custom_admin/orders.html", {"order_obj": order_obj})
     return redirect("home:home_page")
 
 
@@ -243,7 +242,10 @@ def coupon_management(request):
         coupons = Coupon.objects.annotate(users_used=Count("couponusage")).order_by(
             "-id"
         )
-        return render(request, "custom_admin/coupon.html", {"coupons": coupons})
+        paginator = Paginator(coupons, 10)
+        page_number = request.GET.get("page")
+        coupon_obj = paginator.get_page(page_number)
+        return render(request, "custom_admin/coupon.html", {"coupon_obj": coupon_obj})
     return redirect("home:home_page")
 
 
@@ -383,5 +385,8 @@ def generate_excel(request):
 def offer_management(request):
     if request.user.is_superuser:
         offers = Offer.objects.all().order_by("-id")
-        return render(request, "custom_admin/offer.html", {"offers": offers})
+        paginator = Paginator(offers, 10)
+        page_number = request.GET.get("page")
+        offer_obj = paginator.get_page(page_number)
+        return render(request, "custom_admin/offer.html", {"offer_obj": offer_obj})
     return redirect("home:home_page")
