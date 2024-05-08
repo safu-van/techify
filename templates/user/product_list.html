@@ -10,6 +10,91 @@
     <link rel="stylesheet" href="{% static 'user/assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'user/assets/css/skins/skin-demo-13.css' %}">
     <link rel="stylesheet" href="{% static 'user/assets/css/demos/demo-13.css' %}">
+    <style>
+        .pagination{
+            list-style: none;
+            display: inline-block;
+            padding: 0;
+            margin-top: 10px;
+            li{
+                display: inline;
+                text-align: center;
+            }
+            a{
+                float: left;
+                display: block;
+                font-size: 14px;
+                text-decoration: none;
+                padding: 5px 12px;
+                color:#fff;
+                margin-left: -1px;
+                border:1px solid transparent;
+                line-height: 1.5;
+                &.active{  cursor: default;}
+                &:active{ outline: none;}
+            }
+        }
+        .modal-5{
+            position: relative;
+            &:after{
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 35px;
+                left:0;
+                bottom:0;
+                z-index: -1;
+                @include background-image(linear-gradient( left, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 40% ,rgba(0,0,0,0.65) 50%,rgba(0,0,0,0.65) 60%,rgba(0,0,0,0) 100%));
+            }
+
+            a{
+                color:#666;
+                padding:13px 5px 5px;
+                margin: 0 10px;
+                position: relative;
+                &:hover{
+                    color: #fff;
+                    &:after{
+                        content: '';
+                        position: absolute;
+                        width: 24px;
+                        height: 24px;
+                        background:#3399ff;
+                        @include border-radius(100%);
+                        z-index: -1;
+                        left: -3px;
+                        bottom: 4px;
+                        margin: auto;
+                    }
+                }
+                &.next , &.prev{
+                    color:#3399ff;
+                    &:hover{
+                        color:#666;
+                        &:after{display: none;}
+                    }
+                }
+                &.active {
+                    background:#3399ff;
+                    color:#fff;
+                    &:before{
+                        content: '';
+                        position: absolute;
+                        top:-11px;
+                        left:-10px;
+                        width: 18px;
+                        border:10px solid transparent;
+                        border-bottom:7px solid #104477;
+                        z-index: -1;
+                    }
+                    &:hover{
+                        &:after{display: none;}
+                    }
+                }
+
+            }
+        }
+    </style>
 {% endblock %}
 {% block main %}
     <main class="main">
@@ -20,25 +105,33 @@
                         <a href="#" class="sidebar-toggler"><i class="icon-bars"></i>Filters</a>
                     </div>
                     <div class="toolbox-right">
-                        <form method="POST" action="{% url 'product:product_list' %}">
-                            {% csrf_token %}
-                            <div class="toolbox-sort">
-                                <label for="sortby">Sort by:</label>
-                                <div class="select-custom">
+                        <div class="toolbox-sort">
+                            <label for="sortby">Sort by:</label>
+                            <div class="select-custom">
+                                <form method="get" action="{% url 'product:product_list' %}">
+                                    {% if search_query %}
+                                        <input type="hidden" name="query" value="{{ search_query }}">
+                                    {% endif %}
+                                    {% for cat_id in selected_categories %}
+                                        <input type="hidden" name="categories" value="{{ cat_id }}">
+                                    {% endfor %}
+                                    {% for brand_id in selected_brands %}
+                                        <input type="hidden" name="brands" value="{{ brand_id }}">
+                                    {% endfor %}
                                     <select name="sortby" id="sortby" class="form-control" onchange="this.form.submit()">
                                         <option value="" selected disabled>Select an Option</option>
                                         <option value="Price: low to high">Price: low to high</option>
                                         <option value="Price: high to low">Price: high to low</option>
                                         <option value="New Arrivals">New Arrivals</option>
                                     </select>
-                                </div>
+                                </form>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div class="products" >
                     <div class="row" >
-                        {% for product in products %}
+                        {% for product in product_obj %}
                             <div class="col-6 col-md-4 col-lg-4 col-xl-3">
                                 <div class="product">
                                     <figure class="product-media">
@@ -54,7 +147,7 @@
                                     </figure>
                                     <div class="product-body">
                                         <div class="product-cat">
-                                            <a href="{% url 'product:category_product' product.category.id%}">{{ product.category.name }}</a>
+                                            <a>{{ product.category.name }}</a>
                                         </div>
                                         <h3 class="product-title"><a href="{% url 'product:product_view' product.id %}">{{ product.name }}</a></h3>
                                         <div class="product-price">
@@ -79,7 +172,26 @@
                             </div>
                         {% endfor %}
                     </div>
-                    {% if not products %}
+                    {% if product_obj.paginator.num_pages > 1 %}
+                        <div class="row" style="display: flex; justify-content: center;">
+                            <ul class="pagination modal-5">
+                                {% if product_obj.has_previous %}
+                                    <li><a href="?page={{ product_obj.previous_page_number }}{% if sort_by %}&sortby={{ sort_by }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% for cat_id in selected_categories %}&categories={{ cat_id }}{% endfor %}{% for brand_id in selected_brands %}&brands={{ brand_id }}{% endfor %}" class="prev">Prev</a></li>
+                                {% endif %}
+                                {% for page_num in product_obj.paginator.page_range %}
+                                    {% if page_num == product_obj.number %}
+                                        <li><a class="active">{{ page_num }}</a></li>
+                                    {% elif page_num == 1 or page_num == product_obj.paginator.num_pages or page_num >= product_obj.number|add:"-2" and page_num <= product_obj.number|add:"2" %}
+                                        <li><a href="?page={{ page_num }}{% if sort_by %}&sortby={{ sort_by }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% for cat_id in selected_categories %}&categories={{ cat_id }}{% endfor %}{% for brand_id in selected_brands %}&brands={{ brand_id }}{% endfor %}">{{ page_num }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if product_obj.has_next %}
+                                    <li><a href="?page={{ product_obj.next_page_number }}{% if sort_by %}&sortby={{ sort_by }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% for cat_id in selected_categories %}&categories={{ cat_id }}{% endfor %}{% for brand_id in selected_brands %}&brands={{ brand_id }}{% endfor %}" class="next">Next</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    {% if not product_obj %}
                         <div style="text-align: center; margin-top: 20rem; height: 50rem;">
                             <h2>Empty</h2>
                             <span>Sorry, The Product is not Available</span>
@@ -88,8 +200,10 @@
                 </div>
                 <div class="sidebar-filter-overlay"></div>
                 <aside class="sidebar-shop sidebar-filter">
-                    <form id="filter-form" method="post" action="{% url 'product:filtered_products' %}" onsubmit="return validateForm()">
-                        {% csrf_token %}
+                    <form id="filter-form" method="get" action="{% url 'product:product_list' %}" onsubmit="return validateForm()">
+                        {% if search_query %}
+                            <input type="hidden" name="query" value="{{ search_query }}">
+                        {% endif %}
                         <div class="sidebar-filter-wrapper">
                             <div class="widget widget-clean" style="margin-bottom: 1rem;">
                                 <a href="{% url 'product:product_list' %}" >Clear All</a>

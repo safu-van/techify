@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, Q
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from product.models import Product, ProductDetails
 from category.models import Category
@@ -12,25 +13,35 @@ from utils.utils import validate_image
 
 # List Products
 def product_list(request):
-    if request.method == "POST":
-        sort_by = request.POST.get("sortby")
+    products = Product.objects.filter(
+        is_available=True, category__is_available=True, brand__is_available=True
+    ).order_by("id")
 
-        if sort_by == "Price: low to high":
-            products = Product.objects.filter(
-                is_available=True, category__is_available=True, brand__is_available=True
-            ).order_by("p_price")
-        elif sort_by == "Price: high to low":
-            products = Product.objects.filter(
-                is_available=True, category__is_available=True, brand__is_available=True
-            ).order_by("-p_price")
-        elif sort_by == "New Arrivals":
-            products = Product.objects.filter(
-                is_available=True, category__is_available=True, brand__is_available=True
-            ).order_by("-id")
-    else:
-        products = Product.objects.filter(
-            is_available=True, category__is_available=True, brand__is_available=True
-        ).order_by("id")
+    # Search products
+    search_query = request.GET.get("query", None)
+    if search_query:
+        products = products.filter(name__icontains=search_query)
+
+    # Filter products
+    selected_categories = [int(cat_id) for cat_id in request.GET.getlist("categories")]
+    selected_brands = [int(brand_id) for brand_id in request.GET.getlist("brands")]
+    if selected_categories or selected_brands:
+        products = products.filter(
+            Q(category__id__in=selected_categories) | Q(brand__id__in=selected_brands)
+        ).distinct()
+
+    # Sorting products
+    sort_by = request.GET.get("sortby")
+    if sort_by == "Price: low to high":
+        products = products.order_by("p_price")
+    elif sort_by == "Price: high to low":
+        products = products.order_by("-p_price")
+    elif sort_by == "New Arrivals":
+        products = products.order_by("-id")
+
+    paginator = Paginator(products, 8)
+    page_number = request.GET.get("page")
+    product_obj = paginator.get_page(page_number)
 
     brands = Brand.objects.filter(is_available=True).annotate(
         product_count=Count("product")
@@ -40,58 +51,15 @@ def product_list(request):
     )
 
     context = {
-        "products": products,
+        "product_obj": product_obj,
         "brands": brands,
         "categories": categories,
+        "sort_by": sort_by,
+        "search_query": search_query,
+        "selected_brands": selected_brands,
+        "selected_categories": selected_categories,
     }
     return render(request, "user/product_list.html", context)
-
-
-# List filtered products
-def filtered_products(request):
-    if request.method == "POST":
-        selected_categories = [
-            int(cat_id) for cat_id in request.POST.getlist("categories")
-        ]
-        selected_brands = [int(brand_id) for brand_id in request.POST.getlist("brands")]
-
-        products = Product.objects.filter(
-            Q(category__id__in=selected_categories) | Q(brand__id__in=selected_brands)
-        ).distinct()
-
-        brands = Brand.objects.filter(is_available=True).annotate(
-            product_count=Count("product")
-        )
-        categories = Category.objects.filter(is_available=True).annotate(
-            product_count=Count("product")
-        )
-
-        context = {
-            "products": products,
-            "brands": brands,
-            "categories": categories,
-            "selected_brands": selected_brands,
-            "selected_categories": selected_categories,
-        }
-    return render(request, "user/product_list.html", context)
-
-
-# Search Products by query
-def search_products(request):
-    if request.method == "POST":
-        search_query = request.POST.get("query")
-        products = Product.objects.filter(
-            name__icontains=search_query, is_available=True, brand__is_available=True
-        ).exclude(category__is_available=False)
-        return render(request, "user/product_list.html", {"products": products})
-
-
-# List Products Based On Category
-def category_product(request, category_id):
-    products = Product.objects.filter(
-        category=category_id, brand__is_available=True
-    ).exclude(is_available=False)
-    return render(request, "user/product_list.html", {"products": products})
 
 
 # Product Individual View

@@ -44,7 +44,7 @@
                 <div class="row">
                     {% for category in categories %}
                         <div class="col-6 col-sm-4 col-lg-2">
-                            <a href="{% url 'product:category_product' category.id %}" class="cat-block">
+                            <a class="cat-block">
                                 <figure>
                                     <span>
                                         <img src="{{ category.image.url }}" alt="Category image" style="width: 130px;">
@@ -107,7 +107,7 @@
                                     </figure>
                                     <div class="product-body">
                                         <div class="product-cat">
-                                            <a href="{% url 'product:category_product' product.category.id%}">{{ product.category.name }}</a>
+                                            <a>{{ product.category.name }}</a>
                                         </div>
                                         <h3 class="product-title"><a href="{% url 'product:product_view' product.id %}">{{ product.name }}</a></h3>
                                         <div class="product-price">

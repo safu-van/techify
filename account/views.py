@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.http import HttpResponse
 from django.template.loader import get_template
+from django.core.paginator import Paginator
 
 from authentication.models import User
 from account.models import UserAddress, Wallet, WalletTransaction
@@ -62,9 +63,10 @@ def generate_referral_code(request):
 def orders(request):
     user_id = request.user.id
     ordered_products = Orders.objects.filter(user=user_id).order_by("-id")
-    return render(
-        request, "user/list_orders.html", {"ordered_products": ordered_products}
-    )
+    paginator = Paginator(ordered_products, 5)
+    page_number = request.GET.get("page")
+    ordered_obj = paginator.get_page(page_number)
+    return render(request, "user/list_orders.html", {"ordered_obj": ordered_obj})
 
 
 # Order Details
@@ -209,14 +211,17 @@ def wallet(request):
             transactions = WalletTransaction.objects.filter(wallet=wallet).order_by(
                 "-id"
             )
+            paginator = Paginator(transactions, 5)
+            page_number = request.GET.get("page")
+            transaction_obj = paginator.get_page(page_number)
         else:
             amount = 0.0
-            transactions = False
+            transaction_obj = False
     except ObjectDoesNotExist:
         return redirect("authentication:signin")
     context = {
         "amount": amount,
-        "transactions": transactions,
+        "transaction_obj": transaction_obj,
     }
     return render(request, "user/wallet.html", context)
 
