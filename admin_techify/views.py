@@ -216,10 +216,17 @@ def product_management(request):
 def order_management(request):
     if request.user.is_superuser:
         orders = Orders.objects.all().order_by("-id")
+
+        # Sorting
+        sort = request.GET.get("sort")
+        if sort:
+            orders = orders.filter(status=sort)
+
         paginator = Paginator(orders, 10)
         page_number = request.GET.get("page")
         order_obj = paginator.get_page(page_number)
-        return render(request, "custom_admin/orders.html", {"order_obj": order_obj})
+        context = {"order_obj": order_obj, "sort": sort, "page_number": page_number}
+        return render(request, "custom_admin/orders.html", context)
     return redirect("home:home_page")
 
 
