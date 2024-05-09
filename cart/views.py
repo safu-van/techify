@@ -334,6 +334,7 @@ def order_status(request, order_id, status):
         if status == "Delivered":
             item.delivered_date = date.today()
         elif status == "Returned":
+            item.return_status = None
             # Add amount of Returned product to wallet
             description = "Returned Product Amount Credited"
             update_wallet(user, amount, description, is_credit)
@@ -346,7 +347,10 @@ def order_status(request, order_id, status):
                 update_wallet(user, amount, description, is_credit)
             # Increase the product stock
             update_product_stock(purchased_qty, product_id)
-        item.status = status
+        if status == "Requested Return" or status == "Return request rejected":
+            item.return_status = status
+        else:
+            item.status = status
         item.save()
     except ObjectDoesNotExist:
         return redirect(previous_url)

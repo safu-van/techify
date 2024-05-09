@@ -112,6 +112,7 @@
                         <a href="?sort=Out of Delivery" class="dropdown-item" style="color: white;">Out of Delivery</a>
                         <a href="?sort=Delivered" class="dropdown-item" style="color: #00d25b;">Delivered</a>
                         <a href="?sort=Cancelled" class="dropdown-item" style="color: #fc424a;">Cancelled</a>
+                        <a href="?sort=Requested Return" class="dropdown-item" style="color: #ffab00;">Requested Return</a>
                         <a href="?sort=Returned" class="dropdown-item" style="color: #ffab00;">Returned</a>
                     </div>
                 </div>
@@ -146,7 +147,17 @@
                                                     {% if order.status == "Cancelled" %}
                                                         <button class="btn btn-outline-danger">Cancelled</button>
                                                     {% elif order.status == "Delivered" %}
-                                                        <button class="btn btn-outline-success">Delivered</button>
+                                                        {% if order.return_status == "Requested Return" %}
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ order.return_status }}</button>
+                                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
+                                                                    <a href="{% url 'cart:order_status' order.id 'Return request rejected' %}" class="dropdown-item" style="color: #fc424a;">Reject</a>
+                                                                    <a href="{% url 'cart:order_status' order.id 'Returned' %}" class="dropdown-item" style="color: #00d25b;">Approve</a>
+                                                                </div>
+                                                            </div>
+                                                        {% else %}
+                                                            <button class="btn btn-outline-success">Delivered</button>
+                                                        {% endif %}
                                                     {% elif order.status == "Returned" %}
                                                         <button class="btn btn-outline-warning">Returned</button>
                                                     {% else %}

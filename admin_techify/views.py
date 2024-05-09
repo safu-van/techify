@@ -35,8 +35,8 @@ def admin_dashboard(request):
         current_year = timezone.now().year
         monthly_orders = Orders.objects.filter(
             status="Delivered",
-            ordered_date__month=current_month,
-            ordered_date__year=current_year,
+            delivered_date__month=current_month,
+            delivered_date__year=current_year,
         )
         monthly_revenue = sum(order.total for order in monthly_orders)
         # Daily Revenue
@@ -91,41 +91,45 @@ def admin_dashboard(request):
             if time_frame == "weekly":
                 weekly_sales = (
                     Orders.objects.filter(status="Delivered")
-                    .annotate(week=ExtractWeek("ordered_date"))
+                    .annotate(week=ExtractWeek("delivered_date"))
                     .values("week")
                     .annotate(total_sales=Count("id"))
+                    .order_by("week")
                 )
-                for item in reversed(weekly_sales):
+                for item in weekly_sales:
                     label.append("Week " + str(item["week"]))
                     sales_count.append(item["total_sales"])
             elif time_frame == "monthly":
                 monthly_sales = (
                     Orders.objects.filter(status="Delivered")
-                    .annotate(month=ExtractMonth("ordered_date"))
+                    .annotate(month=ExtractMonth("delivered_date"))
                     .values("month")
                     .annotate(total_sales=Count("id"))
+                    .order_by("month")
                 )
-                for item in reversed(monthly_sales):
+                for item in monthly_sales:
                     label.append(calendar.month_name[item["month"]])
                     sales_count.append(item["total_sales"])
             elif time_frame == "yearly":
                 yearly_sales = (
                     Orders.objects.filter(status="Delivered")
-                    .annotate(year=ExtractYear("ordered_date"))
+                    .annotate(year=ExtractYear("delivered_date"))
                     .values("year")
                     .annotate(total_sales=Count("id"))
+                    .order_by("year")
                 )
-                for item in reversed(yearly_sales):
+                for item in yearly_sales:
                     label.append(item["year"])
                     sales_count.append(item["total_sales"])
         else:
             monthly_sales = (
                 Orders.objects.filter(status="Delivered")
-                .annotate(month=ExtractMonth("ordered_date"))
+                .annotate(month=ExtractMonth("delivered_date"))
                 .values("month")
                 .annotate(total_sales=Count("id"))
+                .order_by("month")
             )
-            for item in reversed(monthly_sales):
+            for item in monthly_sales:
                 label.append(calendar.month_name[item["month"]])
                 sales_count.append(item["total_sales"])
 
@@ -220,7 +224,12 @@ def order_management(request):
         # Sorting
         sort = request.GET.get("sort")
         if sort:
-            orders = orders.filter(status=sort)
+            if sort == "Requested Return":
+                orders = orders.filter(return_status=sort)
+            else:
+                orders = orders.filter(status=sort).exclude(
+                    return_status="Requested Return"
+                )
 
         paginator = Paginator(orders, 10)
         page_number = request.GET.get("page")

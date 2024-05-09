@@ -146,7 +146,7 @@
                                                 <span style="width: 100%; float: left; height: 20px; font-size: 12px">{{ order.product.category.name }}</span>
                                                 <span style="width: 100%; float: left; font-size: 12px">${{ order.product_price }}</span>
                                             </div>
-                                            {% if order.status == "Delivered" %}
+                                            {% if order.status == "Delivered" or order.status == "Returned" %}
                                                 <div style="float: right; width: fit-content; margin-top: 6rem;">
                                                     <a href="{% url 'account:download_invoice' order.id %}" class="btn btn-primary text-white" style="border-radius: 30px; color: #666666; margin-left: 1rem; cursor: pointer;">
                                                         Download Invoice
@@ -161,9 +161,15 @@
                                                 </div>
                                             {% elif order.status == "Delivered" and return_order == True %}
                                                 <div style="float: right; width: fit-content; margin-top: 6rem;">
-                                                    <button class="btn btn-warning" onclick="confirmReturn({{ order.id }})" style="border-radius: 30px; color: #666666;">
-                                                        Return Order
-                                                    </button>
+                                                    {% if order.return_status %}
+                                                        <button class="btn text-white" style="border-radius: 30px; background-color: #a5a5a5;" disabled>
+                                                            {{ order.return_status }}
+                                                        </button>
+                                                    {% else %}
+                                                        <button class="btn btn-warning text-white" onclick="confirmReturn({{ order.id }})" style="border-radius: 30px; color: #666666;">
+                                                            Request Return
+                                                        </button>
+                                                    {% endif %}
                                                 </div>
                                             {% endif %}
                                         </div>
@@ -220,7 +226,7 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var returnOrder = "{% url 'cart:order_status' 123 'Returned' %}";
+                    var returnOrder = "{% url 'cart:order_status' 123 'Requested Return' %}";
                     returnOrder = returnOrder.replace('123', orderId);
 
                     window.location.href = returnOrder;
