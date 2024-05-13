@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('cart', '0014_orders_return_status'),
+        ("cart", "0014_orders_return_status"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='orders',
-            name='return_status',
+            model_name="orders",
+            name="return_status",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
     ]
