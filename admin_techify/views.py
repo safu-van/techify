@@ -48,22 +48,30 @@ def admin_dashboard(request):
         # Total Sales
         total_sales = Orders.objects.filter(status="Delivered").count()
         # Top Selling Products
-        top_selling_products = Product.objects.annotate(
-            total_orders=Count("orders")
-        ).order_by("-total_orders")[:7]
+        top_selling_products = Orders.objects.filter(status='Delivered').values('product').annotate(total_sold=Sum('product_qty')).order_by('-total_sold')[:7]
+        top_products = []
+        for item in top_selling_products:
+            product_id = item['product']
+            product = Product.objects.get(id=product_id)
+            top_products.append(product)
         # Top Selling Brands
-        top_selling_brands = (
-            Product.objects.values("brand__name")
-            .annotate(total_quantity=Sum("orders__product_qty"))
-            .order_by("-total_quantity")[:7]
-        )
-        top_brand_names = [brand["brand__name"] for brand in top_selling_brands]
+        top_selling_brands = Orders.objects.filter(status='Delivered').values('product__brand').annotate(total_sold=Sum('product_qty')).order_by('-total_sold')[:7]
+        top_brands = []
+        for item in top_selling_brands:
+            brand_id = item['product__brand']
+            brand_name = Brand.objects.get(pk=brand_id).name
+            top_brands.append(brand_name)
         # Payment Methods Counts (for graph)
+        payment_methods = ["Cash on Delivery", "Online Payment", "Wallet Payment"]
         payment_method_counts = (
             Orders.objects.filter(status="Delivered")
             .values("payment_method")
             .annotate(count=Count("payment_method"))
         )
+        payment_counts = {method: 0 for method in payment_methods}
+        for method_count in payment_method_counts:
+            payment_counts[method_count["payment_method"]] = method_count["count"]
+        counts = [payment_counts[method] for method in payment_methods]
         counts = [method_count["count"] for method_count in payment_method_counts]
         # Total Amt of each payment method
         payment_methods = ["Online Payment", "Cash on Delivery", "Wallet Payment"]
@@ -138,8 +146,8 @@ def admin_dashboard(request):
             "monthly_revenue": monthly_revenue,
             "daily_revenue": daily_revenue,
             "total_sales": total_sales,
-            "top_products": top_selling_products,
-            "top_brands": top_brand_names,
+            "top_products": top_products,
+            "top_brands": top_brands,
             "counts": counts,
             "methods_and_totals": methods_and_totals,
             "scrollTo": scrollTo,
