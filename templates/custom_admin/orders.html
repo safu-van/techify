@@ -149,7 +149,7 @@
                                                     {% elif order.status == "Delivered" %}
                                                         {% if order.return_status == "Requested Return" %}
                                                             <div class="dropdown">
-                                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ order.return_status }}</button>
+                                                                <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ order.return_status }}</button>
                                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton2">
                                                                     <a href="{% url 'cart:order_status' order.id 'Return request rejected' %}" class="dropdown-item" style="color: #fc424a;">Reject</a>
                                                                     <a href="{% url 'cart:order_status' order.id 'Returned' %}" class="dropdown-item" style="color: #00d25b;">Approve</a>
