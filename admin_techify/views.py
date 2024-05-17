@@ -48,17 +48,27 @@ def admin_dashboard(request):
         # Total Sales
         total_sales = Orders.objects.filter(status="Delivered").count()
         # Top Selling Products
-        top_selling_products = Orders.objects.filter(status='Delivered').values('product').annotate(total_sold=Sum('product_qty')).order_by('-total_sold')[:7]
+        top_selling_products = (
+            Orders.objects.filter(status="Delivered")
+            .values("product")
+            .annotate(total_sold=Sum("product_qty"))
+            .order_by("-total_sold")[:7]
+        )
         top_products = []
         for item in top_selling_products:
-            product_id = item['product']
+            product_id = item["product"]
             product = Product.objects.get(id=product_id)
             top_products.append(product)
         # Top Selling Brands
-        top_selling_brands = Orders.objects.filter(status='Delivered').values('product__brand').annotate(total_sold=Sum('product_qty')).order_by('-total_sold')[:7]
+        top_selling_brands = (
+            Orders.objects.filter(status="Delivered")
+            .values("product__brand")
+            .annotate(total_sold=Sum("product_qty"))
+            .order_by("-total_sold")[:7]
+        )
         top_brands = []
         for item in top_selling_brands:
-            brand_id = item['product__brand']
+            brand_id = item["product__brand"]
             brand_name = Brand.objects.get(pk=brand_id).name
             top_brands.append(brand_name)
         # Payment Methods Counts (for graph)
