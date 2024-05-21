@@ -52,7 +52,7 @@
     </style>
 {% endblock %}
 {% block main %}
-    <main class="main" style="margin-top: 50px;">
+    <main class="main" style="margin-top: 50px; margin-bottom: 13rem;">
         <div class="page-content">
             <div class="dashboard">
                 <div class="container">
@@ -60,7 +60,7 @@
                         <aside class="col-md-4 col-lg-3">
                             <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'account:account_settings'  %}">Account Settings</a>
+                                    <a class="nav-link" href="{% url 'account:account_settings'  %}">Account Details</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'account:orders'  %}">Orders</a>
@@ -77,6 +77,7 @@
                             </ul>
                         </aside>
                         <div class="col-md-8 col-lg-9">
+                            <h3>Addresses</h3>
                             <div class="tab-content">
                                 <div class="row">
                                     <a href="{% url 'account:add_address' %}" class="address-container col-6" style="margin-bottom: 1rem; border: 2px dashed #ccc; cursor: pointer; height: 263.8px;">

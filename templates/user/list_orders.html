@@ -97,15 +97,15 @@
     </style>
 {% endblock %}
 {% block main %}
-    <main class="main" style="margin-top: 50px;">
-        <div class="page-content">
+    <main class="main" style="margin-top: 50px; margin-bottom: 5rem;">
+        <div class="page-content" style="padding: 0;">
             <div class="dashboard">
                 <div class="container">
                     <div class="row">
                         <aside class="col-md-4 col-lg-3">
                             <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'account:account_settings'  %}">Account Settings</a>
+                                    <a class="nav-link" href="{% url 'account:account_settings'  %}">Account Details</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link active" href="{% url 'account:orders'  %}">Orders</a>
@@ -125,71 +125,78 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
                                     <h3>Orders</h3>
-                                    {% for product in ordered_obj %}
-                                        <div class="row" style="border: 1px solid #ccc; border-radius: 5px; margin-bottom: 2rem;">
-                                            <div class="top" style="background:#F0F2F2; width:100%;">
-                                                <div style="width: 20%; padding-left: 40px; float: left;">
-                                                    <div style="width: fit-content;">
-                                                        <span style="color: #3399ff;">ORDER PLACED</span>
-                                                    </div>
-                                                    <div style="width: fit-content;">
-                                                        {{ product.ordered_date }}
-                                                    </div>
-                                                </div>
-                                                <div style="width: 20%; padding-left: 40px; float: left;">
-                                                    <div style="width: fit-content;">
-                                                        <span style="color: #3399ff;">TOTAL</span>
-                                                    </div>
-                                                    <div style="width: fit-content;">
-                                                        ${{ product.total }}
-                                                    </div>
-                                                </div>
-                                                <div style="width: 20%; padding-left: 40px; float: left;">
-                                                    <div style="width: fit-content;">
-                                                        <span style="color: #3399ff;">SHIP TO</span>
-                                                    </div>
-                                                    <div style="width: fit-content;">
-                                                        {{ product.address.name }}
-                                                    </div>
-                                                </div>
-                                                <div style="width: 20%; padding-left: 40px; float: left;">
-                                                    <div style="width: fit-content;">
-                                                        <span style="color: #3399ff;">STATUS</span>
-                                                    </div>
-                                                    <div style="width: fit-content;">
-                                                        {{ product.status }}
-                                                    </div>
-                                                </div>
-                                                <div style="width: 20%; padding-left: 40px; float: left;">
-                                                    <div style="width: fit-content;">
-                                                        <span style="color: #3399ff;">DELIVERED ON</span>
-                                                    </div>
-                                                    {% if product.delivered_date %}
+                                    {% if ordered_obj %}
+                                        {% for product in ordered_obj %}
+                                            <div class="row" style="border: 1px solid #ccc; border-radius: 5px; margin-bottom: 2rem;">
+                                                <div class="top" style="background:#F0F2F2; width:100%;">
+                                                    <div style="width: 20%; padding-left: 40px; float: left;">
                                                         <div style="width: fit-content;">
-                                                            {{ product.delivered_date }}
+                                                            <span style="color: #3399ff;">ORDER PLACED</span>
                                                         </div>
-                                                    {% else %}
                                                         <div style="width: fit-content;">
-                                                            <span>Not Delivered</span>
+                                                            {{ product.ordered_date }}
                                                         </div>
-                                                    {% endif %}
+                                                    </div>
+                                                    <div style="width: 20%; padding-left: 40px; float: left;">
+                                                        <div style="width: fit-content;">
+                                                            <span style="color: #3399ff;">TOTAL</span>
+                                                        </div>
+                                                        <div style="width: fit-content;">
+                                                            ${{ product.total }}
+                                                        </div>
+                                                    </div>
+                                                    <div style="width: 20%; padding-left: 40px; float: left;">
+                                                        <div style="width: fit-content;">
+                                                            <span style="color: #3399ff;">SHIP TO</span>
+                                                        </div>
+                                                        <div style="width: fit-content;">
+                                                            {{ product.address.name }}
+                                                        </div>
+                                                    </div>
+                                                    <div style="width: 20%; padding-left: 40px; float: left;">
+                                                        <div style="width: fit-content;">
+                                                            <span style="color: #3399ff;">STATUS</span>
+                                                        </div>
+                                                        <div style="width: fit-content;">
+                                                            {{ product.status }}
+                                                        </div>
+                                                    </div>
+                                                    <div style="width: 20%; padding-left: 40px; float: left;">
+                                                        <div style="width: fit-content;">
+                                                            <span style="color: #3399ff;">DELIVERED ON</span>
+                                                        </div>
+                                                        {% if product.delivered_date %}
+                                                            <div style="width: fit-content;">
+                                                                {{ product.delivered_date }}
+                                                            </div>
+                                                        {% else %}
+                                                            <div style="width: fit-content;">
+                                                                <span>Not Delivered</span>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="down" style="width: 100%; padding: 10px; padding-left: 40px;">
+                                                    <div style="width: 14%; float: left;">
+                                                        <img src="{{ product.product.thumbnail.url }}" height="90" width="90">
+                                                    </div>
+                                                    <div style="width: 65%; float: left; padding-top: 3rem;">
+                                                        <span style="color: #3399ff;">{{ product.product.name }}</span>
+                                                    </div>
+                                                    <div style="float: right; width: fit-content; margin-top: 5rem;">
+                                                        <button style="border: none; background: white;">
+                                                            <a href="{% url 'account:order_details' product.id %}" class="btn btn-primary text-white" style="border-radius: 30px;">View Details</a>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="down" style="width: 100%; padding: 10px; padding-left: 40px;">
-                                                <div style="width: 14%; float: left;">
-                                                    <img src="{{ product.product.thumbnail.url }}" height="90" width="90">
-                                                </div>
-                                                <div style="width: 65%; float: left; padding-top: 3rem;">
-                                                    <span style="color: #3399ff;">{{ product.product.name }}</span>
-                                                </div>
-                                                <div style="float: right; width: fit-content; margin-top: 5rem;">
-                                                    <button style="border: none; background: white;">
-                                                        <a href="{% url 'account:order_details' product.id %}" class="btn btn-primary text-white" style="border-radius: 30px;">View Details</a>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div style="text-align: center; margin-top: 15rem; height: 25rem;">
+                                            <h2>Empty</h2>
+                                            <span>No Orders Yet.</span>
                                         </div>
-                                    {% endfor %}
+                                    {% endif %}
                                 </div>
                             </div>
                             {% if ordered_obj.paginator.num_pages > 1 %}

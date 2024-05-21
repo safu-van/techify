@@ -68,13 +68,13 @@
                                 <div class="product-details-action">
                                     <input type='hidden' value='{{ product.id }}' id='product-id'>
                                     {% if product.stock != 0 and user.is_authenticated %}
-                                        <a class="btn-product btn-cart " id="add-to-cart-btn"  style="margin-right: 4rem;"><span>ADD TO CART</span></a>
+                                        <button class="btn-product btn-cart " id="add-to-cart-btn"  style="margin-right: 4rem;"><span>ADD TO CART</span></button>
                                     {% elif product.stock != 0 and not user.is_authenticated %}
                                         <a class="btn-product btn-cart " href="{% url 'authentication:signin' %}" style="margin-right: 4rem;"><span>ADD TO CART</span></a>
                                     {% endif %}
                                     <div class="details-action-wrapper" style="margin-left: 0;">
                                         {% if user.is_authenticated %}
-                                            <a class="btn-product btn-wishlist" id="add-to-wishlist" style="width: 198px; height: 38.45px;"><span>ADD TO WISHLIST</span></a>
+                                            <button class="btn-product btn-wishlist" id="add-to-wishlist" style="width: 198px; height: 38.45px;"><span>ADD TO WISHLIST</span></button>
                                         {% else %}
                                             <a class="btn-product btn-wishlist" href="{% url 'authentication:signin' %}" style="width: 198px; height: 38.45px;"><span>ADD TO WISHLIST</span></a>
                                         {% endif %}
@@ -194,14 +194,11 @@
                             <div class="product" style="width: 75%;">
                                 <figure class="product-media">
                                     {% if product.offer %}
-                                        <span class="product-label label-sale">{{ product.offer.discount }}% off</span>
+                                        <span class="product-label label-sale" style="top:0.8rem; left:0.8rem;">{{ product.offer.discount }}% off</span>
                                     {% endif %}
                                     <a href="{% url 'product:product_view' product.id %}">
                                         <img src="{{ product.thumbnail.url }}" alt="Product image" class="product-image">
                                     </a>
-                                    <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                    </div>
                                 </figure>
                                 <div class="product-body">
                                     <div class="product-cat">

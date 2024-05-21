@@ -16,7 +16,7 @@
         <div class="page-content mt-4">
             <div class="container">
                 {% if products %}
-                    <table class="table table-wishlist table-mobile">
+                    <table class="table table-wishlist table-mobile" style="margin-bottom: 20rem;">
                         <thead>
                             <tr>
                                 <th>Product</th>
@@ -32,12 +32,12 @@
                                     <td class="product-col">
                                         <div class="product">
                                             <figure class="product-media">
-                                                <a href="#">
+                                                <a href="{% url 'product:product_view' product.product.id %}">
                                                     <img src="{{ product.product.thumbnail.url }}" alt="Product image">
                                                 </a>
                                             </figure>
                                             <h3 class="product-title">
-                                                <a href="#">{{ product.product.name }}</a>
+                                                <a href="{% url 'product:product_view' product.product.id %}">{{ product.product.name }}</a>
                                             </h3>
                                         </div>
                                     </td>
@@ -45,7 +45,7 @@
                                     {% if product.product.stock != 0 %}
                                         <td class="stock-col"><span class="in-stock">In stock</span></td>
                                         <td class="action-col">
-                                            <a class="btn-product btn-cart add-to-cart-btn" data-product-id="{{ product.product.id }}" data-item-id="{{ product.id }}"><span>ADD TO CART</span></a>
+                                            <button class="btn-product btn-cart add-to-cart-btn" data-product-id="{{ product.product.id }}" data-item-id="{{ product.id }}" style="cursor: pointer; width: 20rem;"><span>ADD TO CART</span></button>
                                         </td>
                                     {% else %}
                                         <td class="stock-col"><span class="out-of-stock">Out of stock</span></td>

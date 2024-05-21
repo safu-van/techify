@@ -36,6 +36,7 @@ def cart(request):
         message = None
 
     for item in cart_items:
+        product_id = item.product.id
         product_name = item.product.name
         product_image = item.product.thumbnail.url
         product_price = item.product.price
@@ -45,6 +46,7 @@ def cart(request):
         stock_of_product = item.product.stock
         cart_details.append(
             {
+                "product_id": product_id,
                 "product_name": product_name,
                 "product_image": product_image,
                 "product_price": product_price,

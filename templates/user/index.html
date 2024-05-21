@@ -96,14 +96,11 @@
                                 <div class="product">
                                     <figure class="product-media">
                                         {% if product.offer %}
-                                            <span class="product-label label-sale">{{ product.offer.discount }}% off</span>
+                                            <span class="product-label label-sale" style="top:0.8rem; left:0.8rem;">{{ product.offer.discount }}% off</span>
                                         {% endif %}
                                         <a href="{% url 'product:product_view' product.id %}">
                                             <img src="{{ product.thumbnail.url }}" alt="Product image" class="product-image" >
                                         </a>
-                                        <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                        </div>
                                     </figure>
                                     <div class="product-body">
                                         <div class="product-cat">
