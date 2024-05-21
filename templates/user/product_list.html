@@ -192,9 +192,9 @@
                         </div>
                     {% endif %}
                     {% if not product_obj %}
-                        <div style="text-align: center; margin-top: 20rem; height: 50rem;">
+                        <div style="text-align: center; margin-top: 20rem; height: 25rem;">
                             <h2>Empty</h2>
-                            <span>Sorry, The Product is not Available</span>
+                            <span>Product is not Available</span>
                         </div>
                     {% endif %}
                 </div>
@@ -256,7 +256,7 @@
                             </div>
                         </div>
                         <span id="filterError" style="color: red; font-size: 12px; display: flex; justify-content: center;"></span>
-                        <div style="display: flex; justify-content: center;">
+                        <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
                             <button style="border: none; background: white;">
                                 <a class="btn btn-primary text-white rounded-pill">APPLY FILTERS</a>
                             </button>
@@ -266,39 +266,6 @@
             </div>
         </div>
     </main>
-{% endblock %}
-{% block mobile_menu %}
-    <div class="mobile-menu-overlay"></div>
-    <div class="mobile-menu-container">
-        <div class="mobile-menu-wrapper">
-            <span class="mobile-menu-close"><i class="icon-close"></i></span>
-            <nav class="mobile-nav">
-                <ul class="mobile-menu">
-                    <li class="active">
-                        <a href="#">Home</a>
-                    </li>
-                    <li>
-                        <a href="#">Shop</a>
-                    </li>
-                    <li>
-                        <a href="#" class="sf-with-ul">Product</a>
-                    </li>
-                    <li>
-                        <a href="#">Pages</a>
-                    </li>
-                    <li>
-                        <a href="#">Blog</a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="social-icons">
-                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
-            </div>
-        </div>
-    </div>
 {% endblock %}
 {% block js %}
     <script src="{% static 'user/assets/js/jquery.min.js' %}"></script>

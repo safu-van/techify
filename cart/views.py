@@ -181,8 +181,15 @@ def checkout(request):
     else:
         message = False
 
-    addresses = UserAddress.objects.filter(user=user_id)
-    products = CartItems.objects.filter(user=user_id)
+    addresses = UserAddress.objects.filter(user=user)
+    today = timezone.now().date()
+    used_coupons = CouponUsage.objects.filter(user=user).values_list(
+        "coupon_id", flat=True
+    )
+    coupons = Coupon.objects.filter(expiry_date__gte=today, limit__gt=0).exclude(
+        id__in=used_coupons
+    )
+    products = CartItems.objects.filter(user=user)
     sub_total = sum(item.total for item in products)
     total = sub_total
 
@@ -203,6 +210,7 @@ def checkout(request):
 
     context = {
         "addresses": addresses,
+        "coupons": coupons,
         "message": message,
         "products": products,
         "sub_total": sub_total,
