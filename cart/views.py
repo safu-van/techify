@@ -322,35 +322,37 @@ def order_success(request):
 
 
 # Order Status updation
+@login_required(login_url="authentication:signin")
 def order_status(request, order_id, status):
     previous_url = request.META.get("HTTP_REFERER")
     try:
-        user = User.objects.get(id=request.user.id)
         item = Orders.objects.get(id=order_id)
+        user = item.user
         amount = item.total
         purchased_qty = item.product_qty
         product_id = item.product.id
-        is_credit = True
+
         if status == "Delivered":
             item.delivered_date = date.today()
         elif status == "Returned":
             item.return_status = None
             # Add amount of Returned product to wallet
             description = "Returned Product Amount Credited"
-            update_wallet(user, amount, description, is_credit)
+            update_wallet(user, amount, description)
             # Increase the product stock
             update_product_stock(purchased_qty, product_id)
         elif status == "Cancelled":
             # Add amount of Cancelled product to wallet if payment method is ("Online Payment" or "Wallet Payment")
             if item.payment_method in ["Online Payment", "Wallet Payment"]:
                 description = "Cancelled Product Amount Credited"
-                update_wallet(user, amount, description, is_credit)
+                update_wallet(user, amount, description)
             # Increase the product stock
             update_product_stock(purchased_qty, product_id)
-        if status == "Requested Return" or status == "Return request rejected":
+        if status in ["Requested Return", "Return request rejected"]:
             item.return_status = status
         else:
             item.status = status
+
         item.save()
     except ObjectDoesNotExist:
         return redirect(previous_url)

@@ -27,7 +27,7 @@ def withdraw_from_wallet(user, total_amount):
 
 
 # Update Wallet (when product is returned or cancelled)
-def update_wallet(user, amount, description, is_credit):
+def update_wallet(user, amount, description):
     if Wallet.objects.filter(user=user).exists():
         wallet = Wallet.objects.get(user=user)
         wallet.amount += amount
@@ -38,7 +38,7 @@ def update_wallet(user, amount, description, is_credit):
         wallet=wallet,
         description=description,
         amount=amount,
-        is_credit=is_credit,
+        is_credit=True,
     )
     transaction.save()
 
