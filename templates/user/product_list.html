@@ -112,6 +112,9 @@
                                     {% if search_query %}
                                         <input type="hidden" name="query" value="{{ search_query }}">
                                     {% endif %}
+                                    {% if category_id %}
+                                        <input type="hidden" name="category" value="{{ category_id }}">
+                                    {% endif %}
                                     {% for cat_id in selected_categories %}
                                         <input type="hidden" name="categories" value="{{ cat_id }}">
                                     {% endfor %}
@@ -119,7 +122,7 @@
                                         <input type="hidden" name="brands" value="{{ brand_id }}">
                                     {% endfor %}
                                     <select name="sortby" id="sortby" class="form-control" onchange="this.form.submit()">
-                                        <option value="" selected disabled>Select an Option</option>
+                                        <option value="" selected disabled>{% if sort_by %}{{ sort_by }}{% else %}Select an Option{% endif %}</option>
                                         <option value="Price: low to high">Price: low to high</option>
                                         <option value="Price: high to low">Price: high to low</option>
                                         <option value="New Arrivals">New Arrivals</option>
@@ -173,17 +176,17 @@
                         <div class="row" style="display: flex; justify-content: center;">
                             <ul class="pagination modal-5">
                                 {% if product_obj.has_previous %}
-                                    <li><a href="?page={{ product_obj.previous_page_number }}{% if sort_by %}&sortby={{ sort_by }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% for cat_id in selected_categories %}&categories={{ cat_id }}{% endfor %}{% for brand_id in selected_brands %}&brands={{ brand_id }}{% endfor %}" class="prev">Prev</a></li>
+                                    <li><a href="?page={{ product_obj.previous_page_number }}{% if sort_by %}&sortby={{ sort_by }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% for cat_id in selected_categories %}&categories={{ cat_id }}{% endfor %}{% for brand_id in selected_brands %}&brands={{ brand_id }}{% endfor %}{% if category_id %}&category={{ category_id }}{% endif %}" class="prev">Prev</a></li>
                                 {% endif %}
                                 {% for page_num in product_obj.paginator.page_range %}
                                     {% if page_num == product_obj.number %}
                                         <li><a class="active">{{ page_num }}</a></li>
                                     {% elif page_num == 1 or page_num == product_obj.paginator.num_pages or page_num >= product_obj.number|add:"-2" and page_num <= product_obj.number|add:"2" %}
-                                        <li><a href="?page={{ page_num }}{% if sort_by %}&sortby={{ sort_by }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% for cat_id in selected_categories %}&categories={{ cat_id }}{% endfor %}{% for brand_id in selected_brands %}&brands={{ brand_id }}{% endfor %}">{{ page_num }}</a></li>
+                                        <li><a href="?page={{ page_num }}{% if sort_by %}&sortby={{ sort_by }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% for cat_id in selected_categories %}&categories={{ cat_id }}{% endfor %}{% for brand_id in selected_brands %}&brands={{ brand_id }}{% endfor %}{% if category_id %}&category={{ category_id }}{% endif %}">{{ page_num }}</a></li>
                                     {% endif %}
                                 {% endfor %}
                                 {% if product_obj.has_next %}
-                                    <li><a href="?page={{ product_obj.next_page_number }}{% if sort_by %}&sortby={{ sort_by }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% for cat_id in selected_categories %}&categories={{ cat_id }}{% endfor %}{% for brand_id in selected_brands %}&brands={{ brand_id }}{% endfor %}" class="next">Next</a></li>
+                                    <li><a href="?page={{ product_obj.next_page_number }}{% if sort_by %}&sortby={{ sort_by }}{% endif %}{% if search_query %}&query={{ search_query }}{% endif %}{% for cat_id in selected_categories %}&categories={{ cat_id }}{% endfor %}{% for brand_id in selected_brands %}&brands={{ brand_id }}{% endfor %}{% if category_id %}&category={{ category_id }}{% endif %}" class="next">Next</a></li>
                                 {% endif %}
                             </ul>
                         </div>

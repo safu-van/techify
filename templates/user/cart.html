@@ -28,9 +28,9 @@
     <main class="main">
         <div class="page-content" style="padding-top: 5rem;">
             <div class="cart">
-                <div class="container">
-                    <div class="row ">
-                        {% if cart_details %}
+                {% if cart_details %}
+                    <div class="container" style="min-height: 40rem;">
+                        <div class="row ">
                             <div class="col-lg-9" >
                                 <div>
                                     <table class="table table-cart table-mobile" >
@@ -79,9 +79,9 @@
                                 </div>
                             </div>
                             <aside class="col-lg-3">
-                                <div class="summary summary-cart">
+                                <div class="summary summary-cart" style="padding: 4.5rem 3rem 4rem;">
                                     <h3 class="summary-title">Cart Total</h3>
-                                    <table class="table table-summary" id="refresh">
+                                    <table class="table table-summary" id="refresh" style="margin-bottom: 2.5rem;">
                                         <tbody style="line-height: 4;">
                                             <tr class="summary-total">
                                                 <td>Total:</td>
@@ -95,13 +95,14 @@
                                 </div>
                                 <a href="{% url 'home:home_page' %}" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
                             </aside>
-                        {% else %}
-                            <div style="padding: 20rem 0rem; display: flex; justify-content: center; width:100%;">
-                                <span style="font-size: 3rem;">No Items in Cart</span>
-                            </div>
-                        {% endif %}
+                        </div>
                     </div>
-                </div>
+                {% else %}
+                    <div style="text-align: center; margin-top: 20rem; height: 20rem; width: 100%;">
+                        <h2>Empty</h2>
+                        <span>Looks like you haven't added product to cart.</span>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </main>

@@ -44,7 +44,7 @@
                 <div class="row">
                     {% for category in categories %}
                         <div class="col-6 col-sm-4 col-lg-2">
-                            <a class="cat-block">
+                            <a class="cat-block" href="{% url 'product:product_list' %}?category={{ category.id }}">
                                 <figure>
                                     <span>
                                         <img src="{{ category.image.url }}" alt="Category image" style="width: 130px;">

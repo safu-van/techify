@@ -22,6 +22,11 @@ def product_list(request):
     if search_query:
         products = products.filter(name__icontains=search_query)
 
+    # Category wise products
+    category_id = request.GET.get("category", None) 
+    if category_id:
+        products = products.filter(category__id=category_id)
+
     # Filter products
     selected_categories = [int(cat_id) for cat_id in request.GET.getlist("categories")]
     selected_brands = [int(brand_id) for brand_id in request.GET.getlist("brands")]
@@ -31,7 +36,7 @@ def product_list(request):
         ).distinct()
 
     # Sorting products
-    sort_by = request.GET.get("sortby")
+    sort_by = request.GET.get("sortby", None)
     if sort_by == "Price: low to high":
         products = products.order_by("p_price")
     elif sort_by == "Price: high to low":
@@ -55,6 +60,7 @@ def product_list(request):
         "brands": brands,
         "categories": categories,
         "sort_by": sort_by,
+        "category_id": category_id,
         "search_query": search_query,
         "selected_brands": selected_brands,
         "selected_categories": selected_categories,

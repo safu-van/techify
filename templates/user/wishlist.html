@@ -14,9 +14,9 @@
 {% block main %}
     <main class="main">
         <div class="page-content mt-4">
-            <div class="container">
-                {% if products %}
-                    <table class="table table-wishlist table-mobile" style="margin-bottom: 20rem;">
+            {% if products %}
+                <div class="container" style="min-height: 40rem;">
+                    <table class="table table-wishlist table-mobile">
                         <thead>
                             <tr>
                                 <th>Product</th>
@@ -58,12 +58,13 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                {% else %}
-                    <div style="padding: 20rem 0rem; display: flex; justify-content: center;">
-                        <span style="font-size: 3rem;">No Items in Wishlist</span>
-                    </div>
-                {% endif %}
-            </div>
+                </div>
+            {% else %}
+                <div style="text-align: center; margin-top: 20rem; height: 25rem;">
+                    <h2>Empty</h2>
+                    <span>Looks like you haven't added product to wishlist.</span>
+                </div>
+            {% endif %}
         </div>
     </main>
 {% endblock %}
