@@ -122,28 +122,33 @@ def category_offer(request, category_id, offer_id):
             offer = Offer.objects.get(id=offer_id)
             category = Category.objects.get(id=category_id)
             flag = 0
-            if Product.objects.filter(
-                category=category_id, offer__isnull=True
-            ).exists():
-                Product.objects.filter(category=category_id, offer__isnull=True).update(
-                    offer=offer
+            if Product.objects.filter(category=category_id):
+                if Product.objects.filter(
+                    category=category_id, offer__isnull=True
+                ).exists():
+                    Product.objects.filter(category=category_id, offer__isnull=True).update(
+                        offer=offer
+                    )
+                    flag = 1
+                product_with_offer = Product.objects.filter(
+                    category=category_id, offer__isnull=False
                 )
-                flag = 1
-            product_with_offer = Product.objects.filter(
-                category=category_id, offer__isnull=False
-            )
-            if product_with_offer:
-                for product in product_with_offer:
-                    if product.offer.discount < offer.discount:
-                        product.offer = offer
-                        product.save()
-                        flag = 1
-            if flag == 1:
-                category.offer = offer
-                category.save()
+                if product_with_offer:
+                    for product in product_with_offer:
+                        if product.offer.discount < offer.discount:
+                            product.offer = offer
+                            product.save()
+                            flag = 1
+                if flag == 1:
+                    category.offer = offer
+                    category.save()
+                else:
+                    request.session["message"] = (
+                        f"{category.name} category products already have offer which is greater than {offer.name}"
+                    )
             else:
                 request.session["message"] = (
-                    f"{category.name} category products already have offer which is greater than {offer.name}"
+                    f"{category.name} category doesn't have products"
                 )
         except ObjectDoesNotExist:
             return redirect("admin_techify:category_management")

@@ -50,10 +50,10 @@ def product_list(request):
 
     brands = Brand.objects.filter(is_available=True).annotate(
         product_count=Count("product")
-    )
+    ).filter(product_count__gt=0)
     categories = Category.objects.filter(is_available=True).annotate(
         product_count=Count("product")
-    )
+    ).filter(product_count__gt=0)
 
     context = {
         "product_obj": product_obj,

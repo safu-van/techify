@@ -205,8 +205,8 @@
                             <input type="hidden" name="query" value="{{ search_query }}">
                         {% endif %}
                         <div class="sidebar-filter-wrapper">
-                            <div class="widget widget-clean" style="margin-bottom: 1rem;">
-                                <a href="{% url 'product:product_list' %}" >Clear All</a>
+                            <div class="widget widget-clean " style="margin-bottom: 1rem; position:sticky; top:0; z-index:1; background: white;">
+                                <a href="{% url 'product:product_list' %}" style="margin-top:1rem;">Clear All</a>
                             </div>
                             <div class="widget widget-collapsible" style="margin-bottom: 1rem;">
                                 <h3 class="widget-title">
@@ -255,11 +255,13 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <span id="filterError" style="color: red; font-size: 12px; display: flex; justify-content: center;"></span>
-                        <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-                            <button style="border: none; background: white;">
-                                <a class="btn btn-primary text-white rounded-pill">APPLY FILTERS</a>
-                            </button>
+                        <div style="position:sticky; bottom:0; z-index:1; background: white;">
+                            <span id="filterError" style="color: red; font-size: 12px; display: flex; justify-content: center;"></span>
+                            <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+                                <button style="border: none; background: white; margin-bottom: 1rem;">
+                                    <a class="btn btn-primary text-white rounded-pill">APPLY FILTERS</a>
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </aside>

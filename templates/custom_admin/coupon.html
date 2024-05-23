@@ -136,7 +136,7 @@
                                                     <a type="button" href="{% url 'coupon:edit_coupon' coupon.id %}" class="btn btn-outline-primary edit-category-btn mdi mdi-pencil" style="width: auto;"></a>
                                                 </td>
                                                 <td>
-                                                    <a type="button" href="{% url 'coupon:remove_coupon' coupon.id %}" class="btn btn-outline-danger mdi mdi-delete" style="width: auto;"></a>
+                                                    <a type="button" onclick="confirmDelete({{ coupon.id }})" class="btn btn-outline-danger mdi mdi-delete" style="width: auto;"></a>
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -176,4 +176,24 @@
     <script src="{% static 'admin/assets/js/misc.js' %}"></script>
     <script src="{% static 'admin/assets/js/settings.js' %}"></script>
     <script src="{% static 'admin/assets/js/todolist.js' %}"></script>
+    <script>
+        function confirmDelete(couponId) {
+            Swal.fire({
+                title: '<span style="color: red;">Are you sure?</span>',
+                text: "You won't be able to revert this!",
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Remove',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var removeCouponUrl = "{% url 'coupon:remove_coupon' 123 %}";
+                    removeCouponUrl = removeCouponUrl.replace('123', couponId);
+
+                    window.location.href = removeCouponUrl;
+                }
+            });
+        }
+    </script>
 {% endblock %}

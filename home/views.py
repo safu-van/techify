@@ -10,6 +10,10 @@ def home(request):
     products = Product.objects.filter(
         is_available=True, category__is_available=True, brand__is_available=True
     ).exclude(offer=None)
+    offer = True
+    if not products:
+        offer = False
+        products = Product.objects.filter(is_available=True, category__is_available=True, brand__is_available=True)
 
     # User signin  message
     if "message" in request.session:
@@ -21,5 +25,6 @@ def home(request):
         "categories": categories,
         "products": products,
         "message": message,
+        "offer": offer,
     }
     return render(request, "user/index.html", context)

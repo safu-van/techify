@@ -41,7 +41,7 @@
                                 <form method="get" action="{% url 'product:product_list' %}">
                                     <div class="header-search-wrapper search-wrapper-wide">
                                         <label for="query" class="sr-only">Search</label>
-                                        <input type="search" class="form-control" name="query" id="query" placeholder="Search product" required>
+                                        <input type="search" class="form-control" name="query" id="query" {% if search_query %}value="{{ search_query }}"{% else %}placeholder="Search product"{% endif %} required>
                                         <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
                                     </div>
                                 </form>

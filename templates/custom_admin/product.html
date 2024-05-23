@@ -139,7 +139,7 @@
                                                 {% endif %}
                                                 <td>
                                                     {% if product.offer %}
-                                                        <a type="button" href="{% url 'offer:remove_product_offer' product.id %}" class="btn btn-outline-danger">Remove Offer</a>
+                                                        <a type="button" onclick="confirmRemove({{ product.id }})" class="btn btn-outline-danger">Remove Offer</a>
                                                     {% else %}
                                                         <div class="dropdown">
                                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuOutlineButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Apply Offer</button>
@@ -201,4 +201,24 @@
     <script src="{% static 'admin/assets/js/misc.js' %}"></script>
     <script src="{% static 'admin/assets/js/settings.js' %}"></script>
     <script src="{% static 'admin/assets/js/todolist.js' %}"></script>
+    <script>
+        function confirmRemove(productId) {
+            Swal.fire({
+                title: '<span style="color: red;">Are you sure?</span>',
+                text: "You want to remove offer",
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Remove',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var removeOfferUrl = "{% url 'offer:remove_product_offer' 123 %}";
+                    removeOfferUrl = removeOfferUrl.replace('123', productId);
+
+                    window.location.href = removeOfferUrl;
+                }
+            });
+        }
+    </script>
 {% endblock %}
