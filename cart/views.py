@@ -236,7 +236,7 @@ def place_order(request):
         address_id = request.POST.get("selectedAddressId")
         payment_method = request.POST.get("payment_method")
         ordered_date = date.today()
-        ordered_products = CartItems.objects.filter(user=user)
+        ordered_products = CartItems.objects.filter(user=user).select_related('product')
         total_amount = request.session.pop("total_amount")
 
         if payment_method == "Cash on Delivery":

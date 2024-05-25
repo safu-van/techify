@@ -248,14 +248,13 @@
     transactionHistoryChart = new Chart(ctx2, {
       type: 'pie',
       data: {
-        labels: ['Wallet Payment', 'Cash on Delivery', 'Online Payment'],
+        labels: ['Online Payment', 'Cash on Delivery', 'Wallet Payment'],
         datasets: [{
           data: {{ counts|safe }},
           backgroundColor: [
-            'rgba(0, 235, 255, 1)',   // blue
+            'rgba(0, 255, 38, 1)',   // Green
             'rgba(255, 254, 0, 1)',  // Yellow
-            'rgba(0, 255, 38, 1)', // Green
-            
+            'rgba(0, 235, 255, 1)',  // blue            
           ],
         }]
       },

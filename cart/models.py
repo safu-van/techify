@@ -33,7 +33,7 @@ class Orders(models.Model):
     payment_method = models.CharField(max_length=100)
     status = models.CharField(max_length=100, default="Pending")
     return_status = models.CharField(max_length=100, null=True, blank=True)
-    address = models.OneToOneField(DeliveyAddress, on_delete=models.CASCADE)
+    address = models.ForeignKey(DeliveyAddress, on_delete=models.CASCADE)
     discount_amt = models.DecimalField(max_digits=30, decimal_places=1, default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     product_price = models.DecimalField(max_digits=30, decimal_places=1)

@@ -220,7 +220,7 @@ def category_management(request):
 @login_required(login_url="authentication:signin")
 def product_management(request):
     if request.user.is_superuser:
-        products = Product.objects.all().order_by("-id")
+        products = Product.objects.all().select_related('category', 'brand', 'offer').order_by("-id")
         offers = Offer.objects.filter(
             active_date__lte=timezone.now().date(),
             expiry_date__gte=timezone.now().date(),
@@ -237,7 +237,7 @@ def product_management(request):
 @login_required(login_url="authentication:signin")
 def order_management(request):
     if request.user.is_superuser:
-        orders = Orders.objects.all().order_by("-id")
+        orders = Orders.objects.all().select_related('product').order_by("-id")
 
         # Sorting
         sort = request.GET.get("sort")
