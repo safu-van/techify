@@ -27,7 +27,7 @@ from product.models import Product
 @login_required(login_url="authentication:signin")
 def cart(request):
     user_id = request.user.id
-    cart_items = CartItems.objects.filter(user=user_id).order_by("-id")
+    cart_items = CartItems.objects.filter(user=user_id).select_related('product').order_by("-id")
     cart_details = []
 
     if "message" in request.session:
@@ -148,11 +148,7 @@ def remove_coupon(request):
 # Checkout
 @login_required(login_url="authentication:signin")
 def checkout(request):
-    try:
-        user_id = request.user.id
-        user = User.objects.get(id=user_id)
-    except ObjectDoesNotExist:
-        return redirect("authentication:signin")
+    user = request.user.id
 
     if not check_product_stock(request):
         return redirect("cart:cart")
@@ -191,7 +187,7 @@ def checkout(request):
     coupons = Coupon.objects.filter(expiry_date__gte=today, limit__gt=0).exclude(
         id__in=used_coupons
     )
-    products = CartItems.objects.filter(user=user)
+    products = CartItems.objects.filter(user=user).select_related('product')
     sub_total = sum(item.total for item in products)
     total = sub_total
 

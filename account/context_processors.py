@@ -9,9 +9,8 @@ def user_name(request):
     if request.user.is_authenticated:
         user_id = request.user.id
         try:
-            user = User.objects.get(id=user_id)
-            name = user.name
-            return {"name": name}
+            user_name = User.objects.filter(id=user_id).values_list('name', flat=True).first()
+            return {"name": user_name}
         except ObjectDoesNotExist:
             return redirect("authentication:signin")
     return {"name": None}

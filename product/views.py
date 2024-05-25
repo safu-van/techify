@@ -15,7 +15,7 @@ from utils.utils import validate_image
 def product_list(request):
     products = Product.objects.filter(
         is_available=True, category__is_available=True, brand__is_available=True
-    ).order_by("id")
+    ).select_related('category', 'brand', 'offer').order_by('id')
 
     # Search products
     search_query = request.GET.get("query", None)
@@ -81,7 +81,7 @@ def product_view(request, product_id):
         category = product.category
         related_products = Product.objects.filter(
             category=category, is_available=True, brand__is_available=True
-        ).exclude(id=product_id)
+        ).exclude(id=product_id).select_related('category', 'offer')
 
         context = {
             "product": product,

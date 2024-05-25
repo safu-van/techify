@@ -12,7 +12,7 @@ from wishlist.models import Wishlist
 @login_required(login_url="authentication:signin")
 def wishlist(request):
     user_id = request.user.id
-    products = Wishlist.objects.filter(user=user_id).order_by("-id")
+    products = Wishlist.objects.filter(user=user_id).select_related('product').order_by("-id")
     return render(request, "user/wishlist.html", {"products": products})
 
 

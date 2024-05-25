@@ -62,7 +62,7 @@ def generate_referral_code(request):
 @login_required(login_url="authentication:signin")
 def orders(request):
     user_id = request.user.id
-    ordered_products = Orders.objects.filter(user=user_id).order_by("-id")
+    ordered_products = Orders.objects.filter(user=user_id).select_related('address', 'product').order_by("-id")
     paginator = Paginator(ordered_products, 5)
     page_number = request.GET.get("page")
     ordered_obj = paginator.get_page(page_number)
@@ -202,9 +202,8 @@ def edit_address(request, address_id):
 # Wallet
 @login_required(login_url="authentication:signin")
 def wallet(request):
-    user_id = request.user.id
+    user = request.user.id
     try:
-        user = User.objects.get(id=user_id)
         if Wallet.objects.filter(user=user).exists():
             wallet = Wallet.objects.get(user=user)
             amount = wallet.amount
