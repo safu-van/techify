@@ -62,7 +62,11 @@ def generate_referral_code(request):
 @login_required(login_url="authentication:signin")
 def orders(request):
     user_id = request.user.id
-    ordered_products = Orders.objects.filter(user=user_id).select_related('address', 'product').order_by("-id")
+    ordered_products = (
+        Orders.objects.filter(user=user_id)
+        .select_related("address", "product")
+        .order_by("-id")
+    )
     paginator = Paginator(ordered_products, 5)
     page_number = request.GET.get("page")
     ordered_obj = paginator.get_page(page_number)

@@ -194,11 +194,8 @@ def brand_management(request):
             brand_message = request.session.pop("brand_message")
         else:
             brand_message = False
-        
-        context = {
-            "brand_obj": brand_obj,
-            "brand_message": brand_message
-        }
+
+        context = {"brand_obj": brand_obj, "brand_message": brand_message}
         return render(request, "custom_admin/brand.html", context)
     return redirect("home:home_page")
 
@@ -236,7 +233,13 @@ def category_management(request):
         else:
             category_message = False
 
-        context = {"category_obj": category_obj, "offers": offers, "message": message, "category_message": category_message, "offer_message": offer_message}
+        context = {
+            "category_obj": category_obj,
+            "offers": offers,
+            "message": message,
+            "category_message": category_message,
+            "offer_message": offer_message,
+        }
         return render(request, "custom_admin/category.html", context)
     return redirect("home:home_page")
 
@@ -245,7 +248,11 @@ def category_management(request):
 @login_required(login_url="authentication:signin")
 def product_management(request):
     if request.user.is_superuser:
-        products = Product.objects.all().select_related('category', 'brand', 'offer').order_by("-id")
+        products = (
+            Product.objects.all()
+            .select_related("category", "brand", "offer")
+            .order_by("-id")
+        )
         offers = Offer.objects.filter(
             active_date__lte=timezone.now().date(),
             expiry_date__gte=timezone.now().date(),
@@ -265,8 +272,13 @@ def product_management(request):
             offer_message = request.session.pop("product_offer_message")
         else:
             offer_message = False
-        
-        context = {"product_obj": product_obj, "offers": offers, "product_message": product_message, "offer_message": offer_message}
+
+        context = {
+            "product_obj": product_obj,
+            "offers": offers,
+            "product_message": product_message,
+            "offer_message": offer_message,
+        }
         return render(request, "custom_admin/product.html", context)
     return redirect("home:home_page")
 
@@ -275,7 +287,7 @@ def product_management(request):
 @login_required(login_url="authentication:signin")
 def order_management(request):
     if request.user.is_superuser:
-        orders = Orders.objects.all().select_related('product').order_by("-id")
+        orders = Orders.objects.all().select_related("product").order_by("-id")
 
         # Sorting
         sort = request.GET.get("sort")
@@ -324,10 +336,7 @@ def coupon_management(request):
         else:
             coupon_message = False
 
-        context = {
-            "coupon_obj": coupon_obj,
-            "coupon_message": coupon_message
-        }
+        context = {"coupon_obj": coupon_obj, "coupon_message": coupon_message}
         return render(request, "custom_admin/coupon.html", context)
     return redirect("home:home_page")
 
@@ -478,9 +487,6 @@ def offer_management(request):
         else:
             offer_message = False
 
-        context = {
-            "offer_obj": offer_obj,
-            "offer_message": offer_message
-        }
+        context = {"offer_obj": offer_obj, "offer_message": offer_message}
         return render(request, "custom_admin/offer.html", context)
     return redirect("home:home_page")

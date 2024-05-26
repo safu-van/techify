@@ -13,9 +13,13 @@ from utils.utils import validate_image
 
 # List Products
 def product_list(request):
-    products = Product.objects.filter(
-        is_available=True, category__is_available=True, brand__is_available=True
-    ).select_related('category', 'brand', 'offer').order_by('id')
+    products = (
+        Product.objects.filter(
+            is_available=True, category__is_available=True, brand__is_available=True
+        )
+        .select_related("category", "brand", "offer")
+        .order_by("id")
+    )
 
     # Search products
     search_query = request.GET.get("query", None)
@@ -23,7 +27,7 @@ def product_list(request):
         products = products.filter(name__icontains=search_query)
 
     # Category wise products
-    category_id = request.GET.get("category", None) 
+    category_id = request.GET.get("category", None)
     if category_id:
         products = products.filter(category__id=category_id)
 
@@ -48,12 +52,16 @@ def product_list(request):
     page_number = request.GET.get("page")
     product_obj = paginator.get_page(page_number)
 
-    brands = Brand.objects.filter(is_available=True).annotate(
-        product_count=Count("product")
-    ).filter(product_count__gt=0)
-    categories = Category.objects.filter(is_available=True).annotate(
-        product_count=Count("product")
-    ).filter(product_count__gt=0)
+    brands = (
+        Brand.objects.filter(is_available=True)
+        .annotate(product_count=Count("product"))
+        .filter(product_count__gt=0)
+    )
+    categories = (
+        Category.objects.filter(is_available=True)
+        .annotate(product_count=Count("product"))
+        .filter(product_count__gt=0)
+    )
 
     context = {
         "product_obj": product_obj,
@@ -79,9 +87,13 @@ def product_view(request, product_id):
     if product.is_available:
         product_details = ProductDetails.objects.get(product=product)
         category = product.category
-        related_products = Product.objects.filter(
-            category=category, is_available=True, brand__is_available=True
-        ).exclude(id=product_id).select_related('category', 'offer')
+        related_products = (
+            Product.objects.filter(
+                category=category, is_available=True, brand__is_available=True
+            )
+            .exclude(id=product_id)
+            .select_related("category", "offer")
+        )
 
         context = {
             "product": product,

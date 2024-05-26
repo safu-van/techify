@@ -27,7 +27,9 @@ from product.models import Product
 @login_required(login_url="authentication:signin")
 def cart(request):
     user_id = request.user.id
-    cart_items = CartItems.objects.filter(user=user_id).select_related('product').order_by("-id")
+    cart_items = (
+        CartItems.objects.filter(user=user_id).select_related("product").order_by("-id")
+    )
     cart_details = []
 
     if "message" in request.session:
@@ -187,7 +189,7 @@ def checkout(request):
     coupons = Coupon.objects.filter(expiry_date__gte=today, limit__gt=0).exclude(
         id__in=used_coupons
     )
-    products = CartItems.objects.filter(user=user).select_related('product')
+    products = CartItems.objects.filter(user=user).select_related("product")
     sub_total = sum(item.total for item in products)
     total = sub_total
 
@@ -236,7 +238,7 @@ def place_order(request):
         address_id = request.POST.get("selectedAddressId")
         payment_method = request.POST.get("payment_method")
         ordered_date = date.today()
-        ordered_products = CartItems.objects.filter(user=user).select_related('product')
+        ordered_products = CartItems.objects.filter(user=user).select_related("product")
         total_amount = request.session.pop("total_amount")
 
         if payment_method == "Cash on Delivery":
@@ -302,13 +304,14 @@ def place_order(request):
                 ordered_date=ordered_date,
                 payment_method=payment_method,
                 address=address,
-                discount_amt=item.total * (Decimal(discount_percentage) / Decimal("100")),
+                discount_amt=item.total
+                * (Decimal(discount_percentage) / Decimal("100")),
                 product=product,
                 product_price=product.price,
                 product_qty=item.quantity,
             )
             ordered_items_list.append(ordered_item)
-            
+
         Orders.objects.bulk_create(ordered_items_list)
 
         request.session.pop("discount_percentage", None)

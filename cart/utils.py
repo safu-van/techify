@@ -46,7 +46,7 @@ def update_wallet(user, amount, description):
 # To Check product stock
 def check_product_stock(request):
     user_id = request.user.id
-    products = CartItems.objects.filter(user=user_id).select_related('product')
+    products = CartItems.objects.filter(user=user_id).select_related("product")
 
     for product in products:
         qty = product.quantity

@@ -5,15 +5,16 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('cart', '0015_alter_orders_return_status'),
+        ("cart", "0015_alter_orders_return_status"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='orders',
-            name='address',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='cart.deliveyaddress'),
+            model_name="orders",
+            name="address",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to="cart.deliveyaddress"
+            ),
         ),
     ]

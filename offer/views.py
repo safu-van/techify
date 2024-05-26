@@ -113,7 +113,9 @@ def product_offer(request, product_id, offer_id):
             offer = Offer.objects.get(id=offer_id)
             product.offer = offer
             product.save()
-            request.session["product_offer_message"] = f"{offer.name} Offer applied to Product {product.name}"
+            request.session["product_offer_message"] = (
+                f"{offer.name} Offer applied to Product {product.name}"
+            )
         except ObjectDoesNotExist:
             return redirect("admin_techify:product_management")
         return redirect("admin_techify:product_management")
@@ -132,9 +134,9 @@ def category_offer(request, category_id, offer_id):
                 if Product.objects.filter(
                     category=category_id, offer__isnull=True
                 ).exists():
-                    Product.objects.filter(category=category_id, offer__isnull=True).update(
-                        offer=offer
-                    )
+                    Product.objects.filter(
+                        category=category_id, offer__isnull=True
+                    ).update(offer=offer)
                     flag = 1
                 product_with_offer = Product.objects.filter(
                     category=category_id, offer__isnull=False
@@ -148,7 +150,9 @@ def category_offer(request, category_id, offer_id):
                 if flag == 1:
                     category.offer = offer
                     category.save()
-                    request.session["category_offer_message"] = f"{offer.name} Offer applied to {category.name} Category"
+                    request.session["category_offer_message"] = (
+                        f"{offer.name} Offer applied to {category.name} Category"
+                    )
                 else:
                     request.session["message"] = (
                         f"{category.name} category products already have offer which is greater than {offer.name}"
