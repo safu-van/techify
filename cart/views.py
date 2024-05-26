@@ -291,23 +291,25 @@ def place_order(request):
                 request.session.pop("coupon_id", None)
                 return redirect("cart:checkout")
 
+        ordered_items_list = []
         for item in ordered_products:
             product = Product.objects.get(id=item.product.id)
             product.stock = product.stock - item.quantity
             product.save()
 
-            ordered_items = Orders.objects.create(
+            ordered_item = Orders(
                 user=user,
                 ordered_date=ordered_date,
                 payment_method=payment_method,
                 address=address,
-                discount_amt=item.total
-                * (Decimal(discount_percentage) / Decimal("100")),
+                discount_amt=item.total * (Decimal(discount_percentage) / Decimal("100")),
                 product=product,
                 product_price=product.price,
                 product_qty=item.quantity,
             )
-            ordered_items.save()
+            ordered_items_list.append(ordered_item)
+            
+        Orders.objects.bulk_create(ordered_items_list)
 
         request.session.pop("discount_percentage", None)
         request.session.pop("coupon_code", None)
