@@ -54,6 +54,7 @@ def add_category(request):
                 name=category_name, image=category_img
             )
             add_category.save()
+            request.session["category_message"] = f"{category_name} Category Added"
 
             return redirect("admin_techify:category_management")
         return render(request, "custom_admin/add_category.html", {"message": message})
@@ -101,6 +102,7 @@ def edit_category(request, category_id):
                     return redirect(url)
                 edit_category.image = category_img
             edit_category.save()
+            request.session["category_message"] = f"{category_name} Category Updated"
 
             return redirect("admin_techify:category_management")
         context = {"edit_category": edit_category, "message": message}

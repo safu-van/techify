@@ -40,6 +40,9 @@ def add_coupon(request):
                 expiry_date=expiry_date,
             )
             new_coupon.save()
+
+            request.session["coupon_message"] = f"{coupon_name} Coupon Added"
+
             return redirect("admin_techify:coupon_management")
         return render(request, "custom_admin/add_coupon.html")
     return redirect("home:home_page")
@@ -94,6 +97,8 @@ def edit_coupon(request, coupon_id):
             update_coupon.limit = user_limit
             update_coupon.expiry_date = expiry_date
             update_coupon.save()
+
+            request.session["coupon_message"] = f"{coupon_name} Coupon Updated"
 
             return redirect("admin_techify:coupon_management")
 

@@ -35,6 +35,9 @@ def add_offer(request):
                 expiry_date=expiry_date,
             )
             new_offer.save()
+
+            request.session["offer_message"] = f"{offer_name} Offer Added"
+
             return redirect("admin_techify:offer_management")
         return render(request, "custom_admin/add_offer.html")
     return redirect("home:home_page")
@@ -74,6 +77,8 @@ def edit_offer(request, offer_id):
             update_offer.active_date = active_date
             update_offer.expiry_date = expiry_date
             update_offer.save()
+
+            request.session["offer_message"] = f"{offer_name} Offer Updated"
 
             return redirect("admin_techify:offer_management")
 

@@ -23,6 +23,7 @@ def add_brand(request):
 
             new_brand = Brand.objects.create(name=name)
             new_brand.save()
+            request.session["brand_message"] = f"{name} Brand Added"
             return redirect("admin_techify:brand_management")
         return render(request, "custom_admin/add_brand.html")
     return redirect("home:home_page")
@@ -55,6 +56,7 @@ def edit_brand(request, brand_id):
 
             update_brand.name = name
             update_brand.save()
+            request.session["brand_message"] = f"{name} Brand Updated"
             return redirect("admin_techify:brand_management")
         return render(request, "custom_admin/edit_brand.html", {"brand": update_brand})
     return redirect("home:home_page")

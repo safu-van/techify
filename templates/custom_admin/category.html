@@ -195,8 +195,8 @@
     <script src="{% static 'admin/assets/js/misc.js' %}"></script>
     <script src="{% static 'admin/assets/js/settings.js' %}"></script>
     <script src="{% static 'admin/assets/js/todolist.js' %}"></script>
-    {% if message %}
-        <script>
+    <script>
+        {% if message %}
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -212,9 +212,26 @@
                 icon: "warning",
                 title: "{{ message }}"
             });
-        </script>
-    {% endif %}
-    <script>
+        {% endif %}
+
+        {% if category_message %}
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "success",
+                title: "{{ category_message }}"
+            });
+        {% endif %}
+
         function confirmRemove(categoryId) {
             Swal.fire({
                 title: '<span style="color: red;">Are you sure?</span>',

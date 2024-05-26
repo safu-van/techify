@@ -143,6 +143,8 @@ def add_product(request):
             )
             product_details.save()
 
+            request.session["product_message"] = f"{name} Product Added"
+
             return redirect("admin_techify:product_management")
         context = {
             "categories": categories,
@@ -230,6 +232,8 @@ def edit_product(request, product_id):
                 product.image3 = image3
 
             product.save()
+
+            request.session["product_message"] = f"{name} Product Updated"
 
             return redirect("admin_techify:product_management")
 

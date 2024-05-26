@@ -188,7 +188,18 @@ def brand_management(request):
         paginator = Paginator(brands, 10)
         page_number = request.GET.get("page")
         brand_obj = paginator.get_page(page_number)
-        return render(request, "custom_admin/brand.html", {"brand_obj": brand_obj})
+
+        # Success message of Brand Added/Edited
+        if "brand_message" in request.session:
+            brand_message = request.session.pop("brand_message")
+        else:
+            brand_message = False
+        
+        context = {
+            "brand_obj": brand_obj,
+            "brand_message": brand_message
+        }
+        return render(request, "custom_admin/brand.html", context)
     return redirect("home:home_page")
 
 
@@ -206,12 +217,20 @@ def category_management(request):
         paginator = Paginator(categories, 10)
         page_number = request.GET.get("page")
         category_obj = paginator.get_page(page_number)
+
         # offer alert message
         if "message" in request.session:
             message = request.session.pop("message")
         else:
             message = None
-        context = {"category_obj": category_obj, "offers": offers, "message": message}
+
+        # Success message of Category Added/Edited
+        if "category_message" in request.session:
+            category_message = request.session.pop("category_message")
+        else:
+            category_message = False
+
+        context = {"category_obj": category_obj, "offers": offers, "message": message, "category_message": category_message}
         return render(request, "custom_admin/category.html", context)
     return redirect("home:home_page")
 
@@ -228,7 +247,14 @@ def product_management(request):
         paginator = Paginator(products, 10)
         page_number = request.GET.get("page")
         product_obj = paginator.get_page(page_number)
-        context = {"product_obj": product_obj, "offers": offers}
+
+        # Success message of Product Added/Edited
+        if "product_message" in request.session:
+            product_message = request.session.pop("product_message")
+        else:
+            product_message = False
+        
+        context = {"product_obj": product_obj, "offers": offers, "product_message": product_message}
         return render(request, "custom_admin/product.html", context)
     return redirect("home:home_page")
 
@@ -279,7 +305,18 @@ def coupon_management(request):
         paginator = Paginator(coupons, 10)
         page_number = request.GET.get("page")
         coupon_obj = paginator.get_page(page_number)
-        return render(request, "custom_admin/coupon.html", {"coupon_obj": coupon_obj})
+
+        # Success message of Coupon Added/Edited
+        if "coupon_message" in request.session:
+            coupon_message = request.session.pop("coupon_message")
+        else:
+            coupon_message = False
+
+        context = {
+            "coupon_obj": coupon_obj,
+            "coupon_message": coupon_message
+        }
+        return render(request, "custom_admin/coupon.html", context)
     return redirect("home:home_page")
 
 
@@ -422,5 +459,16 @@ def offer_management(request):
         paginator = Paginator(offers, 10)
         page_number = request.GET.get("page")
         offer_obj = paginator.get_page(page_number)
-        return render(request, "custom_admin/offer.html", {"offer_obj": offer_obj})
+
+        # Success message of Coupon Added/Edited
+        if "offer_message" in request.session:
+            offer_message = request.session.pop("offer_message")
+        else:
+            offer_message = False
+
+        context = {
+            "offer_obj": offer_obj,
+            "offer_message": offer_message
+        }
+        return render(request, "custom_admin/offer.html", context)
     return redirect("home:home_page")
