@@ -224,13 +224,19 @@ def category_management(request):
         else:
             message = None
 
+        # offer applied message
+        if "category_offer_message" in request.session:
+            offer_message = request.session.pop("category_offer_message")
+        else:
+            offer_message = False
+
         # Success message of Category Added/Edited
         if "category_message" in request.session:
             category_message = request.session.pop("category_message")
         else:
             category_message = False
 
-        context = {"category_obj": category_obj, "offers": offers, "message": message, "category_message": category_message}
+        context = {"category_obj": category_obj, "offers": offers, "message": message, "category_message": category_message, "offer_message": offer_message}
         return render(request, "custom_admin/category.html", context)
     return redirect("home:home_page")
 
@@ -253,8 +259,14 @@ def product_management(request):
             product_message = request.session.pop("product_message")
         else:
             product_message = False
+
+        # offer applied message
+        if "product_offer_message" in request.session:
+            offer_message = request.session.pop("product_offer_message")
+        else:
+            offer_message = False
         
-        context = {"product_obj": product_obj, "offers": offers, "product_message": product_message}
+        context = {"product_obj": product_obj, "offers": offers, "product_message": product_message, "offer_message": offer_message}
         return render(request, "custom_admin/product.html", context)
     return redirect("home:home_page")
 
@@ -460,7 +472,7 @@ def offer_management(request):
         page_number = request.GET.get("page")
         offer_obj = paginator.get_page(page_number)
 
-        # Success message of Coupon Added/Edited
+        # Success message of Offer Added/Edited
         if "offer_message" in request.session:
             offer_message = request.session.pop("offer_message")
         else:
