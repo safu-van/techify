@@ -197,35 +197,36 @@
     <script src="{% static 'user/assets/js/superfish.min.js' %}"></script>
     <script src="{% static 'user/assets/js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'user/assets/js/main.js' %}"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AetxnT3oGnQo4T0zD1gvktvvGyYC7C_us8EMHNdaYlP7AKw82ieJK1TWw2SYMUwxPAZBsqXdWXKKwPjL&currency=USD"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=ARElmOMGK-awaEk82aZHEfmA-CoAipMHHnu7sED2BVHpBaExANPwb2NxQqmMaR8xaMvrpPK_fWWAWaEj&currency=USD"></script>
 {% endblock %}
 {% block extra_js %}
     <script>
         paypal.Buttons({
 
-            onClick : function(data, actions){
+            onClick: function(data, actions) {
                 var addressRadios = document.querySelectorAll('.addressRadio');
-
+                var atLeastOneAddressSelected = false;
+        
                 addressRadios.forEach(function(radio) {
                     if (radio.checked) {
                         atLeastOneAddressSelected = true;
                         document.getElementById('selectedAddressId').value = radio.getAttribute('data-address-id');
                     }
                 });
-
+        
                 if (!atLeastOneAddressSelected) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Please select an address.',
-                        timer: 1500,
+                        timer: 2000,
                         showConfirmButton: false
                     });
-                    return false;
+                    return actions.reject(); // Prevents the PayPal popup from opening
                 }
-
-                return true;
+        
+                return actions.resolve(); // Allows the PayPal popup to open
             },
-
+        
             // Call your server to set up the transaction
             createOrder: function(data, actions) {
                 return actions.order.create({
@@ -234,33 +235,33 @@
                             value: '{{ total }}',
                         }
                     }]
-                })
+                });
             },
-
+        
             // Call your server to finalize the transaction
             onApprove: function(data, actions) {
                 return actions.order.capture().then(function(orderData) {
                     var address = document.getElementById("selectedAddressId").value;
-                    var paymentMethod = "Online Payment"
-
-                    console.log(address)
-
-                    data = {
+                    var paymentMethod = "Online Payment";
+        
+                    console.log(address);
+        
+                    var data = {
                         "selectedAddressId": address,
                         "payment_method": paymentMethod,
-                    }
+                    };
                     $.ajax({
                         method: "POST",
                         url: "/cart/place-order/",
                         data: data,
-                        success: function(){
-                            window.location.href = "/cart/order-success/"
+                        success: function() {
+                            window.location.href = "/cart/order-success/";
                         }
                     });
                 });
             }
-
-        }).render('#paypal-button-container');
+        
+        }).render('#paypal-button-container');        
 
         {% if message %}
             Swal.fire({
