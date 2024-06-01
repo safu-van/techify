@@ -1,13 +1,16 @@
-import magic
+from PIL import Image
+from io import BytesIO
 
 
 # To validate image
 def validate_image(image):
-    mime = magic.Magic(mime=True)
-    image_mime = mime.from_buffer(image.read())
+    allowed_formats = ["JPEG", "PNG", "GIF"]
 
-    allowed_mimes = ["image/jpeg", "image/png", "image/gif"]
+    try:
+        img = Image.open(BytesIO(image.read()))
+        if img.format in allowed_formats:
+            return True
+    except IOError:
+        pass
 
-    if image_mime not in allowed_mimes:
-        return False
-    return True
+    return False
