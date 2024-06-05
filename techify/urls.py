@@ -24,7 +24,7 @@ urlpatterns = [
     # Django admin-panel Url
     path("django-admin/", admin.site.urls),
     # Custom admin-panel Url
-    path("admin/", include("admin_techify.urls")),
+    path("techify-admin/", include("admin_techify.urls")),
     # Custom Apps Urls
     path("", include("home.urls")),
     path("category/", include("category.urls")),
