@@ -3,3 +3,4 @@ pandas==2.2.2
 Pillow==10.3.0
 psycopg2-binary==2.9.9
 xhtml2pdf==0.2.15
+XlsxWriter==3.2.0
