@@ -247,6 +247,7 @@ def change_password(request):
             user.set_password(new_password)
             user.save()
             message = "password_changed"
+            return redirect("authentication:signin")
         else:
             message = "invalid_password"
 
