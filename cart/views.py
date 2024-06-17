@@ -221,6 +221,16 @@ def checkout(request):
     return render(request, "user/checkout.html", context)
 
 
+# To Check Product Stock on Online Payment
+@csrf_exempt
+def check_stock(request):
+    if request.method == "POST":
+        if not check_product_stock(request):
+            return JsonResponse({'stock_available': False})
+        return JsonResponse({'stock_available': True})
+    return JsonResponse({'stock_available': False}, status=400)
+
+
 # Place Order
 @login_required(login_url="authentication:signin")
 @csrf_exempt
@@ -231,12 +241,14 @@ def place_order(request):
             user = User.objects.get(id=user_id)
         except ObjectDoesNotExist:
             return redirect("authentication:signin")
+        
+        payment_method = request.POST.get("payment_method")
 
-        if not check_product_stock(request):
-            return redirect("cart:cart")
+        if payment_method != "Online Payment":
+            if not check_product_stock(request):
+                return redirect("cart:cart")
 
         address_id = request.POST.get("selectedAddressId")
-        payment_method = request.POST.get("payment_method")
         ordered_date = date.today()
         ordered_products = CartItems.objects.filter(user=user).select_related("product")
         total_amount = request.session.pop("total_amount")

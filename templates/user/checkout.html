@@ -224,7 +224,30 @@
                     return actions.reject(); // Prevents the PayPal popup from opening
                 }
         
-                return actions.resolve(); // Allows the PayPal popup to open
+                // Check product stock before proceeding with the payment
+                return $.ajax({
+                    method: 'POST',
+                    url: '/cart/check-stock/',
+                    data: {},
+                    success: function(response) {
+                        if (response.stock_available) {
+                            return actions.resolve(); // Allows the PayPal popup to open
+                        } else {
+                            window.location.href = '/cart/';
+                            return actions.reject(); // Prevents the PayPal popup from opening
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Something Went Wrong.',
+                            text: 'Please try again.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        return actions.reject(); // Prevents the PayPal popup from opening
+                    }
+                });
             },
         
             // Call your server to set up the transaction
