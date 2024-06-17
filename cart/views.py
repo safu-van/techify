@@ -226,9 +226,9 @@ def checkout(request):
 def check_stock(request):
     if request.method == "POST":
         if not check_product_stock(request):
-            return JsonResponse({'stock_available': False})
-        return JsonResponse({'stock_available': True})
-    return JsonResponse({'stock_available': False}, status=400)
+            return JsonResponse({"stock_available": False})
+        return JsonResponse({"stock_available": True})
+    return JsonResponse({"stock_available": False}, status=400)
 
 
 # Place Order
@@ -241,7 +241,7 @@ def place_order(request):
             user = User.objects.get(id=user_id)
         except ObjectDoesNotExist:
             return redirect("authentication:signin")
-        
+
         payment_method = request.POST.get("payment_method")
 
         if payment_method != "Online Payment":
