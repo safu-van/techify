@@ -3,6 +3,7 @@ from product.models import Product
 from cart.models import CartItems
 
 
+
 # Withdraw money from wallet (when user purchase using wallet)
 def withdraw_from_wallet(user, total_amount):
     if total_amount == 0:

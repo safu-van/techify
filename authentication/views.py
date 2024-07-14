@@ -13,6 +13,7 @@ from authentication.models import User
 from authentication.utils import add_referral_money
 
 
+
 # Send otp to mail
 def send_otp(request):
     otp = random.randint(1000, 9999)
@@ -85,6 +86,7 @@ def verify_email(request):
                 return redirect("home:home_page")
         else:
             messages.error(request, "Invalid OTP Please try again")
+
     context = {"email": email, "message": message}
     return render(request, "authentication/otp.html", context)
 
@@ -118,6 +120,7 @@ def signup(request):
         request.session["password"] = password
 
         send_otp(request)
+
         return redirect("authentication:verify_email")
     return render(request, "authentication/signup.html")
 
@@ -208,5 +211,6 @@ def change_password(request):
                 return redirect("authentication:signin")
             except ObjectDoesNotExist:
                 return redirect("authentication:forget_password")
+            
         return render(request, "authentication/change_password.html")
     return redirect("authentication:forget_password")

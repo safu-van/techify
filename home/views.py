@@ -4,6 +4,7 @@ from category.models import Category
 from product.models import Product
 
 
+
 # Home Page
 def home(request):
     categories = Category.objects.filter(is_available=True)

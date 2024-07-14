@@ -7,6 +7,7 @@ from datetime import datetime
 from coupon.models import Coupon
 
 
+
 # Add Coupon
 @login_required(login_url="authentication:signin")
 def add_coupon(request):
@@ -44,6 +45,7 @@ def add_coupon(request):
             request.session["coupon_message"] = f"{coupon_name} Coupon Added"
 
             return redirect("admin_techify:coupon_management")
+        
         return render(request, "custom_admin/add_coupon.html")
     return redirect("home:home_page")
 
@@ -116,5 +118,6 @@ def remove_coupon(request, coupon_id):
             coupon.delete()
         except ObjectDoesNotExist:
             return redirect("admin_techify:coupon_management")
+        
         return redirect("admin_techify:coupon_management")
     return redirect("home:home_page")

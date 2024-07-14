@@ -11,6 +11,7 @@ from brand.models import Brand
 from utils.utils import validate_image
 
 
+
 # List Products
 def product_list(request):
     products = (
@@ -158,6 +159,7 @@ def add_product(request):
             request.session["product_message"] = f"{name} Product Added"
 
             return redirect("admin_techify:product_management")
+        
         context = {
             "categories": categories,
             "brands": brands,
@@ -180,6 +182,7 @@ def product_action(request, product_id):
             product.save()
         except ObjectDoesNotExist:
             return redirect("admin_techify:product_management")
+        
         return redirect("admin_techify:product_management")
     return redirect("home:home_page")
 

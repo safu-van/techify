@@ -23,6 +23,7 @@ from coupon.models import Coupon
 from offer.models import Offer
 
 
+
 # Admin Dashboard
 @login_required(login_url="authentication:signin")
 def admin_dashboard(request):
@@ -30,6 +31,7 @@ def admin_dashboard(request):
         # Total Revenue
         total_orders = Orders.objects.filter(status="Delivered")
         total_revenue = sum(order.total for order in total_orders)
+
         # Monthly Revenue
         current_month = timezone.now().month
         current_year = timezone.now().year
@@ -39,14 +41,17 @@ def admin_dashboard(request):
             delivered_date__year=current_year,
         )
         monthly_revenue = sum(order.total for order in monthly_orders)
+
         # Daily Revenue
         current_date = timezone.now().date()
         daily_orders = Orders.objects.filter(
             status="Delivered", delivered_date=current_date
         )
         daily_revenue = sum(order.total for order in daily_orders)
+
         # Total Sales
         total_sales = Orders.objects.filter(status="Delivered").count()
+
         # Top Selling Products
         top_selling_products = (
             Orders.objects.filter(status="Delivered")
@@ -59,6 +64,7 @@ def admin_dashboard(request):
             product_id = item["product"]
             product = Product.objects.get(id=product_id)
             top_products.append(product)
+
         # Top Selling Brands
         top_selling_brands = (
             Orders.objects.filter(status="Delivered")
@@ -71,6 +77,7 @@ def admin_dashboard(request):
             brand_id = item["product__brand"]
             brand_name = Brand.objects.get(pk=brand_id).name
             top_brands.append(brand_name)
+
         # Payment Methods Counts (for graph)
         payment_methods = ["Cash on Delivery", "Online Payment", "Wallet Payment"]
         payment_method_counts = (
@@ -83,6 +90,7 @@ def admin_dashboard(request):
             payment_counts[method_count["payment_method"]] = method_count["count"]
         counts = [payment_counts[method] for method in payment_methods]
         counts = [method_count["count"] for method_count in payment_method_counts]
+
         # Total Amt of each payment method
         payment_methods = ["Online Payment", "Cash on Delivery", "Wallet Payment"]
         methods_and_totals = {}
@@ -98,6 +106,7 @@ def admin_dashboard(request):
                 or 0
             )
             methods_and_totals[method] = total_amount
+
         # Sales graph data
         scrollTo = None
         label = []
@@ -164,6 +173,7 @@ def admin_dashboard(request):
             "label": label,
             "sales_count": sales_count,
         }
+
         return render(request, "custom_admin/index.html", context)
     return redirect("home:home_page")
 
@@ -176,6 +186,7 @@ def user_management(request):
         paginator = Paginator(users, 10)
         page_number = request.GET.get("page")
         user_obj = paginator.get_page(page_number)
+
         return render(request, "custom_admin/user.html", {"user_obj": user_obj})
     return redirect("home:home_page")
 
@@ -302,6 +313,7 @@ def order_management(request):
         paginator = Paginator(orders, 10)
         page_number = request.GET.get("page")
         order_obj = paginator.get_page(page_number)
+
         context = {"order_obj": order_obj, "sort": sort, "page_number": page_number}
         return render(request, "custom_admin/orders.html", context)
     return redirect("home:home_page")
@@ -400,6 +412,7 @@ def sales_report(request):
                 )
                 sales_count = sales.count()
                 total_sales = sum(order.total for order in sales)
+
             pdf_data = {
                 "sales": sales,
                 "sales_count": sales_count,
@@ -408,6 +421,7 @@ def sales_report(request):
             html_content = render(
                 request, "custom_admin/report.html", pdf_data
             ).content.decode("utf-8")
+            
             context = {
                 "sales": sales,
                 "html_content": html_content,

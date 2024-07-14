@@ -17,6 +17,7 @@ from account.models import UserAddress, Wallet, WalletTransaction
 from cart.models import Orders
 
 
+
 # Account Settings
 @login_required(login_url="authentication:signin")
 def account_settings(request):
@@ -70,6 +71,7 @@ def orders(request):
     paginator = Paginator(ordered_products, 5)
     page_number = request.GET.get("page")
     ordered_obj = paginator.get_page(page_number)
+
     return render(request, "user/list_orders.html", {"ordered_obj": ordered_obj})
 
 
@@ -222,6 +224,7 @@ def wallet(request):
             transaction_obj = False
     except ObjectDoesNotExist:
         return redirect("authentication:signin")
+    
     context = {
         "amount": amount,
         "transaction_obj": transaction_obj,

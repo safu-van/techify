@@ -8,6 +8,7 @@ from authentication.models import User
 from wishlist.models import Wishlist
 
 
+
 # Wishlist
 @login_required(login_url="authentication:signin")
 def wishlist(request):
@@ -15,6 +16,7 @@ def wishlist(request):
     products = (
         Wishlist.objects.filter(user=user_id).select_related("product").order_by("-id")
     )
+    
     return render(request, "user/wishlist.html", {"products": products})
 
 

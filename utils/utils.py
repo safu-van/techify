@@ -2,7 +2,7 @@ from PIL import Image
 from io import BytesIO
 
 
-# To validate image
+# To validate image on uploading
 def validate_image(image):
     allowed_formats = ["JPEG", "PNG", "GIF"]
 
