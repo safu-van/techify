@@ -24,7 +24,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
@@ -93,6 +93,7 @@ DATABASES = {
         "PORT": config("DB_PORT"),
         "USER": config("DB_USER"),
         "PASSWORD": config("DB_PASSWORD"),
+        "CONN_MAX_AGE": 500,
     }
 }
 
