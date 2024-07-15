@@ -741,6 +741,15 @@ blockquote {
   padding-left: 2.5rem; }
   .compare-dropdown .dropdown-toggle {
     font-size: 2.6rem; }
+  
+.compare-dropdown a,
+.compare-dropdown a:focus,
+.compare-dropdown a:active {
+    background-color: transparent;
+    color: inherit;  
+    outline: none;  
+    box-shadow: none; 
+}
 
 .compare-products {
   list-style: none;
