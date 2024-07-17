@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.core.paginator import Paginator
 
-from product.models import Product, ProductDetails
+from product.models import Product, ProductDetails, ProductReview
 from category.models import Category
 from brand.models import Brand
 from utils.utils import validate_image
@@ -261,3 +261,28 @@ def edit_product(request, product_id):
         }
         return render(request, "custom_admin/edit_product.html", context)
     return redirect("home:home_page")
+
+
+# Add Product Review
+@login_required(login_url="authentication:signin")
+def add_review(request):
+    previous_url = request.META.get("HTTP_REFERER")
+
+    if request.method == "POST":
+        product_id = request.POST.get("product_id")
+        review = request.POST.get("review")
+        rating = request.POST.get("rating")
+        
+        product = Product.objects.get(id=product_id)
+        user = request.user
+        
+        existing_review = ProductReview.objects.filter(user=user, product=product).first()
+
+        if existing_review:
+            existing_review.review = review
+            existing_review.rating = rating
+            existing_review.save()
+        else:
+            ProductReview.objects.create(user=user, product=product, review=review, rating=rating)
+    
+    return redirect(previous_url)

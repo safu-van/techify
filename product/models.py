@@ -8,6 +8,7 @@ from django.dispatch import receiver
 from category.models import Category
 from brand.models import Brand
 from offer.models import Offer
+from authentication.models import User
 
 
 # Product
@@ -63,3 +64,11 @@ class ProductDetails(models.Model):
     )
     description = models.TextField()
     additional_information = models.TextField()
+
+
+# Product Rating & Review
+class ProductReview(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.TextField()
+    rating = models.IntegerField(default=0)

@@ -10,6 +10,57 @@
     <link rel="stylesheet" href="{% static 'user/assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'user/assets/css/skins/skin-demo-13.css' %}">
     <link rel="stylesheet" href="{% static 'user/assets/css/demos/demo-13.css' %}">
+    <style>
+        .review-form-container {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .review-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .review-form__textarea {
+            height: 100px;
+            margin-bottom: 25px;
+        }
+        .review-form__star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        .review-form__star-rating input {
+            display: none;
+        }
+        .review-form__star-rating label {
+            cursor: pointer;
+            font-size: 30px;
+            color: #ccc;
+        }
+        .review-form__star-rating label:before {
+            content: '★';
+        }
+        .review-form__star-rating input:checked ~ label {
+            color: #ffcc00;
+        }
+        .review-form__submit-btn {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .review-form__submit-btn:hover {
+            background-color: #45a049;
+        }
+        .review-form__error {
+            color: red;
+            margin-bottom: 10px;
+            display: none;
+        }
+    </style>
 {% endblock %}
 {% block main %}
     <main class="main" style="margin-top: 50px; margin-bottom: 5rem;">
@@ -175,6 +226,31 @@
                                         </div>
                                     </div>
                                 </div>
+                                <h4 style="margin-top: 5rem;">Write Review</h4>
+                                <form class="review-form" id="reviewForm" action="{% url 'product:add_review' %}" method="post">
+                                    {% csrf_token %}
+
+                                    <input type="hidden" name="product_id" value="{{ order.product.id }}" />
+                                    <div class="review-form__star-rating">
+                                        <input type="radio" id="star5" name="rating" value="5" />
+                                        <label for="star5"></label>
+                                        <input type="radio" id="star4" name="rating" value="4" />
+                                        <label for="star4"></label>
+                                        <input type="radio" id="star3" name="rating" value="3" />
+                                        <label for="star3"></label>
+                                        <input type="radio" id="star2" name="rating" value="2" />
+                                        <label for="star2"></label>
+                                        <input type="radio" id="star1" name="rating" value="1" />
+                                        <label for="star1"></label>
+                                    </div>
+
+                                    <label class="review-form__label" for="review">Your Review:</label>
+                                    <textarea class="review-form__textarea" id="review" name="review" ></textarea>
+                                    
+                                    <div id="errorMessage" class="review-form__error"></div>
+
+                                    <button class="btn btn-primary text-white" type="submit">Submit Review</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -233,5 +309,28 @@
                 }
             });
         }
+
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const rating = document.querySelector('input[name="rating"]:checked');
+            const review = document.getElementById('review').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = '';
+            
+            if (!rating) {
+                errorMessage.textContent += 'Please select a star rating. ';
+                errorMessage.style.display = 'block';
+            }else if (review === '') {
+                errorMessage.textContent += 'Please write a review. ';
+                errorMessage.style.display = 'block';
+            }
+            
+            if (rating && review !== '') {
+                this.submit();
+            }
+        });
     </script>
 {% endblock %}
