@@ -79,7 +79,7 @@ def admin_dashboard(request):
             top_brands.append(brand_name)
 
         # Payment Methods Counts (for graph)
-        payment_methods = ["Cash on Delivery", "Online Payment", "Wallet Payment"]
+        payment_methods = ["Online Payment", "Cash on Delivery", "Wallet Payment"]
         payment_method_counts = (
             Orders.objects.filter(status="Delivered")
             .values("payment_method")
@@ -89,7 +89,6 @@ def admin_dashboard(request):
         for method_count in payment_method_counts:
             payment_counts[method_count["payment_method"]] = method_count["count"]
         counts = [payment_counts[method] for method in payment_methods]
-        counts = [method_count["count"] for method_count in payment_method_counts]
 
         # Total Amt of each payment method
         payment_methods = ["Online Payment", "Cash on Delivery", "Wallet Payment"]
