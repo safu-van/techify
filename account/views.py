@@ -87,10 +87,16 @@ def order_details(request, order_id):
             difference = (today_date - delivered_date).days
             if difference <= 7:
                 return_order = True
+        
+        if "review_message" in request.session:
+            review_message = request.session.pop("review_message")
+        else:
+            review_message = False
 
         context = {
             "order": order,
             "return_order": return_order,
+            "review_message": review_message,
         }
         return render(request, "user/order_details.html", context)
     except ObjectDoesNotExist:

@@ -284,5 +284,7 @@ def add_review(request):
             existing_review.save()
         else:
             ProductReview.objects.create(user=user, product=product, review=review, rating=rating)
+
+        request.session["review_message"] = "Thanks for the review"
     
     return redirect(previous_url)
