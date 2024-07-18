@@ -226,6 +226,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                {% if write_review %}
                                 <h5 style="margin-top: 5rem;">How was the Product?</h5>
                                 <form class="review-form" id="reviewForm" action="{% url 'product:add_review' %}" method="post">
                                     {% csrf_token %}
@@ -251,6 +252,34 @@
 
                                     <button class="btn btn-primary text-white" type="submit">Submit Review</button>
                                 </form>
+                                {% endif %}
+                                {% if written_review %}
+                                <h5 style="margin-top: 5rem;">Update the Review</h5>
+                                <form class="review-form" id="reviewForm" action="{% url 'product:add_review' %}" method="post">
+                                    {% csrf_token %}
+
+                                    <input type="hidden" name="product_id" value="{{ order.product.id }}" />
+                                    <div class="review-form__star-rating">
+                                        <input type="radio" id="star5" name="rating" value="5" {% if written_review.rating == 5 %} checked {% endif %} />
+                                        <label for="star5"></label>
+                                        <input type="radio" id="star4" name="rating" value="4" {% if written_review.rating == 4 %} checked {% endif %} />
+                                        <label for="star4"></label>
+                                        <input type="radio" id="star3" name="rating" value="3" {% if written_review.rating == 3 %} checked {% endif %} />
+                                        <label for="star3"></label>
+                                        <input type="radio" id="star2" name="rating" value="2" {% if written_review.rating == 2 %} checked {% endif %} />
+                                        <label for="star2"></label>
+                                        <input type="radio" id="star1" name="rating" value="1" {% if written_review.rating == 1 %} checked {% endif %} />
+                                        <label for="star1"></label>
+                                    </div>
+
+                                    <label class="review-form__label" for="review">Your Review:</label>
+                                    <textarea class="review-form__textarea" id="review" name="review" >{{ written_review.review }}</textarea>
+                                    
+                                    <div id="errorMessage" class="review-form__error"></div>
+
+                                    <button class="btn btn-primary text-white" type="submit">Update Review</button>
+                                </form>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

@@ -15,6 +15,7 @@ from django.core.paginator import Paginator
 from authentication.models import User
 from account.models import UserAddress, Wallet, WalletTransaction
 from cart.models import Orders
+from product.models import ProductReview
 
 
 
@@ -87,6 +88,15 @@ def order_details(request, order_id):
             difference = (today_date - delivered_date).days
             if difference <= 7:
                 return_order = True
+
+        write_review = written_review = False
+        if order.status == "Delivered" or order.status == "Returned":
+            write_review = True
+            written_review = ProductReview.objects.filter(user=request.user, product=order.product).first()
+            if written_review:
+                write_review = False
+
+        
         
         if "review_message" in request.session:
             review_message = request.session.pop("review_message")
@@ -97,6 +107,8 @@ def order_details(request, order_id):
             "order": order,
             "return_order": return_order,
             "review_message": review_message,
+            "write_review": write_review,
+            "written_review": written_review,
         }
         return render(request, "user/order_details.html", context)
     except ObjectDoesNotExist:
