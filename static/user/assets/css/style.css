@@ -7724,7 +7724,7 @@ a:focus {
 
 .product-body {
   position: relative;
-  padding: 1.6rem 2rem;
+  padding: 0.6rem 2rem;
   transition: all .35s ease;
   background-color: #fff; }
   .product-body.product-action-inner {

@@ -87,6 +87,9 @@ def product_view(request, product_id):
 
     if product.is_available:
         product_details = ProductDetails.objects.get(product=product)
+        product_reviews = ProductReview.objects.filter(product=product)
+        reviews_count = product_reviews.count()
+
         category = product.category
         related_products = (
             Product.objects.filter(
@@ -99,6 +102,8 @@ def product_view(request, product_id):
         context = {
             "product": product,
             "product_details": product_details,
+            "reviews_count": reviews_count,
+            "product_reviews": product_reviews,
             "related_products": related_products,
         }
         return render(request, "user/product.html", context)

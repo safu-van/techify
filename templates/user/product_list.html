@@ -156,15 +156,16 @@
                                                 <span class="old-price">Was <s>${{ product.p_price }}</s></span>
                                             {% endif %}
                                         </div>
-                                        <div class="ratings-container">
+                                        <div class="ratings-container" style="display: block;">
+                                            {% if product.average_rating %}
                                             <div class="ratings">
-                                                <div class="ratings-val" style="width: 100%;"></div>
+                                                <div class="ratings-val" style="width: {{ product.average_rating }}%;"></div>
                                             </div>
-                                            <span class="ratings-text">( 2 )</span>
+                                            {% endif %}
                                             {% if product.stock == 0 %}
-                                                <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">Out of Stock</span>
+                                                <div  style="margin-top:1rem; padding: 0px; background: #fff; color: #d30000;">Out of Stock</div>
                                             {% elif product.stock <= 5 %}
-                                                <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</span>
+                                                <div style="margin-top:1rem; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</div>
                                             {% endif %}
                                         </div>
                                     </div>

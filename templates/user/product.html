@@ -42,12 +42,14 @@
                             {% endif %}
                             <div class="product-details" style="margin-top: 2rem;">
                                 <h1 class="product-title">{{ product.name }}</h1>
+                                {% if reviews_count %}
                                 <div class="ratings-container">
                                     <div class="ratings">
-                                        <div class="ratings-val" style="width: 80%;"></div>
+                                        <div class="ratings-val" style="width: {{ product.average_rating }}%;"></div>
                                     </div>
-                                    <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
+                                    <a class="ratings-text" href="#product-review-link" id="review-link">( {{ reviews_count }} Reviews )</a>
                                 </div>
+                                {% endif %}
                                 <div class="product-price">
                                     <span class="new-price" style="color: red; font-size: 30px;">${{ product.price }}</span>
                                     {% if product.offer %}
@@ -111,60 +113,33 @@
                         </div>
                         <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
                             <div class="reviews">
-                                <h3>Reviews (2)</h3>
+                                <h3>Reviews ({{ reviews_count }})</h3>
+                                {% for review in product_reviews %}
                                 <div class="review">
                                     <div class="row no-gutters">
                                         <div class="col-auto">
-                                            <h4><a href="#">Samanta J.</a></h4>
+                                            <h4>{{ review.user.name }}</h4>
                                             <div class="ratings-container">
                                                 <div class="ratings">
-                                                    <div class="ratings-val" style="width: 80%;"></div>
+                                                    <div class="ratings-val" style="width: {{ review.rating_percentage }}%;"></div>
                                                 </div>
                                             </div>
-                                            <span class="review-date">6 days ago</span>
                                         </div>
                                         <div class="col">
-                                            <h4>Good, perfect size</h4>
                                             <div class="review-content">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
-                                            </div>
-                                            <div class="review-action">
-                                                <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
-                                                <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                <p>{{ review.review }}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="review">
-                                    <div class="row no-gutters">
-                                        <div class="col-auto">
-                                            <h4><a href="#">John Doe</a></h4>
-                                            <div class="ratings-container">
-                                                <div class="ratings">
-                                                    <div class="ratings-val" style="width: 100%;"></div>
-                                                </div>
-                                            </div>
-                                            <span class="review-date">5 days ago</span>
-                                        </div>
-                                        <div class="col">
-                                            <h4>Very good</h4>
-                                            <div class="review-content">
-                                                <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
-                                            </div>
-                                            <div class="review-action">
-                                                <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
-                                                <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
                 </div>
                 {% if related_products %}
                     <h2 class="title text-center mb-4">Related Products</h2>
-                    <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
+                    <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" style="background: #f8f8f8; padding: 0px 15px 0px 15px;" data-toggle="owl"
                          data-owl-options='{
                                            "nav": false,
                                            "dots": true,
@@ -211,15 +186,16 @@
                                             <span class="old-price">Was <s>${{ product.p_price }}</s></span>
                                         {% endif %}
                                     </div>
-                                    <div class="ratings-container">
+                                    <div class="ratings-container" style="display: block;">
+                                        {% if product.average_rating %}
                                         <div class="ratings">
-                                            <div class="ratings-val" style="width: 100%;"></div>
+                                            <div class="ratings-val" style="width: {{ product.average_rating }}%;"></div>
                                         </div>
-                                        <span class="ratings-text">( 2 )</span>
+                                        {% endif %}
                                         {% if product.stock == 0 %}
-                                            <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">Out of Stock</span>
+                                            <div  style="margin-top:1rem; padding: 0px; background: #fff; color: #d30000;">Out of Stock</div>
                                         {% elif product.stock <= 5 %}
-                                            <span class="product-label label-sale" style="top: 101px; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</span>
+                                            <div style="margin-top:1rem; padding: 0px; background: #fff; color: #d30000;">( Only {{ product.stock }} left in stock )</div>
                                         {% endif %}
                                     </div>
                                 </div>

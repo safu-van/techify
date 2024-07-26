@@ -2,6 +2,7 @@ import os
 from decimal import Decimal, ROUND_HALF_UP
 
 from django.db import models
+from django.db.models import Avg
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
@@ -36,6 +37,12 @@ class Product(models.Model):
             return offer_price
         else:
             return self.p_price
+    
+    @property
+    def average_rating(self):
+        avg_rating = self.reviews.aggregate(Avg('rating'))['rating__avg'] or 0
+        avg_rating_percentage = (avg_rating / 5) * 100
+        return avg_rating_percentage
 
 
 # Signal receiver function to delete old product images before saving new ones
@@ -72,3 +79,8 @@ class ProductReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     review = models.TextField()
     rating = models.IntegerField(default=0)
+
+    @property
+    def rating_percentage(self):
+        return (self.rating / 5) * 100
+    
