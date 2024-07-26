@@ -23,7 +23,6 @@ from coupon.models import Coupon, CouponUsage
 from product.models import Product
 
 
-
 # Cart
 @login_required(login_url="authentication:signin")
 def cart(request):

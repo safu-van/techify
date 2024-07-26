@@ -7,7 +7,6 @@ from category.models import Category
 from utils.utils import validate_image
 
 
-
 # Category Block/Unblock
 @login_required(login_url="authentication:signin")
 def category_action(request, category_id):
@@ -21,7 +20,7 @@ def category_action(request, category_id):
             category.save()
         except ObjectDoesNotExist:
             return redirect("admin_techify:category_management")
-        
+
         return redirect("admin_techify:category_management")
     return redirect("home:home_page")
 
@@ -59,7 +58,7 @@ def add_category(request):
             request.session["category_message"] = f"{category_name} Category Added"
 
             return redirect("admin_techify:category_management")
-        
+
         return render(request, "custom_admin/add_category.html", {"message": message})
     return redirect("home:home_page")
 
@@ -108,7 +107,7 @@ def edit_category(request, category_id):
             request.session["category_message"] = f"{category_name} Category Updated"
 
             return redirect("admin_techify:category_management")
-        
+
         context = {"edit_category": edit_category, "message": message}
         return render(request, "custom_admin/edit_category.html", context)
     return redirect("home:home_page")

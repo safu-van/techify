@@ -13,7 +13,6 @@ from authentication.models import User
 from authentication.utils import add_referral_money
 
 
-
 # Send otp to mail
 def send_otp(request):
     otp = random.randint(1000, 9999)
@@ -211,6 +210,6 @@ def change_password(request):
                 return redirect("authentication:signin")
             except ObjectDoesNotExist:
                 return redirect("authentication:forget_password")
-            
+
         return render(request, "authentication/change_password.html")
     return redirect("authentication:forget_password")

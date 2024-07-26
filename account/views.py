@@ -18,7 +18,6 @@ from cart.models import Orders
 from product.models import ProductReview
 
 
-
 # Account Settings
 @login_required(login_url="authentication:signin")
 def account_settings(request):
@@ -92,12 +91,12 @@ def order_details(request, order_id):
         write_review = written_review = False
         if order.status == "Delivered" or order.status == "Returned":
             write_review = True
-            written_review = ProductReview.objects.filter(user=request.user, product=order.product).first()
+            written_review = ProductReview.objects.filter(
+                user=request.user, product=order.product
+            ).first()
             if written_review:
                 write_review = False
 
-        
-        
         if "review_message" in request.session:
             review_message = request.session.pop("review_message")
         else:
@@ -242,7 +241,7 @@ def wallet(request):
             transaction_obj = False
     except ObjectDoesNotExist:
         return redirect("authentication:signin")
-    
+
     context = {
         "amount": amount,
         "transaction_obj": transaction_obj,

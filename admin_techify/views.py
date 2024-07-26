@@ -23,7 +23,6 @@ from coupon.models import Coupon
 from offer.models import Offer
 
 
-
 # Admin Dashboard
 @login_required(login_url="authentication:signin")
 def admin_dashboard(request):
@@ -420,7 +419,7 @@ def sales_report(request):
             html_content = render(
                 request, "custom_admin/report.html", pdf_data
             ).content.decode("utf-8")
-            
+
             context = {
                 "sales": sales,
                 "html_content": html_content,

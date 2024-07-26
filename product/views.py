@@ -11,7 +11,6 @@ from brand.models import Brand
 from utils.utils import validate_image
 
 
-
 # List Products
 def product_list(request):
     products = (
@@ -164,7 +163,7 @@ def add_product(request):
             request.session["product_message"] = f"{name} Product Added"
 
             return redirect("admin_techify:product_management")
-        
+
         context = {
             "categories": categories,
             "brands": brands,
@@ -187,7 +186,7 @@ def product_action(request, product_id):
             product.save()
         except ObjectDoesNotExist:
             return redirect("admin_techify:product_management")
-        
+
         return redirect("admin_techify:product_management")
     return redirect("home:home_page")
 
@@ -277,19 +276,23 @@ def add_review(request):
         product_id = request.POST.get("product_id")
         review = request.POST.get("review")
         rating = request.POST.get("rating")
-        
+
         product = Product.objects.get(id=product_id)
         user = request.user
-        
-        existing_review = ProductReview.objects.filter(user=user, product=product).first()
+
+        existing_review = ProductReview.objects.filter(
+            user=user, product=product
+        ).first()
 
         if existing_review:
             existing_review.review = review
             existing_review.rating = rating
             existing_review.save()
         else:
-            ProductReview.objects.create(user=user, product=product, review=review, rating=rating)
+            ProductReview.objects.create(
+                user=user, product=product, review=review, rating=rating
+            )
 
         request.session["review_message"] = "Thanks for the review"
-    
+
     return redirect(previous_url)

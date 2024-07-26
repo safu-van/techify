@@ -5,7 +5,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from brand.models import Brand
 
 
-
 # Add brand
 @login_required(login_url="authentication:signin")
 def add_brand(request):
@@ -26,7 +25,7 @@ def add_brand(request):
             new_brand.save()
             request.session["brand_message"] = f"{name} Brand Added"
             return redirect("admin_techify:brand_management")
-        
+
         return render(request, "custom_admin/add_brand.html")
     return redirect("home:home_page")
 
@@ -60,7 +59,7 @@ def edit_brand(request, brand_id):
             update_brand.save()
             request.session["brand_message"] = f"{name} Brand Updated"
             return redirect("admin_techify:brand_management")
-        
+
         return render(request, "custom_admin/edit_brand.html", {"brand": update_brand})
     return redirect("home:home_page")
 
@@ -78,6 +77,6 @@ def brand_action(request, brand_id):
             brand.save()
         except ObjectDoesNotExist:
             return redirect("admin_techify:brand_management")
-        
+
         return redirect("admin_techify:brand_management")
     return redirect("home:home_page")

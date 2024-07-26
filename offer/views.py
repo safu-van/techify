@@ -9,7 +9,6 @@ from product.models import Product
 from category.models import Category
 
 
-
 # Add Offer
 @login_required(login_url="authentication:signin")
 def add_offer(request):
@@ -40,7 +39,7 @@ def add_offer(request):
             request.session["offer_message"] = f"{offer_name} Offer Added"
 
             return redirect("admin_techify:offer_management")
-        
+
         return render(request, "custom_admin/add_offer.html")
     return redirect("home:home_page")
 
@@ -102,7 +101,7 @@ def remove_offer(request, offer_id):
             offer.delete()
         except ObjectDoesNotExist:
             return redirect("admin_techify:offer_management")
-        
+
         return redirect("admin_techify:offer_management")
     return redirect("home:home_page")
 
@@ -121,7 +120,7 @@ def product_offer(request, product_id, offer_id):
             )
         except ObjectDoesNotExist:
             return redirect("admin_techify:product_management")
-        
+
         return redirect("admin_techify:product_management")
     return redirect("home:home_page")
 
@@ -167,7 +166,7 @@ def category_offer(request, category_id, offer_id):
                 )
         except ObjectDoesNotExist:
             return redirect("admin_techify:category_management")
-        
+
         return redirect("admin_techify:category_management")
     return redirect("home:home_page")
 
@@ -182,7 +181,7 @@ def remove_product_offer(request, product_id):
             product.save()
         except ObjectDoesNotExist:
             return redirect("admin_techify:product_management")
-        
+
         return redirect("admin_techify:product_management")
     return redirect("home:home_page")
 
@@ -197,6 +196,6 @@ def remove_category_offer(request, category_id):
             category.save()
         except ObjectDoesNotExist:
             return redirect("admin_techify:category_management")
-        
+
         return redirect("admin_techify:category_management")
     return redirect("home:home_page")

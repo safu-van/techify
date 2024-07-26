@@ -37,10 +37,10 @@ class Product(models.Model):
             return offer_price
         else:
             return self.p_price
-    
+
     @property
     def average_rating(self):
-        avg_rating = self.reviews.aggregate(Avg('rating'))['rating__avg'] or 0
+        avg_rating = self.reviews.aggregate(Avg("rating"))["rating__avg"] or 0
         avg_rating_percentage = (avg_rating / 5) * 100
         return avg_rating_percentage
 
@@ -75,7 +75,9 @@ class ProductDetails(models.Model):
 
 # Product Rating & Review
 class ProductReview(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="reviews"
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     review = models.TextField()
     rating = models.IntegerField(default=0)
@@ -83,4 +85,3 @@ class ProductReview(models.Model):
     @property
     def rating_percentage(self):
         return (self.rating / 5) * 100
-    

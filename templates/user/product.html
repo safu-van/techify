@@ -43,12 +43,12 @@
                             <div class="product-details" style="margin-top: 2rem;">
                                 <h1 class="product-title">{{ product.name }}</h1>
                                 {% if reviews_count %}
-                                <div class="ratings-container">
-                                    <div class="ratings">
-                                        <div class="ratings-val" style="width: {{ product.average_rating }}%;"></div>
+                                    <div class="ratings-container">
+                                        <div class="ratings">
+                                            <div class="ratings-val" style="width: {{ product.average_rating }}%;"></div>
+                                        </div>
+                                        <a class="ratings-text" href="#product-review-link" id="review-link">( {{ reviews_count }} Reviews )</a>
                                     </div>
-                                    <a class="ratings-text" href="#product-review-link" id="review-link">( {{ reviews_count }} Reviews )</a>
-                                </div>
                                 {% endif %}
                                 <div class="product-price">
                                     <span class="new-price" style="color: red; font-size: 30px;">${{ product.price }}</span>
@@ -115,23 +115,23 @@
                             <div class="reviews">
                                 <h3>Reviews ({{ reviews_count }})</h3>
                                 {% for review in product_reviews %}
-                                <div class="review">
-                                    <div class="row no-gutters">
-                                        <div class="col-auto">
-                                            <h4>{{ review.user.name }}</h4>
-                                            <div class="ratings-container">
-                                                <div class="ratings">
-                                                    <div class="ratings-val" style="width: {{ review.rating_percentage }}%;"></div>
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4>{{ review.user.name }}</h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: {{ review.rating_percentage }}%;"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="review-content">
+                                                    <p>{{ review.review }}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col">
-                                            <div class="review-content">
-                                                <p>{{ review.review }}</p>
-                                            </div>
-                                        </div>
                                     </div>
-                                </div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -188,9 +188,9 @@
                                     </div>
                                     <div class="ratings-container" style="display: block;">
                                         {% if product.average_rating %}
-                                        <div class="ratings">
-                                            <div class="ratings-val" style="width: {{ product.average_rating }}%;"></div>
-                                        </div>
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: {{ product.average_rating }}%;"></div>
+                                            </div>
                                         {% endif %}
                                         {% if product.stock == 0 %}
                                             <div  style="margin-top:1rem; padding: 0px; background: #fff; color: #d30000;">Out of Stock</div>
