@@ -45,7 +45,7 @@ class Product(models.Model):
         return avg_rating_percentage
 
 
-# Signal receiver function to delete old product images before saving new ones
+# To delete old product images before saving new images
 @receiver(pre_save, sender=Product)
 def delete_old_images(sender, instance, **kwargs):
     if instance.pk:

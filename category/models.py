@@ -15,7 +15,7 @@ class Category(models.Model):
     is_available = models.BooleanField(default=True)
 
 
-# Signal receiver function to delete old category image before saving new one
+# To delete old category images before saving new images
 @receiver(pre_save, sender=Category)
 def delete_old_image(sender, instance, **kwargs):
     if instance.pk:
