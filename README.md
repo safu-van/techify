@@ -11,7 +11,8 @@ Techify is a modern e-commerce web application designed to provide users with a 
 - **Order Management :** Track your orders, view order history, and manage order details.
 - **Coupon System :** Apply discount coupons during checkout to avail special offers and discounts.
 - **Admin Panel :** Powerful admin panel for managing products, orders, users, coupons and offers.
-- **Paypal Payment :** Implemented Paypal payment system for online payment.
+- **Paypal Payment Gateway :** Implemented Paypal payment system for online payment.
+- **Rating & Review :** After purchasing the product user can give rating & review.
 
 ## Contributing
 
