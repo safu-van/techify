@@ -81,7 +81,6 @@ DATABASES = {
         "PORT": config("DB_PORT"),
         "USER": config("DB_USER"),
         "PASSWORD": config("DB_PASSWORD"),
-        "CONN_MAX_AGE": 500,
     }
 }
 
